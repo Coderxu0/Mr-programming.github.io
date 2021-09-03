@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false,"avatar":"/images/avatar.png","url":null,"rounded":false,"rotated":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Vue2中组件间通信系列，本篇是关于父组件向子组件传值的介绍，这里我会用通俗的语言帮助大家理解props配置项  功能：子组件可以接收到父组件传递的数据信息，适用于组件间通信，对于父传子props配置相相对来说是较为方便的  传递方式：1234567891011121314151617181920212223242526&lt;template&gt;  &lt;div&gt;    &lt;So">
+  <meta name="description" content="Vue2中组件间通信系列，本篇是关于父组件向子组件传值的介绍，这里我会用通俗的语言帮助大家理解props配置项">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vue2组件间通信——父传子值props">
 <meta property="og:url" content="http://example.com/2021/09/02/Vue2%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1---%E7%88%B6%E4%BC%A0%E5%AD%90%E5%80%BCprops/index.html">
 <meta property="og:site_name" content="Mr-programming">
-<meta property="og:description" content="Vue2中组件间通信系列，本篇是关于父组件向子组件传值的介绍，这里我会用通俗的语言帮助大家理解props配置项  功能：子组件可以接收到父组件传递的数据信息，适用于组件间通信，对于父传子props配置相相对来说是较为方便的  传递方式：1234567891011121314151617181920212223242526&lt;template&gt;  &lt;div&gt;    &lt;So">
+<meta property="og:description" content="Vue2中组件间通信系列，本篇是关于父组件向子组件传值的介绍，这里我会用通俗的语言帮助大家理解props配置项">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-09-02T01:44:57.000Z">
-<meta property="article:modified_time" content="2021-09-02T03:15:41.447Z">
+<meta property="article:modified_time" content="2021-09-03T05:37:55.279Z">
 <meta property="article:author" content="Mr-programming">
 <meta property="article:tag" content="前端">
 <meta name="twitter:card" content="summary">
@@ -192,10 +192,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建于：2021-09-02 09:44:57 / 更新于：11:15:41" itemprop="dateCreated datePublished" datetime="2021-09-02T09:44:57+08:00">2021-09-02</time>
+              <time title="创建于：2021-09-02 09:44:57" itemprop="dateCreated datePublished" datetime="2021-09-02T09:44:57+08:00">2021-09-02</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="更新于：2021-09-03 13:37:55" itemprop="dateModified" datetime="2021-09-03T13:37:55+08:00">2021-09-03</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -214,6 +220,7 @@
               <span class="post-meta-item-text">مشاهدات：</span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
+            <div class="post-description">Vue2中组件间通信系列，本篇是关于父组件向子组件传值的介绍，这里我会用通俗的语言帮助大家理解props配置项</div>
 
         </div>
       </header>
@@ -224,9 +231,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Vue2中组件间通信系列，本篇是关于父组件向子组件传值的介绍，这里我会用通俗的语言帮助大家理解props配置项</p>
-<hr>
-<h3 id="功能："><a href="#功能：" class="headerlink" title="功能："></a>功能：</h3><p>子组件可以接收到父组件传递的数据信息，适用于组件间通信，对于父传子props配置相相对来说是较为方便的</p>
+        <h3 id="功能："><a href="#功能：" class="headerlink" title="功能："></a>功能：</h3><p>子组件可以接收到父组件传递的数据信息，适用于组件间通信，对于父传子props配置相相对来说是较为方便的</p>
 <hr>
 <h3 id="传递方式："><a href="#传递方式：" class="headerlink" title="传递方式："></a>传递方式：</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">Son</span> <span class="attr">:msg</span>=<span class="string">&quot;Str&quot;</span> <span class="attr">:Job</span>=<span class="string">&#x27;job&#x27;</span>/&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span></span><br><span class="line"><span class="javascript"><span class="xml"><span class="keyword">import</span> Son <span class="keyword">from</span> <span class="string">&#x27;./Son.vue&#x27;</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  <span class="attr">name</span>:<span class="string">&#x27;Father&#x27;</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  <span class="function"><span class="title">data</span>(<span class="params"></span>)</span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="keyword">return</span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="attr">Str</span>:<span class="string">&#x27;hello&#x27;</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="attr">job</span>:&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="attr">salary</span>:<span class="string">&#x27;30k&#x27;</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  <span class="attr">components</span>:&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    Son</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">&#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line">传递方式很简单，只需在子组件中传入父组件想传递的信息即可，msg和Job是我们的自定义写法，不过要注意的是在前面要加v-bind指令，</span><br><span class="line">不然“ ”中的值会被当做字符串传入Son组件中</span><br></pre></td></tr></table></figure>
 
