@@ -74,6 +74,48 @@
       </tags>
   </entry>
   <entry>
+    <title>Vue2组件间通信---全局事件总线</title>
+    <url>/2021/09/04/Vue2%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1-%E5%85%A8%E5%B1%80%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF/</url>
+    <content><![CDATA[<h3 id="功能："><a href="#功能：" class="headerlink" title="功能："></a>功能：</h3><p>实现任意组件间通信</p>
+<hr>
+<h3 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h3><p>相对于接受者和传递者来说全局事件总线相当于一个第三人，接受者会给全局事件总线绑定自定义事件，回调在自己的methods中。传递者去触发这个第三人绑定的自定义事件，回掉参数就是要传递的数据、</p>
+<hr>
+<h3 id="安装全局事件总线："><a href="#安装全局事件总线：" class="headerlink" title="安装全局事件总线："></a>安装全局事件总线：</h3><h5 id="方式一："><a href="#方式一：" class="headerlink" title="方式一："></a>方式一：</h5><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">    <span class="function"><span class="title">beforeCreate</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.__proto__.$bus = <span class="built_in">this</span>;</span><br><span class="line">        <span class="comment">// Vue.prototype.$bus = this</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">render</span>: <span class="function"><span class="params">h</span> =&gt;</span> h(App)</span><br><span class="line">&#125;).$mount(<span class="string">&#x27;#app&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这里的$bus就是我们所说的“第三人”，我们给Vue实例的原型对象添加$bus属性，属性值为一个Vue实例(我们当前new出来的实例对象)，这样做的目的就是为了让所有的组件实例对象都可以在自己的原型对象上找到找到这个$bus。</p>
+<p>这里存在一个关系：VueComponent.prototype.__ proto __ === Vue.prototype</p>
+<p>说白了就是给Vue的原型对象上添加$bus其他的组件实例都可以通过原型链去找到这个属性</p>
+<h5 id="方式二："><a href="#方式二：" class="headerlink" title="方式二："></a>方式二：</h5><p>当然，我们还可以另外定义一个js文件创建一个Vue实例对象：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line">expotr <span class="keyword">default</span> <span class="keyword">new</span> Vue()</span><br></pre></td></tr></table></figure>
+
+<p>这一种方式我们要在使用他的组建中引入，对于以上两种方式都可以采用，它们都是找一个”第三人“</p>
+<hr>
+<h3 id="使用全局事件总线："><a href="#使用全局事件总线：" class="headerlink" title="使用全局事件总线："></a>使用全局事件总线：</h3><p>全部以第一种安装方式为例：</p>
+<h5 id="接收数据："><a href="#接收数据：" class="headerlink" title="接收数据："></a>接收数据：</h5><p>brother1组件：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">name</span>:<span class="string">&#x27;Brother1&#x27;</span>,</span><br><span class="line">  <span class="attr">methods</span>:&#123;</span><br><span class="line">    <span class="function"><span class="title">show</span>(<span class="params">msg</span>)</span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(msg)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.$bus.$on(<span class="string">&#x27;showMsg&#x27;</span>,<span class="built_in">this</span>.show)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="传递数据："><a href="#传递数据：" class="headerlink" title="传递数据："></a>传递数据：</h5><p>brother2组件：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">name</span>:<span class="string">&#x27;Brother2&#x27;</span>,</span><br><span class="line">  <span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.$bus.$emit(<span class="string">&#x27;showMsg&#x27;</span>,<span class="string">&#x27;我是Brother2&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>brother3组件：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">name</span>:<span class="string">&#x27;Brother3&#x27;</span>,</span><br><span class="line">  <span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.$bus.$emit(<span class="string">&#x27;showMsg&#x27;</span>,<span class="string">&#x27;我是Brother3&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>App组件的模板：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">Brother1</span>/&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">Brother2</span>/&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">Brother3</span>/&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">我是Brother2</span><br><span class="line">我是Brother3</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>相比于props和子传父自定义事件全局事件总线可以做到任意键组件间通信，区别于子传父自定义事件的父组件给子组件绑定自定义事件，全局事件总线的方式是找了一个“第三人”，大家都可以为这个第三人去绑定自定义事件，也可以去触发这个自定义事件来达到任意组件间通信的目的。</p>
+]]></content>
+      <categories>
+        <category>关于Vue</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Vue3中的的ref函数和reactive函数及其浅层次响应式原理</title>
     <url>/2021/08/31/Vue3%E4%B8%AD%E7%9A%84%E7%9A%84ref%E5%87%BD%E6%95%B0%E5%92%8Creactive%E5%87%BD%E6%95%B0%E5%8F%8A%E5%85%B6%E6%B5%85%E5%B1%82%E6%AC%A1%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/</url>
     <content><![CDATA[<p>​        </p>
@@ -108,48 +150,6 @@
 <hr>
 <h3 id="区别："><a href="#区别：" class="headerlink" title="区别："></a>区别：</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">1.存储类型：ref对象可以接受基本数据类型得数据也可以接受对象类型的数据，而reactive只可以接受对象类型的数据</span><br><span class="line"></span><br><span class="line">2.响应式：相比于ref对象reactive函数是更深层次的，ref函数参数为对象类型时依赖的也是reactive函数</span><br><span class="line"></span><br><span class="line">3.用法：Proxy代理对象的数据键值对是和原数据对象的键值对一一对应的，在使用时可以直接使用 对象(接受返回值的对象).键名 的形式，ref对象会把数据参数对应到自己</span><br><span class="line"></span><br><span class="line">value属性上，在模板里我们可以直接省略.value的形式，这看起来好像是“把源数据赋值给了ref类型的变量，可以直接在模板上使用这个ref类型的变量”</span><br><span class="line"></span><br><span class="line">4.响应式原理：ref的响应式原理是依赖于Object.defineProperty( )的get( )和<span class="built_in">set</span>( )而reactive的响应式原理是依赖于ES6中的Proxy。</span><br></pre></td></tr></table></figure>
 
-]]></content>
-      <categories>
-        <category>关于Vue</category>
-      </categories>
-      <tags>
-        <tag>前端</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Vue2组件间通信---全局事件总线</title>
-    <url>/2021/09/04/Vue2%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1-%E5%85%A8%E5%B1%80%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF/</url>
-    <content><![CDATA[<h3 id="功能："><a href="#功能：" class="headerlink" title="功能："></a>功能：</h3><p>实现任意组件间通信</p>
-<hr>
-<h3 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h3><p>相对于接受者和传递者来说全局事件总线相当于一个第三人，接受者会给全局事件总线绑定自定义事件，回调在自己的methods中。传递者去触发这个第三人绑定的自定义事件，回掉参数就是要传递的数据、</p>
-<hr>
-<h3 id="安装全局事件总线："><a href="#安装全局事件总线：" class="headerlink" title="安装全局事件总线："></a>安装全局事件总线：</h3><h5 id="方式一："><a href="#方式一：" class="headerlink" title="方式一："></a>方式一：</h5><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">    <span class="function"><span class="title">beforeCreate</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.__proto__.$bus = <span class="built_in">this</span>;</span><br><span class="line">        <span class="comment">// Vue.prototype.$bus = this</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">render</span>: <span class="function"><span class="params">h</span> =&gt;</span> h(App)</span><br><span class="line">&#125;).$mount(<span class="string">&#x27;#app&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-<p>这里的$bus就是我们所说的“第三人”，我们给Vue实例的原型对象添加$bus属性，属性值为一个Vue实例(我们当前new出来的实例对象)，这样做的目的就是为了让所有的组件实例对象都可以在自己的原型对象上找到找到这个$bus。</p>
-<p>这里存在一个关系：VueComponent.prototype.__ proto __ === Vue.prototype</p>
-<p>说白了就是给Vue的原型对象上添加$bus其他的组件实例都可以通过原型链去找到这个属性</p>
-<h5 id="方式二："><a href="#方式二：" class="headerlink" title="方式二："></a>方式二：</h5><p>当然，我们还可以另外定义一个js文件创建一个Vue实例对象：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line">expotr <span class="keyword">default</span> <span class="keyword">new</span> Vue()</span><br></pre></td></tr></table></figure>
-
-<p>这一种方式我们要在使用他的组建中引入，对于以上两种方式都可以采用，它们都是找一个”第三人“</p>
-<hr>
-<h3 id="使用全局事件总线："><a href="#使用全局事件总线：" class="headerlink" title="使用全局事件总线："></a>使用全局事件总线：</h3><p>全部以第一种安装方式为例：</p>
-<h5 id="接收数据："><a href="#接收数据：" class="headerlink" title="接收数据："></a>接收数据：</h5><p>brother1组件：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">name</span>:<span class="string">&#x27;Brother1&#x27;</span>,</span><br><span class="line">  <span class="attr">methods</span>:&#123;</span><br><span class="line">    <span class="function"><span class="title">show</span>(<span class="params">msg</span>)</span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(msg)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.$bus.$on(<span class="string">&#x27;showMsg&#x27;</span>,<span class="built_in">this</span>.show)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-
-<h5 id="传递数据："><a href="#传递数据：" class="headerlink" title="传递数据："></a>传递数据：</h5><p>brother2组件：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">name</span>:<span class="string">&#x27;Brother2&#x27;</span>,</span><br><span class="line">  <span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.$bus.$emit(<span class="string">&#x27;showMsg&#x27;</span>,<span class="string">&#x27;我是Brother2&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-
-<p>brother3组件：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">name</span>:<span class="string">&#x27;Brother3&#x27;</span>,</span><br><span class="line">  <span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.$bus.$emit(<span class="string">&#x27;showMsg&#x27;</span>,<span class="string">&#x27;我是Brother3&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-
-<p>App组件的模板：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">Brother1</span>/&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">Brother2</span>/&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">Brother3</span>/&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
-
-<p>打印结果：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">我是Brother2</span><br><span class="line">我是Brother3</span><br></pre></td></tr></table></figure>
-
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>相比于props和子传父自定义事件全局事件总线可以做到任意键组件间通信，区别于子传父自定义事件的父组件给子组件绑定自定义事件，全局事件总线的方式是找了一个“第三人”，大家都可以为这个第三人去绑定自定义事件，也可以去触发这个自定义事件来达到任意组件间通信的目的。</p>
 ]]></content>
       <categories>
         <category>关于Vue</category>
