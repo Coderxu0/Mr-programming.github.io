@@ -158,4 +158,81 @@
         <tag>前端</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Vue_Music练习项目总结</title>
+    <url>/2021/09/16/Vue_Music%E7%BB%83%E4%B9%A0%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h4 id="项目介绍"><a href="#项目介绍" class="headerlink" title="项目介绍"></a>项目介绍</h4><table>
+<thead>
+<tr>
+<th align="center">功能</th>
+<th align="center">描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">首页推荐</td>
+<td align="center">首页顶部为轮播图下方内容区域为歌单推荐部分</td>
+</tr>
+<tr>
+<td align="center">歌手</td>
+<td align="center">包括各种分类歌手乐队可以选择</td>
+</tr>
+<tr>
+<td align="center">歌单详情</td>
+<td align="center">各个歌单在点击后进入歌单详情页面</td>
+</tr>
+<tr>
+<td align="center">rank榜</td>
+<td align="center">各类排行榜</td>
+</tr>
+<tr>
+<td align="center">主题换肤</td>
+<td align="center">供喜欢样式选择</td>
+</tr>
+<tr>
+<td align="center">搜索</td>
+<td align="center">根据歌曲/歌手相关信息进行搜索</td>
+</tr>
+<tr>
+<td align="center">歌曲播放模式</td>
+<td align="center">顺序播放、单曲循环、随机播放</td>
+</tr>
+<tr>
+<td align="center">关于</td>
+<td align="center">相关版本信息</td>
+</tr>
+</tbody></table>
+<h4 id="项目地址"><a href="#项目地址" class="headerlink" title="项目地址"></a>项目地址</h4><p><a href="https://github.com/Mr-programming/vue_music">https://github.com/Mr-programming/vue_music</a></p>
+<p><a href="https://github.com/xieyezi/vueMusic">原项目地址</a></p>
+<h4 id="项目思路"><a href="#项目思路" class="headerlink" title="项目思路"></a>项目思路</h4><p>主界面分为 recommend首页推荐 ，singer歌手选择，rank排行榜，搜索界面，歌单详情，播放界面</p>
+<p>关于路由跳转采用路由懒加载的形式，图片展示采用v-lazy属性，路由跳转完毕页面等待加载时展示loading组件(展示一个gif动态图)</p>
+<h5 id="首页推荐"><a href="#首页推荐" class="headerlink" title="首页推荐"></a>首页推荐</h5><p>首页推荐和歌手选择以及rank榜模块的整体思路类似，在created钩子中就执行加载资源函数，再将歌单对象数组中的各个歌单对象展示到相应位置，包括图片名称。</p>
+<h5 id="子路由模块"><a href="#子路由模块" class="headerlink" title="子路由模块"></a>子路由模块</h5><p>这里给每一个组件(首页推荐和歌手选择以及rank榜)都添加子路由，在点击对应的歌单对象后都会执行两个函数，第一个向vuex中传入歌单对象，第二个函数跳转路由。子组件此时会从vuex中拿到对象同时根据歌单id请求歌曲列表</p>
+<p>每个子路由组件中都会有一对公用的父子组件来展示歌单详情列表，这里子路由组件只起到请求资源的作用，它会把通过歌单对象请求的歌单信息和歌曲列表传递给这对父子组件，其中父组件展示歌单图片和名字，子组件展歌曲列表</p>
+<h5 id="搜索模块"><a href="#搜索模块" class="headerlink" title="搜索模块"></a>搜索模块</h5><p>关于搜索模块，内部嵌套两个子组件，一个是搜索框区域search-box，一个是搜索结果区域suggest，在搜索模块本身created钩子中加载热门搜索关键字，一旦搜索区域有内容输入关键字部分则会隐藏。</p>
+<p>在search-box组件中会绑定自定义事件 ，该组件会监听输入内容然后触发自定义事件，从而父组件搜索模块会拿到输入结果，这里触发自定义函数外包裹了节流函数，防止监听到输入一个字符就立马触发自定义事件函数</p>
+<p>在搜索模块拿到搜索区域的内容时 会把这个字符串传递给suggest去请求搜索结果并展示</p>
+<h5 id="播放模块"><a href="#播放模块" class="headerlink" title="播放模块"></a>播放模块</h5><p>关于播放歌曲组件player ，在通过歌单详情列表点击某个歌曲时，会把这个歌曲列表和被点击歌曲的索引值传到vuex中，歌曲列表传到顺序列表和播放列表(顺序列表是原封不动的传递，播放列表会根据当前已选择的播放模式来判断是否洗牌)，player组件是根据播放列表中是否有内容来展示的，播放器播放的歌曲是通过mapGetters拿到当前播放列表数组中指定索引的歌曲对象。在搜索歌曲中 点歌曲会往播放列表和顺序列表中插队，索引重新指向当前点击歌曲。</p>
+<h5 id="关于切换歌曲"><a href="#关于切换歌曲" class="headerlink" title="关于切换歌曲"></a>关于切换歌曲</h5><p>关于切换歌曲，切换歌曲只需改变播放列表索引值即可。</p>
+<h5 id="关于切换模式"><a href="#关于切换模式" class="headerlink" title="关于切换模式"></a>关于切换模式</h5><p>关于切换模式，切换模式有三种：0(顺序播放)、1(单曲循环)、2(随机播放) 。在点击顺序播放时会把原本的顺序列表赋给播放列表(当前播放歌曲索引要重新搜索确保，确保当前播放的歌曲是不变的)，随机播放是把当前播放列表洗牌，后续同上。</p>
+<h5 id="关于主题换肤"><a href="#关于主题换肤" class="headerlink" title="关于主题换肤"></a>关于主题换肤</h5><p>关于主题换肤theme：同样是0,1,2三种 默认为0，在选择之后所有相关页面都会改变颜色(通过vuex)</p>
+<h5 id="vuex-中的state"><a href="#vuex-中的state" class="headerlink" title="vuex 中的state"></a>vuex 中的state</h5><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> state = &#123;</span><br><span class="line">    <span class="attr">theme</span>: <span class="number">0</span>, <span class="comment">//主题颜色 默认值为0</span></span><br><span class="line">    <span class="attr">disc</span>: &#123;&#125;, <span class="comment">//歌单对象</span></span><br><span class="line">    <span class="attr">singer</span>: &#123;&#125;, <span class="comment">//歌手对象(和歌单对象类似)</span></span><br><span class="line">    <span class="attr">rank</span>: &#123;&#125;, <span class="comment">//榜单对象(同上)</span></span><br><span class="line">    <span class="attr">sequenceList</span>: [], <span class="comment">//顺序列表</span></span><br><span class="line">    <span class="attr">playList</span>: [], <span class="comment">//当前播放列表</span></span><br><span class="line">    <span class="attr">mode</span>: <span class="number">0</span>, <span class="comment">//播放模式(默认0顺序播放 1单曲 2随机)</span></span><br><span class="line">    <span class="attr">playing</span>: <span class="literal">false</span>, <span class="comment">//播放状态</span></span><br><span class="line">    <span class="attr">fullScreen</span>: <span class="literal">false</span>, <span class="comment">//是否全屏</span></span><br><span class="line">    <span class="attr">currentIndex</span>: -<span class="number">1</span>, <span class="comment">//当前播放歌曲的索引,</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> state;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="App根组件的模板"><a href="#App根组件的模板" class="headerlink" title="App根组件的模板"></a>App根组件的模板</h5><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line"> <span class="xml"><span class="tag">&lt;<span class="name">div</span> &gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;App_Top&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">Mhead</span>/&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">Tab</span>/&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;AppContent&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">     <span class="tag">&lt;<span class="name">keep-alive</span>&gt;</span></span></span><br><span class="line"><span class="xml">       <span class="tag">&lt;<span class="name">router-view</span>&gt;</span><span class="tag">&lt;/<span class="name">router-view</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;/<span class="name">keep-alive</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;bottom&quot;</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">player</span>/&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml"> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="洗牌函数"><a href="#洗牌函数" class="headerlink" title="洗牌函数"></a>洗牌函数</h5><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//洗牌函数的辅助函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getRandomInt</span>(<span class="params">min, max</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//floor为向下取整</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * (max - min + <span class="number">1</span>) + min);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//洗牌函数,打乱歌曲顺序</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">shuffle</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> _arr = arr.slice();</span><br><span class="line">    <span class="comment">//保留arr,制作一个副本</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; _arr.length; i++) &#123;</span><br><span class="line">        <span class="keyword">let</span> j = getRandomInt(<span class="number">0</span>, i);</span><br><span class="line">        <span class="keyword">let</span> temp = _arr[i];</span><br><span class="line">        _arr[i] = _arr[j];</span><br><span class="line">        _arr[j] = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> _arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="节流函数"><a href="#节流函数" class="headerlink" title="节流函数"></a>节流函数</h5><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//截流函数 防止输入一个字符就去请求</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">func, delay</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> timer;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">...args</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (timer) &#123;</span><br><span class="line">            <span class="built_in">clearTimeout</span>(timer)</span><br><span class="line">        &#125;</span><br><span class="line">        timer = <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">            func.apply(<span class="built_in">this</span>, args)</span><br><span class="line">        &#125;, delay)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>关于Vue</category>
+      </categories>
+      <tags>
+        <tag>项目</tag>
+      </tags>
+  </entry>
 </search>
