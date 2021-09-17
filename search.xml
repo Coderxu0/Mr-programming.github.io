@@ -236,4 +236,95 @@
         <tag>项目</tag>
       </tags>
   </entry>
+  <entry>
+    <title>var、let、const关键字的详细解读</title>
+    <url>/2021/09/17/var%E3%80%81let%E3%80%81const%E5%85%B3%E9%94%AE%E5%AD%97%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E5%8C%BA%E5%88%AB/</url>
+    <content><![CDATA[<h2 id="var关键字"><a href="#var关键字" class="headerlink" title="var关键字"></a>var关键字</h2><h4 id="作用：后接变量名，用来定义变量"><a href="#作用：后接变量名，用来定义变量" class="headerlink" title="作用：后接变量名，用来定义变量"></a>作用：后接变量名，用来定义变量</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> num</span><br></pre></td></tr></table></figure>
+
+<p>这里通过var关键字定义了一个num变量，我们没有给num初始化，此时num的值为undifined</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> str =<span class="string">&quot;kobe&quot;</span></span><br><span class="line">str=<span class="number">123</span></span><br></pre></td></tr></table></figure>
+
+<p>这里通过var关键字定义了一个保存“kobe”字符串值的 变量str，str的数据类型不是被规定死的，第二行的代码改变了存储值得同时改变了数据类型(改变类型是不推荐的)</p>
+<h4 id="声明范围-函数作用域"><a href="#声明范围-函数作用域" class="headerlink" title="声明范围(函数作用域)"></a>声明范围(函数作用域)</h4><ul>
+<li>全局作用域下</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">&quot;hello,word&quot;</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(str)</span><br><span class="line">&#125;</span><br><span class="line">test() <span class="comment">//hello ,world</span></span><br></pre></td></tr></table></figure>
+
+<p>在全局作用域下通过var关键字定义的str变量为全局变量</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> num1 = <span class="number">1</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.num1, <span class="built_in">window</span>.num2)	<span class="comment">//1，undefined</span></span><br><span class="line"><span class="keyword">var</span> num2 = <span class="number">2</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.num1, <span class="built_in">window</span>.num2)	<span class="comment">//1,2</span></span><br></pre></td></tr></table></figure>
+
+<p>这里要注意使用var全局声明的变量会成为window对象的属性</p>
+<ul>
+<li>函数体内：</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> str=<span class="string">&quot;hello, world&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(str)    <span class="comment">//报错！</span></span><br></pre></td></tr></table></figure>
+
+<p>在函数体内通过var关键字定义str变量，函数被调用时会创建这个变量并给其赋值，同样在函数被执行完毕后变量被销毁。也就是说这个变量只在函数作用域内有效，在函数体外部我们是访问不到的。</p>
+<ul>
+<li>函数体内省略var关键字</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">test()</span><br><span class="line"><span class="built_in">console</span>.log(str)  <span class="comment">//hello, world</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    str = <span class="string">&quot;hello,word&quot;</span></span><br><span class="line">&#125;    </span><br></pre></td></tr></table></figure>
+
+<p>同样是在函数体内定义，不同的是省略了var关键字，test函数被调用时(只要被调用一次)就会创建全局变量str，该变量和在直接全局作用域下定义的一样都会成为window的属性</p>
+<h4 id="变量提升"><a href="#变量提升" class="headerlink" title="变量提升"></a>变量提升</h4><ul>
+<li>例1</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(str)    <span class="comment">//undefined</span></span><br><span class="line"><span class="keyword">var</span> str = <span class="string">&quot;hello,word&quot;</span></span><br><span class="line"><span class="built_in">console</span>.log(str) 	<span class="comment">//hello, world</span></span><br></pre></td></tr></table></figure>
+
+<p>这里不会报错是相当于执行了如下代码</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> str</span><br><span class="line"><span class="built_in">console</span>.log(str)	<span class="comment">//undefined</span></span><br><span class="line">str=<span class="string">&quot;hello, world&quot;</span></span><br><span class="line"><span class="built_in">console</span>.log(str)	<span class="comment">//hello, world</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>例2</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> num = <span class="number">1</span></span><br><span class="line"><span class="keyword">var</span> num = <span class="number">2</span></span><br><span class="line"><span class="built_in">console</span>.log(num)	<span class="comment">//2</span></span><br><span class="line"><span class="keyword">var</span> num = <span class="number">3</span></span><br><span class="line"><span class="keyword">var</span> num = <span class="number">4</span></span><br><span class="line"><span class="built_in">console</span>.log(num)	<span class="comment">//4</span></span><br></pre></td></tr></table></figure>
+
+<p>相当于执行了如下代码</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> num</span><br><span class="line">num=<span class="number">1</span></span><br><span class="line">num=<span class="number">2</span></span><br><span class="line"><span class="built_in">console</span>.log(num)	<span class="comment">//2</span></span><br><span class="line">num=<span class="number">3</span></span><br><span class="line">num=<span class="number">4</span></span><br><span class="line"><span class="built_in">console</span>.log(num)	<span class="comment">//4</span></span><br></pre></td></tr></table></figure>
+
+<p>这就是var关键字存在的变量“提升”，也就是把所有变量声明拉倒作用域的顶部。</p>
+<hr>
+<h2 id="let关键字"><a href="#let关键字" class="headerlink" title="let关键字"></a>let关键字</h2><p>let关键字和var关键字的作用类似，不过相比于var，let显得更加的严谨，let关键字不存在“变量提升”，let关键声明的作用域范围是块作用域而var关键字是函数作用域</p>
+<h4 id="作用：后接变量名，定义变量"><a href="#作用：后接变量名，定义变量" class="headerlink" title="作用：后接变量名，定义变量"></a>作用：后接变量名，定义变量</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> str</span><br><span class="line">str = <span class="number">123</span></span><br><span class="line"><span class="built_in">console</span>.log(str)	<span class="comment">//123</span></span><br><span class="line">str = <span class="string">&quot;kobe&quot;</span></span><br><span class="line"><span class="built_in">console</span>.log(str)	<span class="comment">//kobe</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="声明范围-块级作用域"><a href="#声明范围-块级作用域" class="headerlink" title="声明范围(块级作用域)"></a>声明范围(块级作用域)</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">     <span class="keyword">var</span> num = <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(num)	<span class="comment">//1</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="keyword">let</span> num = <span class="number">1</span></span><br><span class="line">    <span class="built_in">console</span>.log(num)	<span class="comment">//1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(num)	<span class="comment">//报错！</span></span><br></pre></td></tr></table></figure>
+
+<p>正如开头所说的let关键字不同于var关键字 他的声明范围为块级作用域，在作用域外是访问不到该变量的</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> num=<span class="number">1</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">let</span> num=<span class="number">2</span></span><br><span class="line">    <span class="built_in">console</span>.lgo(num)	<span class="comment">//2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> num = <span class="number">1</span></span><br><span class="line">    <span class="keyword">let</span> num = <span class="number">2</span></span><br><span class="line">    <span class="built_in">console</span>.log(num)	<span class="comment">//报错</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="keyword">let</span> num=<span class="number">1</span></span><br><span class="line">    <span class="keyword">let</span> num=<span class="number">2</span></span><br><span class="line">    <span class="built_in">console</span>.log(num)	<span class="comment">//报错</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于let关键字在同一块级作用域中，相同标识符会报错</p>
+<p>与var关键字不同 ，let关键字在全局作用域声明的变量不会成为window对象的属性</p>
+<h4 id="暂时性死区"><a href="#暂时性死区" class="headerlink" title="暂时性死区"></a>暂时性死区</h4><p>相比于var关键字，let声明的变量不会在作用域中被提升。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(num)	<span class="comment">//报错！ 这里不会和var一样打印undefined</span></span><br><span class="line"><span class="keyword">let</span> num=<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>在num被声明前执行的一瞬间成为“暂时性死区”</p>
+<hr>
+<h2 id="经典例题"><a href="#经典例题" class="headerlink" title="经典例题"></a>经典例题</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(i)		<span class="comment">//5</span></span><br></pre></td></tr></table></figure>
+
+<p>通过var关键字定义的迭代变量会渗透到循环体外部</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(i)		<span class="comment">//报错！</span></span><br></pre></td></tr></table></figure>
+
+<p>迭代变量的作用域是循环体这个块级作用域，let关键字定义的变量范围正是块级作用域，所以外部访问会报错</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(i)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//0 1 2 3 4</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)&#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;<span class="built_in">console</span>.log(i)&#125;,<span class="number">0</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 5</span></span><br></pre></td></tr></table></figure>
+
+<p>加了定时器函数后打印结果变了，这是因为在退出循环时迭代变量保存的是导致循环退出的值：5，在之后的执行超时函数时所有的i都是同一个值：5</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">let</span> i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++)&#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">()=&gt;</span>&#123;<span class="built_in">console</span>.log(i)&#125;,<span class="number">0</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//打印结果0 1 2 3 4</span></span><br></pre></td></tr></table></figure>
+
+<p>这是因为后台会为个迭代循环声明一个新的迭代变量，他们都是互相独立的，每一个超时函数时打印的都是不同的变量实例</p>
+<hr>
+<h2 id="const关键字"><a href="#const关键字" class="headerlink" title="const关键字"></a>const关键字</h2><p>const关键字和let是类似的，唯一 一个重要区别是const关键字声明变量时必须初始化，并且在修改const定义的变量时会报错(这里指的是修改内存地址),在修改一个对象内部的一个属性时是不会报错的</p>
+]]></content>
+      <categories>
+        <category>关于JavaScript</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+      </tags>
+  </entry>
 </search>
