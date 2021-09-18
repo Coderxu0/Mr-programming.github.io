@@ -327,4 +327,97 @@
         <tag>前端</tag>
       </tags>
   </entry>
+  <entry>
+    <title>浅谈JS七种数据类型</title>
+    <url>/2021/09/18/%E6%B5%85%E8%B0%88JS%E4%B8%83%E7%A7%8D%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</url>
+    <content><![CDATA[<h3 id="6种简单数据类型"><a href="#6种简单数据类型" class="headerlink" title="6种简单数据类型"></a>6种简单数据类型</h3><h4 id="undefined类型"><a href="#undefined类型" class="headerlink" title="undefined类型"></a>undefined类型</h4><p>undefined类型只有一个值，就是特殊值undefined</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> str</span><br><span class="line"><span class="built_in">console</span>.log(str)	<span class="comment">//undefined</span></span><br><span class="line"><span class="built_in">console</span>.log(str===<span class="literal">undefined</span>)	<span class="comment">//true </span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> str)		<span class="comment">//undefined</span></span><br></pre></td></tr></table></figure>
+
+<p>当我们声明一个变量并没有对其初始化赋值时，这个变量保存的值就是undefined值。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> str</span><br><span class="line"><span class="built_in">console</span>.log(str)	<span class="comment">//undefined</span></span><br><span class="line"><span class="built_in">console</span>.log(age)	<span class="comment">//报错！ 未定义</span></span><br></pre></td></tr></table></figure>
+
+<p>注意：定义但没有初始化和本身就没有定义是不一样的</p>
+<h4 id="Null类型"><a href="#Null类型" class="headerlink" title="Null类型"></a>Null类型</h4><p>Null类型只有一个值，就是特殊值null</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> person = <span class="literal">null</span></span><br><span class="line"><span class="built_in">console</span>.log(person)     <span class="comment">//null</span></span><br></pre></td></tr></table></figure>
+
+<p>在定义一个保存对象的变量时可以用null值来初始化</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> person = <span class="literal">null</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> person)		<span class="comment">//object</span></span><br></pre></td></tr></table></figure>
+
+<p>null值表示一个空对象指针，所以在用typeof操作符时返回值为object</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> person=<span class="literal">null</span></span><br><span class="line"><span class="built_in">console</span>.log(person==<span class="literal">null</span>)		<span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(person===<span class="literal">null</span>)		<span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+
+<p>undefined值是由null值派生而来的，所以第二行会打印出true</p>
+<h4 id="Boolean类型"><a href="#Boolean类型" class="headerlink" title="Boolean类型"></a>Boolean类型</h4><p>布尔类型有两个字面值，true和false</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> b1=<span class="literal">true</span></span><br><span class="line"><span class="keyword">let</span> b2=<span class="literal">false</span></span><br><span class="line"><span class="built_in">console</span>.log(b1,b2)	<span class="comment">//true,false</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> str= <span class="string">&#x27;hello&#x27;</span></span><br><span class="line"><span class="keyword">if</span>(str)&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(str)	<span class="comment">//hello</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在流程控制语句中其他类型的值会被执行Boolean()转型函数来转换成布尔值，具体原则如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center">数据类型</th>
+<th align="center">转换为true的值</th>
+<th align="center">转换为false的值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Boolean</td>
+<td align="center">true</td>
+<td align="center">false</td>
+</tr>
+<tr>
+<td align="center">String</td>
+<td align="center">非空字符串</td>
+<td align="center">“    ” (空字符串)</td>
+</tr>
+<tr>
+<td align="center">Number</td>
+<td align="center">非零数值(包括无穷值)</td>
+<td align="center">0、NaN</td>
+</tr>
+<tr>
+<td align="center">Object</td>
+<td align="center">任意对象</td>
+<td align="center">null</td>
+</tr>
+<tr>
+<td align="center">Undefined</td>
+<td align="center">N/A (不存在)</td>
+<td align="center">undefined</td>
+</tr>
+</tbody></table>
+<h4 id="Number类型"><a href="#Number类型" class="headerlink" title="Number类型"></a>Number类型</h4><p>Number类型可以用来表示整数和浮点数</p>
+<ul>
+<li>整数</li>
+</ul>
+<p>整数包括八进制，十六进制，最常用的还是十进制整数。</p>
+<ul>
+<li>浮点数</li>
+</ul>
+<p>浮点数中必须包含小数点并且小数点后面必须有数字，不然就会被转换成整数，浮点数在内存中使用的内存空间是整数的两倍。</p>
+<ul>
+<li>特殊值NaN</li>
+</ul>
+<p>NaN的意思是“不是数值”，表示本来要返回数值的但是操作失败了，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="number">5</span>/<span class="number">0</span>)	<span class="comment">//NaN</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="literal">NaN</span>/<span class="number">5</span>)	<span class="comment">//NaN	有关NaN的任何操作返回结果都是NaN</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="literal">NaN</span>===<span class="literal">NaN</span>)	<span class="comment">//false  NaN不等于任何值，包括他自己</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="String类型"><a href="#String类型" class="headerlink" title="String类型"></a>String类型</h4><p>String数据类型表示0或多个16位Unicode字符序列</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> str1= <span class="string">&quot;hello&quot;</span></span><br><span class="line"><span class="keyword">let</span> str2= <span class="string">&#x27;my&#x27;</span></span><br><span class="line"><span class="keyword">let</span> str3=<span class="string">`friend`</span></span><br><span class="line"><span class="built_in">console</span>.log(str1,str2,str3)		<span class="comment">//hello，my,friend</span></span><br></pre></td></tr></table></figure>
+
+<p>在定义字符串时可以使用双引号，单引号，反引号，都是合法的</p>
+<ul>
+<li>字符串是不可改变的</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> str1=<span class="string">&quot;hello&quot;</span></span><br><span class="line">str1+=<span class="string">&quot;,world&quot;</span></span><br><span class="line"><span class="built_in">console</span>.log(str1)	<span class="comment">//hello,world   原字符串“hello”会被销毁，打印的是str中保存新的字符串“hello,world”</span></span><br></pre></td></tr></table></figure>
+
+<p>第一行str1被定义为“hello”字符串，但是在执行第二行时后台会给str1分配一个可以容纳11个字符的空间，str1由“hello”和“,world”拼接而成一个新的字符串，原本的两个字符串”hello”和”,world”会被销毁，所以说字符串是不可变的</p>
+]]></content>
+      <categories>
+        <category>关于JavaScript</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+      </tags>
+  </entry>
 </search>
