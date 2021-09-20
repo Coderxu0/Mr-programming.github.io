@@ -500,18 +500,41 @@
     <url>/2021/09/20/JS%E5%8E%9F%E5%A7%8B%E5%80%BC%E4%B8%8E%E5%BC%95%E7%94%A8%E5%80%BC/</url>
     <content><![CDATA[<p>对于JS中的变量只存储两种类型的值，原始值和引用值。</p>
 <h4 id="原始值"><a href="#原始值" class="headerlink" title="原始值"></a>原始值</h4><p>原始值就是最简单的数据，也就是几种基本数据类型的值。原始值存储在变量上，我们在访问原始值是按值访问的，操作的就是存储在变量中的实际值。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> num1=<span class="number">5</span></span><br><span class="line"><span class="keyword">let</span> num2=num1</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> num1=<span class="number">5</span></span><br><span class="line"><span class="keyword">let</span> num2=num1</span><br><span class="line"><span class="built_in">console</span>.log(++num1)		<span class="comment">//6</span></span><br><span class="line"><span class="built_in">console</span>.log(num2)		<span class="comment">//5</span></span><br></pre></td></tr></table></figure>
 
-<p>第一行num1变量存储数值5，第二行num2初始化为num1，该变量也同样存储数值5。但是这两个变量中的数值5是完全独立的，两个变量可以独立使用，互不干扰。</p>
-<p>​                                                                                                                                初始化num1</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">graph LR;</span><br><span class="line"></span><br><span class="line">A(num1)---B[5 Numer类型]</span><br></pre></td></tr></table></figure>
+<p>第一行num1变量存储数值5，第二行num2初始化为num1，该变量也同样存储数值5。但是这两个变量中的数值5是完全独立的，两个变量可以独立使用，互不干扰。如下图：</p>
+<p><img src="/2021/09/20/JS%E5%8E%9F%E5%A7%8B%E5%80%BC%E4%B8%8E%E5%BC%95%E7%94%A8%E5%80%BC/liucheng1-1.png"></p>
+<center>图1-1 num1初始化</center>
 
-<p>​                                                                                                                            </p>
-<p>​                                                                                                                                初始化num2</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">graph LR;</span><br><span class="line">A(num2)---B(5 Number类型)</span><br><span class="line">C(num1)---D(5 Number类型)</span><br></pre></td></tr></table></figure>
+<p><img src="/2021/09/20/JS%E5%8E%9F%E5%A7%8B%E5%80%BC%E4%B8%8E%E5%BC%95%E7%94%A8%E5%80%BC/liucheng1-2.png"></p>
+<center>图1-2 num2初始化</center>
 
+<h4 id="引用值"><a href="#引用值" class="headerlink" title="引用值"></a>引用值</h4><p>引用值是保存在内存中的对象，在JS中不允许我们直接去访问内存位置，所以就不能直接操作对象所在的内存空间。保存在变量中的值为引用值，我们实际操作的是该对象的引用而非对象本身。换句话说就是我们通过操作保存在变量中的引用值来间接操作对内存中的对象，也就是按引用访问。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> obj1=<span class="keyword">new</span> <span class="built_in">Object</span>()</span><br><span class="line"><span class="keyword">let</span> obj2=obj1</span><br><span class="line">obj1.num=<span class="number">1</span>		<span class="comment">//为obj1对象添加num属性属性值为1</span></span><br><span class="line">consol.log(obj2.num)	<span class="comment">//1		通过obj2也可以访问num属性，这是为什么呢？</span></span><br></pre></td></tr></table></figure>
 
+<p>在第一行中我们为obj1“new”出了一个新的实例对象，在第二行中执行了一个复制值的操作，虽然有值的复制但是并没有在内存中重新开辟新的空间，也就是说这一步复制的值就相当于一个指针，该指针指向内存中的对象(obj1所指向的对象)。这样obj2和obj1通过指针指向同一内存地址，无论哪一个改变了，内存中的对象都会改变。如下图：</p>
+<p><img src="/2021/09/20/JS%E5%8E%9F%E5%A7%8B%E5%80%BC%E4%B8%8E%E5%BC%95%E7%94%A8%E5%80%BC/liucheng2-1.png"></p>
+<center>图2-1 执行复制值之前</center>
 
+<p><img src="/2021/09/20/JS%E5%8E%9F%E5%A7%8B%E5%80%BC%E4%B8%8E%E5%BC%95%E7%94%A8%E5%80%BC/liucheng2-2.png"></p>
+<center>图2-2执行复制值之后</center>
+
+<h4 id="函数传参-按值传递"><a href="#函数传参-按值传递" class="headerlink" title="函数传参(按值传递)"></a>函数传参(按值传递)</h4><p>JS中所有函数传参都是按值传递的。也就是说传递的参数会被复制到函数内部的参数中，就像两个变量进行复制操作一样</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">num</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> ++num</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> n=<span class="number">10</span></span><br><span class="line"><span class="built_in">console</span>.log(add(n))		<span class="comment">//11</span></span><br><span class="line"><span class="built_in">console</span>.log(n)		<span class="comment">//10</span></span><br></pre></td></tr></table></figure>
+
+<p>我们可以发现对于原始值(基本数据类型)传参(按值传递)，函数内部的操作不会影响到外部，这很好理解。正如开头说的，传参相当于执行了复制操作，对于原始值复制值两个变量是完全独立的。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setPerson</span>(<span class="params">obj</span>)</span>&#123;</span><br><span class="line">	obj.name=<span class="string">&quot;kobe&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> p=<span class="keyword">new</span> <span class="built_in">Object</span>()		<span class="comment">//创建一个p对象</span></span><br><span class="line">setPerson(p)</span><br><span class="line"><span class="built_in">console</span>.log(p.name)		<span class="comment">//kobe</span></span><br></pre></td></tr></table></figure>
+
+<p>对于引用值传参(按值传递)，函数内部的操作会影响到外部，很多人认为这就是按引用传递其实是不对的。看下面代码：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setPerson</span>(<span class="params">obj</span>)</span>&#123;</span><br><span class="line">	obj.age=<span class="number">20</span></span><br><span class="line">    obj=<span class="keyword">new</span> <span class="built_in">Object</span>()</span><br><span class="line">    obj.age=<span class="number">22</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> p =<span class="keyword">new</span> <span class="built_in">Object</span>()</span><br><span class="line">setPerson(p)		</span><br><span class="line"><span class="built_in">console</span>.log(p.age)		<span class="comment">//20</span></span><br></pre></td></tr></table></figure>
+
+<p>如果对于引用值函数传参是按引用传递的话，在函数体内部obj指向了一个新的对象，并且为对象添加age属性，属性值为22 ，外部p也应指向新对象并且age也应该为22，但是结果确是20,足以说明这并不是按引用传递而是按值传递。</p>
+<p>在函数体内的过程：</p>
+<p>按值传递实参p会将指针复制给实参obj，此时他们共同指向存放在全局作用域堆内存中的对象，所以添加属性age并为其赋值外部实参也会产生相应的变化</p>
+<p><img src="/2021/09/20/JS%E5%8E%9F%E5%A7%8B%E5%80%BC%E4%B8%8E%E5%BC%95%E7%94%A8%E5%80%BC/liucheng3-1.png"></p>
+<center>图3-1 传递参数</center>
+
+<p>obj在函数内部被重写，他的指针指向了本地对象，而原本的实参p是不受影响的，这个本地对象在函数执行之后会被销毁。</p>
 ]]></content>
       <categories>
         <category>关于JavaScript</category>
