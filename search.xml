@@ -345,7 +345,7 @@
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> person = <span class="literal">null</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> person)		<span class="comment">//object</span></span><br></pre></td></tr></table></figure>
 
 <p>null值表示一个空对象指针，所以在用typeof操作符时返回值为object</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> person=<span class="literal">null</span></span><br><span class="line"><span class="built_in">console</span>.log(person==<span class="literal">null</span>)		<span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(person===<span class="literal">null</span>)		<span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> person				<span class="comment">//person的值为undefined</span></span><br><span class="line"><span class="built_in">console</span>.log(person==<span class="literal">null</span>)		<span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(person===<span class="literal">null</span>)		<span class="comment">//false</span></span><br></pre></td></tr></table></figure>
 
 <p>undefined值是由null值派生而来的，所以第二行会打印出true</p>
 <hr>
