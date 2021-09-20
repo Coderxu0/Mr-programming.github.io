@@ -1,6 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>JS中的原始值、引用值、按值传递</title>
+    <url>/2021/09/20/JS%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%A7%8B%E5%80%BC%E3%80%81%E5%BC%95%E7%94%A8%E5%80%BC%E3%80%81%E6%8C%89%E5%80%BC%E4%BC%A0%E9%80%92/</url>
+    <content><![CDATA[<p>对于JS中的变量只存储两种类型的值，原始值和引用值。</p>
+<h4 id="原始值"><a href="#原始值" class="headerlink" title="原始值"></a>原始值</h4><p>原始值就是最简单的数据，也就是几种基本数据类型的值。原始值存储在变量上，我们在访问原始值是按值访问的，操作的就是存储在变量中的实际值。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> num1=<span class="number">5</span></span><br><span class="line"><span class="keyword">let</span> num2=num1</span><br><span class="line"><span class="built_in">console</span>.log(++num1)		<span class="comment">//6</span></span><br><span class="line"><span class="built_in">console</span>.log(num2)		<span class="comment">//5</span></span><br></pre></td></tr></table></figure>
+
+<p>第一行num1变量存储数值5，第二行num2初始化为num1，该变量也同样存储数值5。但是这两个变量中的数值5是完全独立的，两个变量可以独立使用，互不干扰。如下图：</p>
+<p><img src="/2021/09/20/JS%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%A7%8B%E5%80%BC%E3%80%81%E5%BC%95%E7%94%A8%E5%80%BC%E3%80%81%E6%8C%89%E5%80%BC%E4%BC%A0%E9%80%92/liucheng1-1.png"></p>
+<center>图1-1 num1初始化</center>
+
+<p><img src="/2021/09/20/JS%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%A7%8B%E5%80%BC%E3%80%81%E5%BC%95%E7%94%A8%E5%80%BC%E3%80%81%E6%8C%89%E5%80%BC%E4%BC%A0%E9%80%92/liucheng1-2.png"></p>
+<center>图1-2 num2初始化</center>
+
+<h4 id="引用值"><a href="#引用值" class="headerlink" title="引用值"></a>引用值</h4><p>引用值是保存在内存中的对象，在JS中不允许我们直接去访问内存位置，所以就不能直接操作对象所在的内存空间。保存在变量中的值为引用值，我们实际操作的是该对象的引用而非对象本身。换句话说就是我们通过操作保存在变量中的引用值来间接操作对内存中的对象，也就是按引用访问。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> obj1=<span class="keyword">new</span> <span class="built_in">Object</span>()</span><br><span class="line"><span class="keyword">let</span> obj2=obj1</span><br><span class="line">obj1.num=<span class="number">1</span>		<span class="comment">//为obj1对象添加num属性属性值为1</span></span><br><span class="line">consol.log(obj2.num)	<span class="comment">//1		通过obj2也可以访问num属性，这是为什么呢？</span></span><br></pre></td></tr></table></figure>
+
+<p>在第一行中我们为obj1“new”出了一个新的实例对象，在第二行中执行了一个复制值的操作，虽然有值的复制但是并没有在内存中重新开辟新的空间，也就是说这一步复制的值就相当于一个指针，该指针指向内存中的对象(obj1所指向的对象)。这样obj2和obj1通过指针指向同一内存地址，无论哪一个改变了，内存中的对象都会改变。如下图：</p>
+<p><img src="/2021/09/20/JS%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%A7%8B%E5%80%BC%E3%80%81%E5%BC%95%E7%94%A8%E5%80%BC%E3%80%81%E6%8C%89%E5%80%BC%E4%BC%A0%E9%80%92/liucheng2-1.png"></p>
+<center>图2-1 执行复制值之前</center>
+
+<p><img src="/2021/09/20/JS%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%A7%8B%E5%80%BC%E3%80%81%E5%BC%95%E7%94%A8%E5%80%BC%E3%80%81%E6%8C%89%E5%80%BC%E4%BC%A0%E9%80%92/liucheng2-2.png"></p>
+<center>图2-2执行复制值之后</center>
+
+<h4 id="函数传参-按值传递"><a href="#函数传参-按值传递" class="headerlink" title="函数传参(按值传递)"></a>函数传参(按值传递)</h4><p>JS中所有函数传参都是按值传递的。也就是说传递的参数会被复制到函数内部的参数中，就像两个变量进行复制操作一样</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">num</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> ++num</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> n=<span class="number">10</span></span><br><span class="line"><span class="built_in">console</span>.log(add(n))		<span class="comment">//11</span></span><br><span class="line"><span class="built_in">console</span>.log(n)		<span class="comment">//10</span></span><br></pre></td></tr></table></figure>
+
+<p>我们可以发现对于原始值(基本数据类型)传参(按值传递)，函数内部的操作不会影响到外部，这很好理解。正如开头说的，传参相当于执行了复制操作，对于原始值复制值两个变量是完全独立的。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setPerson</span>(<span class="params">obj</span>)</span>&#123;</span><br><span class="line">	obj.name=<span class="string">&quot;kobe&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> p=<span class="keyword">new</span> <span class="built_in">Object</span>()		<span class="comment">//创建一个p对象</span></span><br><span class="line">setPerson(p)</span><br><span class="line"><span class="built_in">console</span>.log(p.name)		<span class="comment">//kobe</span></span><br></pre></td></tr></table></figure>
+
+<p>对于引用值传参(按值传递)，函数内部的操作会影响到外部，很多人认为这就是按引用传递其实是不对的。看下面代码：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setPerson</span>(<span class="params">obj</span>)</span>&#123;</span><br><span class="line">	obj.age=<span class="number">20</span></span><br><span class="line">    obj=<span class="keyword">new</span> <span class="built_in">Object</span>()</span><br><span class="line">    obj.age=<span class="number">22</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> p =<span class="keyword">new</span> <span class="built_in">Object</span>()</span><br><span class="line">setPerson(p)		</span><br><span class="line"><span class="built_in">console</span>.log(p.age)		<span class="comment">//20</span></span><br></pre></td></tr></table></figure>
+
+<p>如果对于引用值函数传参是按引用传递的话，在函数体内部obj指向了一个新的对象，并且为对象添加age属性，属性值为22 ，外部p也应指向新对象并且age也应该为22，但是结果确是20,足以说明这并不是按引用传递而是按值传递。</p>
+<p>在函数体内的过程：</p>
+<p>按值传递实参p会将指针复制给实参obj，此时他们共同指向存放在全局作用域堆内存中的对象，所以添加属性age并为其赋值外部实参也会产生相应的变化</p>
+<p><img src="/2021/09/20/JS%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%A7%8B%E5%80%BC%E3%80%81%E5%BC%95%E7%94%A8%E5%80%BC%E3%80%81%E6%8C%89%E5%80%BC%E4%BC%A0%E9%80%92/liucheng3-1.png"></p>
+<center>图3-1 传递参数</center>
+
+<p>obj在函数内部被重写，他的指针指向了本地对象，而原本的实参p是不受影响的，这个本地对象在函数执行之后会被销毁。</p>
+]]></content>
+      <categories>
+        <category>关于JavaScript</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vue2组件间通信---全局事件总线</title>
+    <url>/2021/09/04/Vue2%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1-%E5%85%A8%E5%B1%80%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF/</url>
+    <content><![CDATA[<h3 id="功能："><a href="#功能：" class="headerlink" title="功能："></a>功能：</h3><p>实现任意组件间通信</p>
+<hr>
+<h3 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h3><p>相对于接受者和传递者来说全局事件总线相当于一个第三人，接受者会给全局事件总线绑定自定义事件，回调在自己的methods中。传递者去触发这个第三人绑定的自定义事件，回掉参数就是要传递的数据、</p>
+<hr>
+<h3 id="安装全局事件总线："><a href="#安装全局事件总线：" class="headerlink" title="安装全局事件总线："></a>安装全局事件总线：</h3><h5 id="方式一："><a href="#方式一：" class="headerlink" title="方式一："></a>方式一：</h5><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">    <span class="function"><span class="title">beforeCreate</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.__proto__.$bus = <span class="built_in">this</span>;</span><br><span class="line">        <span class="comment">// Vue.prototype.$bus = this</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">render</span>: <span class="function"><span class="params">h</span> =&gt;</span> h(App)</span><br><span class="line">&#125;).$mount(<span class="string">&#x27;#app&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这里的$bus就是我们所说的“第三人”，我们给Vue实例的原型对象添加$bus属性，属性值为一个Vue实例(我们当前new出来的实例对象)，这样做的目的就是为了让所有的组件实例对象都可以在自己的原型对象上找到找到这个$bus。</p>
+<p>这里存在一个关系：VueComponent.prototype.__ proto __ === Vue.prototype</p>
+<p>说白了就是给Vue的原型对象上添加$bus其他的组件实例都可以通过原型链去找到这个属性</p>
+<h5 id="方式二："><a href="#方式二：" class="headerlink" title="方式二："></a>方式二：</h5><p>当然，我们还可以另外定义一个js文件创建一个Vue实例对象：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line">expotr <span class="keyword">default</span> <span class="keyword">new</span> Vue()</span><br></pre></td></tr></table></figure>
+
+<p>这一种方式我们要在使用他的组建中引入，对于以上两种方式都可以采用，它们都是找一个”第三人“</p>
+<hr>
+<h3 id="使用全局事件总线："><a href="#使用全局事件总线：" class="headerlink" title="使用全局事件总线："></a>使用全局事件总线：</h3><p>全部以第一种安装方式为例：</p>
+<h5 id="接收数据："><a href="#接收数据：" class="headerlink" title="接收数据："></a>接收数据：</h5><p>brother1组件：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">name</span>:<span class="string">&#x27;Brother1&#x27;</span>,</span><br><span class="line">  <span class="attr">methods</span>:&#123;</span><br><span class="line">    <span class="function"><span class="title">show</span>(<span class="params">msg</span>)</span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(msg)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.$bus.$on(<span class="string">&#x27;showMsg&#x27;</span>,<span class="built_in">this</span>.show)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h5 id="传递数据："><a href="#传递数据：" class="headerlink" title="传递数据："></a>传递数据：</h5><p>brother2组件：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">name</span>:<span class="string">&#x27;Brother2&#x27;</span>,</span><br><span class="line">  <span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.$bus.$emit(<span class="string">&#x27;showMsg&#x27;</span>,<span class="string">&#x27;我是Brother2&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>brother3组件：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">name</span>:<span class="string">&#x27;Brother3&#x27;</span>,</span><br><span class="line">  <span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.$bus.$emit(<span class="string">&#x27;showMsg&#x27;</span>,<span class="string">&#x27;我是Brother3&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>App组件的模板：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">Brother1</span>/&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">Brother2</span>/&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">Brother3</span>/&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
+
+<p>打印结果：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">我是Brother2</span><br><span class="line">我是Brother3</span><br></pre></td></tr></table></figure>
+
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>相比于props和子传父自定义事件全局事件总线可以做到任意键组件间通信，区别于子传父自定义事件的父组件给子组件绑定自定义事件，全局事件总线的方式是找了一个“第三人”，大家都可以为这个第三人去绑定自定义事件，也可以去触发这个自定义事件来达到任意组件间通信的目的。</p>
+]]></content>
+      <categories>
+        <category>关于Vue</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Vue2组件间通信---子传父值自定义事件</title>
     <url>/2021/09/03/Vue2%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1---%E5%AD%90%E4%BC%A0%E7%88%B6%E5%80%BC%E8%87%AA%E5%AE%9A%E4%B9%89%E4%BA%8B%E4%BB%B6/</url>
     <content><![CDATA[<h3 id="功能："><a href="#功能：" class="headerlink" title="功能："></a>功能：</h3><p>父组件可以接受到子组件传递的数据，适用于组件间通信。</p>
@@ -65,48 +155,6 @@
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">Father</span>/&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">Son</span> <span class="attr">:msg</span>=<span class="string">&quot;Str2&quot;</span> <span class="attr">:Job</span>=<span class="string">&quot;myjob&quot;</span>/&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"></span></span></span><br><span class="line"><span class="javascript"><span class="xml"><span class="keyword">import</span> Father <span class="keyword">from</span> <span class="string">&#x27;./components/Father.vue&#x27;</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml"><span class="keyword">import</span> Son <span class="keyword">from</span> <span class="string">&#x27;./components/Son.vue&#x27;</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span></span></span><br><span class="line"><span class="javascript"><span class="xml"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  <span class="attr">name</span>:<span class="string">&#x27;App&#x27;</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  <span class="function"><span class="title">data</span>(<span class="params"></span>)</span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    <span class="keyword">return</span>&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="attr">Str2</span>:<span class="string">&#x27;world&#x27;</span>,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">      <span class="attr">myjob</span>:&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">        <span class="attr">salary</span>:<span class="string">&#x27;10k&#x27;</span></span></span></span><br><span class="line"><span class="javascript"><span class="xml">      &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">    &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  &#125;,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  <span class="attr">components</span>:&#123;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  Father,</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  Son</span></span></span><br><span class="line"><span class="javascript"><span class="xml">  &#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml">&#125;</span></span></span><br><span class="line"><span class="javascript"><span class="xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line">打印结果：</span><br><span class="line"></span><br><span class="line">你好</span><br><span class="line"></span><br><span class="line">&#123;<span class="attr">__ob__</span>: Observer&#125;</span><br><span class="line"><span class="attr">salary</span>: <span class="string">&quot;30k&quot;</span></span><br><span class="line"><span class="attr">__ob__</span>: Observer &#123;<span class="attr">value</span>: &#123;…&#125;, <span class="attr">dep</span>: Dep, <span class="attr">vmCount</span>: <span class="number">0</span>&#125;</span><br><span class="line">get salary: ƒ reactiveGetter()</span><br><span class="line">set salary: ƒ reactiveSetter(newVal)</span><br><span class="line">[[Prototype]]: <span class="built_in">Object</span></span><br><span class="line"></span><br><span class="line">world</span><br><span class="line"></span><br><span class="line">&#123;<span class="attr">__ob__</span>: Observer&#125;</span><br><span class="line"><span class="attr">salary</span>: <span class="string">&quot;10k&quot;</span></span><br><span class="line"><span class="attr">__ob__</span>: Observer &#123;<span class="attr">value</span>: &#123;…&#125;, <span class="attr">dep</span>: Dep, <span class="attr">vmCount</span>: <span class="number">0</span>&#125;</span><br><span class="line">get salary: ƒ reactiveGetter()</span><br><span class="line">set salary: ƒ reactiveSetter(newVal)</span><br><span class="line">[[Prototype]]: <span class="built_in">Object</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>​     这里我们在App组件中也向Son组建中传递了相关数据，我们可以看出控制台分别打印了两次 msg和Job 的结果。 很明显Son组件作为子组件对于Faher组件和App组件分别挂载了一次，对应的mounted钩子也分别执行一次，每次打印的信息都是对应父组件传递的相关数据。</p>
-]]></content>
-      <categories>
-        <category>关于Vue</category>
-      </categories>
-      <tags>
-        <tag>前端</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Vue2组件间通信---全局事件总线</title>
-    <url>/2021/09/04/Vue2%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1-%E5%85%A8%E5%B1%80%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF/</url>
-    <content><![CDATA[<h3 id="功能："><a href="#功能：" class="headerlink" title="功能："></a>功能：</h3><p>实现任意组件间通信</p>
-<hr>
-<h3 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h3><p>相对于接受者和传递者来说全局事件总线相当于一个第三人，接受者会给全局事件总线绑定自定义事件，回调在自己的methods中。传递者去触发这个第三人绑定的自定义事件，回掉参数就是要传递的数据、</p>
-<hr>
-<h3 id="安装全局事件总线："><a href="#安装全局事件总线：" class="headerlink" title="安装全局事件总线："></a>安装全局事件总线：</h3><h5 id="方式一："><a href="#方式一：" class="headerlink" title="方式一："></a>方式一：</h5><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">    <span class="function"><span class="title">beforeCreate</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.__proto__.$bus = <span class="built_in">this</span>;</span><br><span class="line">        <span class="comment">// Vue.prototype.$bus = this</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">render</span>: <span class="function"><span class="params">h</span> =&gt;</span> h(App)</span><br><span class="line">&#125;).$mount(<span class="string">&#x27;#app&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-<p>这里的$bus就是我们所说的“第三人”，我们给Vue实例的原型对象添加$bus属性，属性值为一个Vue实例(我们当前new出来的实例对象)，这样做的目的就是为了让所有的组件实例对象都可以在自己的原型对象上找到找到这个$bus。</p>
-<p>这里存在一个关系：VueComponent.prototype.__ proto __ === Vue.prototype</p>
-<p>说白了就是给Vue的原型对象上添加$bus其他的组件实例都可以通过原型链去找到这个属性</p>
-<h5 id="方式二："><a href="#方式二：" class="headerlink" title="方式二："></a>方式二：</h5><p>当然，我们还可以另外定义一个js文件创建一个Vue实例对象：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line">expotr <span class="keyword">default</span> <span class="keyword">new</span> Vue()</span><br></pre></td></tr></table></figure>
-
-<p>这一种方式我们要在使用他的组建中引入，对于以上两种方式都可以采用，它们都是找一个”第三人“</p>
-<hr>
-<h3 id="使用全局事件总线："><a href="#使用全局事件总线：" class="headerlink" title="使用全局事件总线："></a>使用全局事件总线：</h3><p>全部以第一种安装方式为例：</p>
-<h5 id="接收数据："><a href="#接收数据：" class="headerlink" title="接收数据："></a>接收数据：</h5><p>brother1组件：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">name</span>:<span class="string">&#x27;Brother1&#x27;</span>,</span><br><span class="line">  <span class="attr">methods</span>:&#123;</span><br><span class="line">    <span class="function"><span class="title">show</span>(<span class="params">msg</span>)</span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(msg)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.$bus.$on(<span class="string">&#x27;showMsg&#x27;</span>,<span class="built_in">this</span>.show)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-
-<h5 id="传递数据："><a href="#传递数据：" class="headerlink" title="传递数据："></a>传递数据：</h5><p>brother2组件：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">name</span>:<span class="string">&#x27;Brother2&#x27;</span>,</span><br><span class="line">  <span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.$bus.$emit(<span class="string">&#x27;showMsg&#x27;</span>,<span class="string">&#x27;我是Brother2&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-
-<p>brother3组件：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">name</span>:<span class="string">&#x27;Brother3&#x27;</span>,</span><br><span class="line">  <span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.$bus.$emit(<span class="string">&#x27;showMsg&#x27;</span>,<span class="string">&#x27;我是Brother3&#x27;</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-
-<p>App组件的模板：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  <span class="xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">Brother1</span>/&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">Brother2</span>/&gt;</span></span></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">Brother3</span>/&gt;</span></span></span><br><span class="line"><span class="xml">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">&lt;/template&gt;</span><br></pre></td></tr></table></figure>
-
-<p>打印结果：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">我是Brother2</span><br><span class="line">我是Brother3</span><br></pre></td></tr></table></figure>
-
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>相比于props和子传父自定义事件全局事件总线可以做到任意键组件间通信，区别于子传父自定义事件的父组件给子组件绑定自定义事件，全局事件总线的方式是找了一个“第三人”，大家都可以为这个第三人去绑定自定义事件，也可以去触发这个自定义事件来达到任意组件间通信的目的。</p>
 ]]></content>
       <categories>
         <category>关于Vue</category>
@@ -487,54 +535,6 @@
 <li>valueOf( )</li>
 </ul>
 <p>返回对象对应的字符串、数值或布尔值表示</p>
-]]></content>
-      <categories>
-        <category>关于JavaScript</category>
-      </categories>
-      <tags>
-        <tag>前端</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JS中的原始值、引用值、按值传递(函数传参)</title>
-    <url>/2021/09/20/JS%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%A7%8B%E5%80%BC%E3%80%81%E5%BC%95%E7%94%A8%E5%80%BC%E3%80%81%E6%8C%89%E5%80%BC%E4%BC%A0%E9%80%92/</url>
-    <content><![CDATA[<p>对于JS中的变量只存储两种类型的值，原始值和引用值。</p>
-<h4 id="原始值"><a href="#原始值" class="headerlink" title="原始值"></a>原始值</h4><p>原始值就是最简单的数据，也就是几种基本数据类型的值。原始值存储在变量上，我们在访问原始值是按值访问的，操作的就是存储在变量中的实际值。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> num1=<span class="number">5</span></span><br><span class="line"><span class="keyword">let</span> num2=num1</span><br><span class="line"><span class="built_in">console</span>.log(++num1)		<span class="comment">//6</span></span><br><span class="line"><span class="built_in">console</span>.log(num2)		<span class="comment">//5</span></span><br></pre></td></tr></table></figure>
-
-<p>第一行num1变量存储数值5，第二行num2初始化为num1，该变量也同样存储数值5。但是这两个变量中的数值5是完全独立的，两个变量可以独立使用，互不干扰。如下图：</p>
-<p><img src="/2021/09/20/JS%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%A7%8B%E5%80%BC%E3%80%81%E5%BC%95%E7%94%A8%E5%80%BC%E3%80%81%E6%8C%89%E5%80%BC%E4%BC%A0%E9%80%92/liucheng1-1.png"></p>
-<center>图1-1 num1初始化</center>
-
-<p><img src="/2021/09/20/JS%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%A7%8B%E5%80%BC%E3%80%81%E5%BC%95%E7%94%A8%E5%80%BC%E3%80%81%E6%8C%89%E5%80%BC%E4%BC%A0%E9%80%92/liucheng1-2.png"></p>
-<center>图1-2 num2初始化</center>
-
-<h4 id="引用值"><a href="#引用值" class="headerlink" title="引用值"></a>引用值</h4><p>引用值是保存在内存中的对象，在JS中不允许我们直接去访问内存位置，所以就不能直接操作对象所在的内存空间。保存在变量中的值为引用值，我们实际操作的是该对象的引用而非对象本身。换句话说就是我们通过操作保存在变量中的引用值来间接操作对内存中的对象，也就是按引用访问。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> obj1=<span class="keyword">new</span> <span class="built_in">Object</span>()</span><br><span class="line"><span class="keyword">let</span> obj2=obj1</span><br><span class="line">obj1.num=<span class="number">1</span>		<span class="comment">//为obj1对象添加num属性属性值为1</span></span><br><span class="line">consol.log(obj2.num)	<span class="comment">//1		通过obj2也可以访问num属性，这是为什么呢？</span></span><br></pre></td></tr></table></figure>
-
-<p>在第一行中我们为obj1“new”出了一个新的实例对象，在第二行中执行了一个复制值的操作，虽然有值的复制但是并没有在内存中重新开辟新的空间，也就是说这一步复制的值就相当于一个指针，该指针指向内存中的对象(obj1所指向的对象)。这样obj2和obj1通过指针指向同一内存地址，无论哪一个改变了，内存中的对象都会改变。如下图：</p>
-<p><img src="/2021/09/20/JS%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%A7%8B%E5%80%BC%E3%80%81%E5%BC%95%E7%94%A8%E5%80%BC%E3%80%81%E6%8C%89%E5%80%BC%E4%BC%A0%E9%80%92/liucheng2-1.png"></p>
-<center>图2-1 执行复制值之前</center>
-
-<p><img src="/2021/09/20/JS%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%A7%8B%E5%80%BC%E3%80%81%E5%BC%95%E7%94%A8%E5%80%BC%E3%80%81%E6%8C%89%E5%80%BC%E4%BC%A0%E9%80%92/liucheng2-2.png"></p>
-<center>图2-2执行复制值之后</center>
-
-<h4 id="函数传参-按值传递"><a href="#函数传参-按值传递" class="headerlink" title="函数传参(按值传递)"></a>函数传参(按值传递)</h4><p>JS中所有函数传参都是按值传递的。也就是说传递的参数会被复制到函数内部的参数中，就像两个变量进行复制操作一样</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">num</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">return</span> ++num</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> n=<span class="number">10</span></span><br><span class="line"><span class="built_in">console</span>.log(add(n))		<span class="comment">//11</span></span><br><span class="line"><span class="built_in">console</span>.log(n)		<span class="comment">//10</span></span><br></pre></td></tr></table></figure>
-
-<p>我们可以发现对于原始值(基本数据类型)传参(按值传递)，函数内部的操作不会影响到外部，这很好理解。正如开头说的，传参相当于执行了复制操作，对于原始值复制值两个变量是完全独立的。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setPerson</span>(<span class="params">obj</span>)</span>&#123;</span><br><span class="line">	obj.name=<span class="string">&quot;kobe&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> p=<span class="keyword">new</span> <span class="built_in">Object</span>()		<span class="comment">//创建一个p对象</span></span><br><span class="line">setPerson(p)</span><br><span class="line"><span class="built_in">console</span>.log(p.name)		<span class="comment">//kobe</span></span><br></pre></td></tr></table></figure>
-
-<p>对于引用值传参(按值传递)，函数内部的操作会影响到外部，很多人认为这就是按引用传递其实是不对的。看下面代码：</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setPerson</span>(<span class="params">obj</span>)</span>&#123;</span><br><span class="line">	obj.age=<span class="number">20</span></span><br><span class="line">    obj=<span class="keyword">new</span> <span class="built_in">Object</span>()</span><br><span class="line">    obj.age=<span class="number">22</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> p =<span class="keyword">new</span> <span class="built_in">Object</span>()</span><br><span class="line">setPerson(p)		</span><br><span class="line"><span class="built_in">console</span>.log(p.age)		<span class="comment">//20</span></span><br></pre></td></tr></table></figure>
-
-<p>如果对于引用值函数传参是按引用传递的话，在函数体内部obj指向了一个新的对象，并且为对象添加age属性，属性值为22 ，外部p也应指向新对象并且age也应该为22，但是结果确是20,足以说明这并不是按引用传递而是按值传递。</p>
-<p>在函数体内的过程：</p>
-<p>按值传递实参p会将指针复制给实参obj，此时他们共同指向存放在全局作用域堆内存中的对象，所以添加属性age并为其赋值外部实参也会产生相应的变化</p>
-<p><img src="/2021/09/20/JS%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%A7%8B%E5%80%BC%E3%80%81%E5%BC%95%E7%94%A8%E5%80%BC%E3%80%81%E6%8C%89%E5%80%BC%E4%BC%A0%E9%80%92/liucheng3-1.png"></p>
-<center>图3-1 传递参数</center>
-
-<p>obj在函数内部被重写，他的指针指向了本地对象，而原本的实参p是不受影响的，这个本地对象在函数执行之后会被销毁。</p>
 ]]></content>
       <categories>
         <category>关于JavaScript</category>
