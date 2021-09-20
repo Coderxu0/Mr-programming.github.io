@@ -496,11 +496,19 @@
       </tags>
   </entry>
   <entry>
-    <title>JS原始值与引用值</title>
+    <title>JS中的原始值与引用值</title>
     <url>/2021/09/20/JS%E5%8E%9F%E5%A7%8B%E5%80%BC%E4%B8%8E%E5%BC%95%E7%94%A8%E5%80%BC/</url>
     <content><![CDATA[<p>对于JS中的变量只存储两种类型的值，原始值和引用值。</p>
 <h4 id="原始值"><a href="#原始值" class="headerlink" title="原始值"></a>原始值</h4><p>原始值就是最简单的数据，也就是几种基本数据类型的值。原始值存储在变量上，我们在访问原始值是按值访问的，操作的就是存储在变量中的实际值。</p>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">graph LR;</span><br><span class="line"></span><br><span class="line">A--&gt;B</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> num1=<span class="number">5</span></span><br><span class="line"><span class="keyword">let</span> num2=num1</span><br></pre></td></tr></table></figure>
+
+<p>第一行num1变量存储数值5，第二行num2初始化为num1，该变量也同样存储数值5。但是这两个变量中的数值5是完全独立的，两个变量可以独立使用，互不干扰。</p>
+<p>​                                                                                                                                初始化num1</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">graph LR;</span><br><span class="line"></span><br><span class="line">A(num1)---B[5 Numer类型]</span><br></pre></td></tr></table></figure>
+
+<p>​                                                                                                                            </p>
+<p>​                                                                                                                                初始化num2</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">graph LR;</span><br><span class="line">A(num2)---B(5 Number类型)</span><br><span class="line">C(num1)---D(5 Number类型)</span><br></pre></td></tr></table></figure>
 
 
 
