@@ -543,4 +543,54 @@
         <tag>前端</tag>
       </tags>
   </entry>
+  <entry>
+    <title>JS中的全等和不全等、等于和不等于</title>
+    <url>/2021/09/21/JS%E4%B8%AD%E7%9A%84%E5%85%A8%E7%AD%89%E5%92%8C%E4%B8%8D%E5%85%A8%E7%AD%89%E3%80%81%E7%AD%89%E4%BA%8E%E5%92%8C%E4%B8%8D%E7%AD%89%E4%BA%8E/</url>
+    <content><![CDATA[<h2 id="全等和不全等"><a href="#全等和不全等" class="headerlink" title="全等和不全等"></a>全等和不全等</h2><p>全等和不全等比较的是符号两侧的操作数，以全等操作符为例，如果操作数满足全等则返回true，否则返回false。全等和不全等操作符在做比较相等时不会转换操作数，也就是在不转换的前提下直接进行全等或不全等的比较。</p>
+<h4 id="全等"><a href="#全等" class="headerlink" title="全等"></a>全等</h4><p>符号：===</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> str1=<span class="string">&quot;1&quot;</span></span><br><span class="line"><span class="keyword">let</span> str2=<span class="number">1</span></span><br><span class="line"><span class="built_in">console</span>.log(str1===str2)		<span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="不全等"><a href="#不全等" class="headerlink" title="不全等"></a>不全等</h4><p>符号：！==</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> str1=<span class="string">&quot;1&quot;</span></span><br><span class="line"><span class="keyword">let</span> str2=<span class="number">1</span></span><br><span class="line"><span class="built_in">console</span>.log(str1!==str2)		<span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="相等和不相等"><a href="#相等和不相等" class="headerlink" title="相等和不相等"></a>相等和不相等</h2><p>相等和不相等操作符也同样是比较两个操作数，以相等操作符为例，如果两个操作数满足相等则返回true，否则返回false。不过与全等和不全等操作符的区别在于：相等和不相等操作符会先对操作数进行强制类型转换，转后的操作数再进行比较。</p>
+<h4 id="相等"><a href="#相等" class="headerlink" title="相等"></a>相等</h4><p>符号：==</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> str1=<span class="string">&quot;1&quot;</span></span><br><span class="line"><span class="keyword">let</span> str2=<span class="number">1</span></span><br><span class="line"><span class="built_in">console</span>.log(str1==str2)		<span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(str1===str2)	<span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> flag=<span class="literal">true</span></span><br><span class="line"><span class="keyword">let</span> num=<span class="number">1</span></span><br><span class="line"><span class="built_in">console</span>.log(flag==num)		<span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(flag===num)		<span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="不相等"><a href="#不相等" class="headerlink" title="不相等"></a>不相等</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> str1=<span class="string">&quot;1&quot;</span></span><br><span class="line"><span class="keyword">let</span> str2=<span class="number">1</span></span><br><span class="line"><span class="keyword">let</span> str3=<span class="string">&quot;hello&quot;</span></span><br><span class="line"><span class="built_in">console</span>.log(str1!=str2)		<span class="comment">//false   先是类型转换，之后进行比较</span></span><br><span class="line"><span class="built_in">console</span>.log(str1!==str2)	 <span class="comment">//true	  对于全等操作福这两个操作数不进行强制类型转换，自然就不全等	</span></span><br><span class="line"><span class="built_in">console</span>.log(str2!=str3)		<span class="comment">//true	  </span></span><br><span class="line"><span class="built_in">console</span>.log(str2!==str3)	  <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="对于相等和不相等操作符对操作数进行强制类型转换的规则如下："><a href="#对于相等和不相等操作符对操作数进行强制类型转换的规则如下：" class="headerlink" title="对于相等和不相等操作符对操作数进行强制类型转换的规则如下："></a>对于相等和不相等操作符对操作数进行强制类型转换的规则如下：</h5><ul>
+<li><p>布尔值会直接转换成数值进行比较：false：0；true：1</p>
+</li>
+<li><p>字符串遇到数值则会转换为数值再进行比较</p>
+</li>
+<li><p>对于对象，如果两个操作数都是对象则比较二者是否为同一个对象，如果两个操作数指向同一个对象则返回true，否则返回false。如果其中的一个操作数为对象则会调用valueOf方法取到原始值，之后再进行比较(按照上述规则)</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> p = <span class="keyword">new</span> <span class="built_in">Object</span>(<span class="string">&#x27;zhangsan&#x27;</span>)	<span class="comment">//相当于const p=new String(&#x27;zhangsan&#x27;)</span></span><br><span class="line"><span class="built_in">console</span>.log(p.valueOf() == <span class="string">&#x27;zhangsan&#x27;</span>)	<span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(p == <span class="string">&#x27;zhangsan&#x27;</span>)	<span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> p1=&#123;<span class="attr">name</span>:<span class="string">&#x27;zhangsan&#x27;</span>&#125;</span><br><span class="line"><span class="keyword">let</span>   p2=p1</span><br><span class="line"><span class="built_in">console</span>.log(p1==p2)		<span class="comment">//true</span></span><br><span class="line">p2=&#123;&#125;</span><br><span class="line"><span class="built_in">console</span>.log(p1==p2)		<span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>对于null和undefined，null和undefined是相等的，但是无论和谁比较，他们都不会被强转。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="literal">null</span>==<span class="literal">undefined</span>)		<span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="literal">null</span>===<span class="literal">undefined</span>)		<span class="comment">//false		对于全等返回结果依然是false</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>对于NaN，NaN不等于任何值包括他自己。涉及到操作符是NaN的比较，只要是相等操作符则返回false，不相等则返回true</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="literal">NaN</span>==<span class="literal">NaN</span>)	<span class="comment">//false</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="literal">NaN</span>!=<span class="string">&#x27;&#x27;</span>)	<span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="literal">NaN</span>!=<span class="number">1</span>)	<span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="literal">NaN</span>!=&#123;&#125;)	<span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>关于JavaScript</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+      </tags>
+  </entry>
 </search>
