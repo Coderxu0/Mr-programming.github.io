@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false,"avatar":null,"url":"/images/avatar.gif","rounded":true,"rotated":true},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="今天看了JavaScript高级程序设计第四版中的内存部分，里面涉及到了垃圾回收的相关内容。又顺便看了几篇大佬们写的博客，下面来总结一下今天收获的知识点 。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS中的垃圾回收机制">
+<meta property="og:url" content="http://example.com/2021/09/22/JS%E4%B8%AD%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="Mr-programming">
+<meta property="og:description" content="今天看了JavaScript高级程序设计第四版中的内存部分，里面涉及到了垃圾回收的相关内容。又顺便看了几篇大佬们写的博客，下面来总结一下今天收获的知识点 。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-09-22T08:44:12.000Z">
+<meta property="article:modified_time" content="2021-09-22T14:38:13.655Z">
+<meta property="article:author" content="Mr-programming">
+<meta property="article:tag" content="前端">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/09/22/JS%E4%B8%AD%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>JS中的垃圾回收机制 | Mr-programming</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Mr-programming</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">gogogo</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="home fa-fw"></i>首&emsp;页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="user fa-fw"></i>关于博主</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="archive fa-fw"></i>归&emsp;档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="tags fa-fw"></i>标&emsp;签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="th fa-fw"></i>分&emsp;类</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>站内搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/22/JS%E4%B8%AD%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="博主">
+      <meta itemprop="description" content="记录生活，努力学习。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr-programming">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JS中的垃圾回收机制
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建于：2021-09-22 16:44:12 / 更新于：22:38:13" itemprop="dateCreated datePublished" datetime="2021-09-22T16:44:12+08:00">2021-09-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%B3%E4%BA%8EJavaScript/" itemprop="url" rel="index"><span itemprop="name">关于JavaScript</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="مشاهدات" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">مشاهدات：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/09/22/JS%E4%B8%AD%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/22/JS%E4%B8%AD%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">今天看了JavaScript高级程序设计第四版中的内存部分，里面涉及到了垃圾回收的相关内容。又顺便看了几篇大佬们写的博客，下面来总结一下今天收获的知识点 。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h2><p>JavaScript是一门使用垃圾回收的语言，也就是执行环境负责在代码执行时管理内存。JS不同于其他的编程语言，比如在C，C++中每当我们为变量在堆内存中开辟一块空间后往往需要开发者去手动的回收掉变量，而<strong>在JS中是通过自动内存管理实现内存分配和闲置资源回收</strong>，这不在需要开发者去“亲力亲为”的释放申请的内存空间。</p>
+<h4 id="垃圾回收原理"><a href="#垃圾回收原理" class="headerlink" title="垃圾回收原理"></a>垃圾回收原理</h4><p style="color: red">垃圾回收程序会每隔一段时间(呈周期性)去确定哪个变量不会使用，然后释放掉它所占的内存。</p>
+
+
+
+<p>在变量的生命周期结束时，会被释放内存。看下面代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> num1=<span class="number">1</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> num2=<span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line">test()</span><br></pre></td></tr></table></figure>
+
+<p>在函数test被调用时会创建对应的上下文环境，同时会在栈内存分配空间来保存声明的num2变量。在函数执行完毕后，此时局部变量num就变成了“不再需要的变量”，所以垃圾回收程序会在栈内存中释放该变量所占的空间。</p>
+<p>在上述代码中全局变量num1暂时是不会被释放内存的，我们不知道哪个函数还会使用到该变量，全局变量会在页面关闭时才会成为“不在使用的变量”。</p>
+<p>以上代码片段是最理想的状态，实际上并不会那样明显，看如下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> obj1=&#123;<span class="attr">name</span>:<span class="string">&#x27;kobe&#x27;</span>&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> obj2=&#123;<span class="attr">name</span>:<span class="string">&#x27;kobe&#x27;</span>&#125;</span><br><span class="line">    <span class="keyword">return</span> obj2</span><br><span class="line">&#125;</span><br><span class="line">test1()</span><br><span class="line"><span class="keyword">let</span> o=test2()</span><br></pre></td></tr></table></figure>
+
+<p>在test1函数执行完毕后内部在堆内存上申请的空间会被释放掉(和第一个代码片段情况相同)，但是当代码执行流进入test2函数上下文后，直到调用结束也并不会释放掉在堆内存上申请的空间，这是因为全局变量o指向了函数返回的obj2。</p>
+<p>基于两个代码片段，我们可以确定垃圾回收程序一定跟踪记录了哪个变量会被使用，哪个变量不再被使用，最后将不再被使用的变量释放内存。至于如何标记变量有两种主要的标记策略：<strong>标记清理和引用计数</strong>。</p>
+<hr>
+<p><em>以下关于两种标记策略的内容全部来自《JavaScript高级程序设计第四版》</em></p>
+<h4 id="标记清理-最常用"><a href="#标记清理-最常用" class="headerlink" title="标记清理(最常用)"></a>标记清理(最常用)</h4><p>JavaScript最常用的垃圾回收策略是**标记清理(mark-and-sweep)**。当变量进入上下文，比如在函数内部声明一个变量时，这个变量会被加上存在于上下文中的标记。而不在上下文中的变量，逻辑上讲，永远不应该释放它们的内存，因为只要上下文中的代码在运行，就有可能用到它们。当变量离开上下文时，也会被加上离开上下文的标记。</p>
+<p>给变量加标记的方式有很多种。比如，当变量进入上下文时，反转某一位；或者可以维护”在上下文中”和”不在上下文中”两个变量列表，可以把变量从一个列表转移到另一个列表。标记过程的实现并不重要，关键是策略。</p>
+<p>垃圾回收程序运行的时候，会标记内存中储存的所有变量(记住，标记方法有很多种)。然后，它会将所有在上下文中的变量，以及被在上下文中的变量引用的变量的标记去掉。在此之后再被加上标记的变量就是待删除的了，原因是任何在上下文中的变量都访问不到它们了。随后垃圾回收程序做一次<strong>内存清理</strong>，销毁带标记的所有值并收回它们的内存。</p>
+<blockquote>
+<p>——《JavaScript高级程序设计第四版》</p>
+</blockquote>
+<h4 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h4><p>另一种没那么常用的垃圾回收策略是<strong>引用计数</strong> 。其思路是对每个值都记录它被引用的次数。声明变量并给它赋一个引用值时，这个值的引用数为1。如果同一个值又被赋给另一个变量，那么引用数加1。类似地，如果保存对该值引用地变量被其他值给覆盖了，那么引用数减1。当一个值地引用数为0时，就说明没办法再访问到这个值了，因此可以安全地回收其内存了。垃圾回收程序下次运行的时候就会释放引用数为0的值的内存。</p>
+<p>引用计数最早由Netscape Navigator 3.0采用，但很快就遇到了严重的问题：循环引用。所谓<strong>循环引用</strong>，就是对象A有一个指针指向对象B，而对象B也引用了对象A。比如</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">problem</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">let</span> objectA=<span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">	<span class="keyword">let</span> objectB=<span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">	objectA.someOtherObject=objectB;</span><br><span class="line">	objectB.anotherObject=objectA;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，objectA和objectB通过各自的属性相互引用，意味着它们的引用数都是2。在标记清理策略下，这不是问题，因为在函数结束后，这两个对象都不在作用域中。而在引用计数策略下，objectA和objectB在函数结束后还会存在，因为它们的引用数永远不会变成0。如果函数被多次调用，则会导致大量的内存永远不会被释放。为此，Netscape在4.0版放弃了引用计数，转而采用标记清理，事实上，引用计数策略的问题还远不止如此。</p>
+<p>在IE8以及更早版本的IE中，并非所有对象都是原生JavaScript对象。BOM和DOM中的对象是C++实现的组件对象模型(COM，Component Object Model)对象，而COM对象使用引用计数实现垃圾回收。因此，即使这些版本IE的JavaScript引擎使用标记清理，JavaScript存取的COM对象依旧使用引用计数。换句话说，只要涉及COM对象，就无法避免循环引用问题。下面这个简单的例子就展示了涉及COM对象的循环引用问题：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> element=<span class="built_in">document</span>.getElementById(<span class="string">&quot;some_element&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> myObject=<span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">myObject.element=element;</span><br><span class="line">element.someObject=myObject;</span><br></pre></td></tr></table></figure>
+
+<p>这个例子在一个DOM对象（element）和一个原生JavaScript对象（myObject）之间制造了循环引用。myObject变量有一个名为element的属性指向DOM对象element，而element对象有一个someObject属指回myObject对象。由于存在循环引用，因此DOM元素的内存永远不会被回收，即使它一家被从页面上删除了也是如此。</p>
+<p>为避免类似的循环引用问题，应该在确保不使用的情况下切断原生JavaScript对象与DOM元素之间的连接。比如，通过以下代码可以清除前面例子中建立的循环引用：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">myObject.element=<span class="literal">null</span>;</span><br><span class="line">element.someObject=<span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+
+<p>把变量设置为null实际上会切断变量与其之前引用值之间的关系。当下次垃圾回收程序运行时，这些值就会被删除，内存也会被回收。</p>
+<p>为了补救这一点，IE9把BOM和DOM对象都改成了JavaScript对象，这同时也避免了由于存在两套垃圾回收算法而导致的问题，还消除了常用的内存泄露现象。</p>
+<blockquote>
+<p>——《JavaScript高级程序设计第四版》</p>
+</blockquote>
+<hr>
+<h4 id="什么条件下会进行垃圾回收"><a href="#什么条件下会进行垃圾回收" class="headerlink" title="什么条件下会进行垃圾回收"></a>什么条件下会进行垃圾回收</h4><p>垃圾回收程序呈周期性运行，如果内存中分配了很多变量则可能造成性能损失。IE6的垃圾回收程序是根据内存的分配数来运行的：比如分配了256个变量，4096个对象/数组字面量和数组槽位(slot)，64kb字符串。只要满足以上任意条件，垃圾回收程序就会运行。我们可以假设一下这种情况：在整个程序内我们创建了许多变量，在这整个程序运行过程中有超过256个变量是被使用的。这样就会造成一种现象，垃圾回收程序会不停的运行。</p>
+<p>所以在IE7发布后，相比原先规定死的条件，js引擎将动态改变变量、字面量或数组槽位等作为触发垃圾回收程序的阈值。IE7的起始阈值和IE6的相同，但是如果垃圾回收程序回收的内存不到已分配内存的15%，这说明有内存中好多内容是不需要回收的，此时触发垃圾回收程序的阈值会翻一倍，这样的目的是为了让垃圾回收程序触发的不会那么敏感。如果有一次回收的内存达到了 分配内存的85%，阈值重置为默认值(这样会把需要清理的部分全部清理)。这样会大大提高性能。</p>
+<p>总结起来就一句话：IE7中垃圾回收程序回收内存的多少与分配的内存会进行比较，如果特别少(不到分配内存的15%)，就会提高触发垃圾回收程序的条件，减少频繁回收。反之如果回收的内存占比达到了85%就恢复触发条件。这个触发条件是动态的，根据回收内存与分配内存的比值。</p>
+
+    </div>
+
+    
+    
+    
+        <div class="reward-container">
+  <div>You can reward me here. Thank you !</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="博主 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="博主 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag"># 前端</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/09/21/JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE/" rel="prev" title="JS中的执行上下文和作用域链">
+      <i class="fa fa-chevron-left"></i> JS中的执行上下文和作用域链
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="nav-number">1.</span> <span class="nav-text">垃圾回收</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%8E%9F%E7%90%86"><span class="nav-number">1.0.1.</span> <span class="nav-text">垃圾回收原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%87%E8%AE%B0%E6%B8%85%E7%90%86-%E6%9C%80%E5%B8%B8%E7%94%A8"><span class="nav-number">1.0.2.</span> <span class="nav-text">标记清理(最常用)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%95%E7%94%A8%E8%AE%A1%E6%95%B0"><span class="nav-number">1.0.3.</span> <span class="nav-text">引用计数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%9D%A1%E4%BB%B6%E4%B8%8B%E4%BC%9A%E8%BF%9B%E8%A1%8C%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6"><span class="nav-number">1.0.4.</span> <span class="nav-text">什么条件下会进行垃圾回收</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">博主</p>
+  <div class="site-description" itemprop="description">记录生活，努力学习。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Mr-programming" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Mr-programming" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      友情链接
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/qq_53848768?spm=1000.2115.3001.5343" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_53848768?spm&#x3D;1000.2115.3001.5343" rel="noopener" target="_blank">CSDN</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">博主</span>
+
+
+
+
+
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="إجمالي الزوار">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="إجمالي المشاهدات">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'U8JFNoDBH4WAnq1jzXqFoRA0-gzGzoHsz',
+      appKey     : 'Nw3i0ODLg9tYeYWsajQq6NIC',
+      placeholder: "欢迎评论留言~",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+
+</body>
+</html>

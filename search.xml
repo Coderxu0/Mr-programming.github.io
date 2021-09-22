@@ -40,6 +40,13 @@
 <center>图3-1 传递参数</center>
 
 <p>obj在函数内部被重写，他的指针指向了本地对象，而原本的实参p是不受影响的，这个本地对象在函数执行之后会被销毁。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>原始值大小固定，保存在栈内存中</li>
+<li>引用值是对象，保存在堆内存中</li>
+<li>保存引用值的变量实际上<strong>只</strong>保存了指向该对象的指针，并不是保存变量本身</li>
+<li>复制原始值（从一个变量到另一个变量）是创建了一个新值，二者是并无关系的</li>
+<li>复制引用值（从一个变量到另一个变量）<strong>只</strong>复制了指针，所以二者指向了同一个对象</li>
+</ul>
 ]]></content>
       <categories>
         <category>关于JavaScript</category>
@@ -624,7 +631,7 @@
 <p><img src="/2021/09/21/JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE/2.png" alt="2"></p>
 <p><img src="/2021/09/21/JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE/3.png" alt="3"></p>
 <p>整个过程中 一旦函数被调用则会创建对应的函数上下文放并将其压出栈中，随着代码运行完毕函数上下文会被弹出上下文栈并销毁。此时上下文栈的控制权会被返还给之前的上下文(可能是函数上下文也可能是全局上下文)。不难发现全局上下文压入栈底后始终没有出栈，所有的函数上下文不断地进出栈，最后当程序结束(关闭网页)时全局上下文会出栈销毁。</p>
-<h2 id="作用域链"><a href="#作用域链" class="headerlink" title="作用域链"></a>作用域链</h2><p>上下文代码在执行的时候，会创建变量对象的一个作用域链。作用域链由多级上下文组成，位于作用域链顶端的是代码正在执行的上下文的变量对象。代码在执行时的标识符解析是通过沿作用域链逐级搜索标识符完成的，说起来可能有点绕。看示例：</p>
+<h2 id="作用域链"><a href="#作用域链" class="headerlink" title="作用域链"></a>作用域链</h2><p>代码执行流每进入一个新的上下文，都会创建一个作用域链，用于搜索变量和函数。这个作用域链的范围或大或小，位于作用域链顶端的是代码正在执行的上下文的变量对象。代码在执行时的标识符解析是通过沿作用域链逐级搜索标识符完成的，说起来可能有点绕。看示例：</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a=<span class="number">1</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> b=<span class="number">2</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//在该函数内通过作用域链完成a和b值的交换</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">test1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">let</span> c=b</span><br><span class="line">        <span class="comment">//访问函数体外部的变量</span></span><br><span class="line">        b=a</span><br><span class="line">        a=c</span><br><span class="line">	&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//调用test2函数</span></span><br><span class="line">    test2()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//执行函数</span></span><br><span class="line">test1()</span><br></pre></td></tr></table></figure>
 
 <p>上述代码涉及到三个上下文：全局上下文、两个局部的函数上下文。</p>
@@ -634,6 +641,67 @@
 <p>看图说话：</p>
 <p><img src="/2021/09/21/JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE/4.png" alt="4"></p>
 <p>每一个矩形表示不同的上下文，内部的子级上下文可以访问外部的父级上下文中的任何数据，而反之外部的父级上下文不可以访问内部的子级上下文。他们之间的连接是线性的、有序的。test1函数上下文的作用域链包含了三个变量对象，分别是test1的变量对象、test2的变量对象和window对象。同理test2函数上下文的作用域链包含了两个变量对象，分别是test2的变量对象和window对象。每一个上下文都会从自身的变量对象上搜索数据(代码运行时，自身的变量对象处于作用域链的顶端)，搜索不到则会到上一级的变量对象中去搜索，以此类推。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>执行上下文分为全局上下文、函数上下文、块级上下文。</li>
+<li>代码执行流没进入一个新上下文，都会创建一个作用域链，用于搜索变量和函数。</li>
+<li>函数上下文既可以访问它本身的变量，也可以访问包含它的上下文和全局上下文中的变量</li>
+<li>全局上下文只可以访问自身的变量和函数</li>
+</ul>
+]]></content>
+      <categories>
+        <category>关于JavaScript</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JS中的垃圾回收机制</title>
+    <url>/2021/09/22/JS%E4%B8%AD%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[<h2 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h2><p>JavaScript是一门使用垃圾回收的语言，也就是执行环境负责在代码执行时管理内存。JS不同于其他的编程语言，比如在C，C++中每当我们为变量在堆内存中开辟一块空间后往往需要开发者去手动的回收掉变量，而<strong>在JS中是通过自动内存管理实现内存分配和闲置资源回收</strong>，这不在需要开发者去“亲力亲为”的释放申请的内存空间。</p>
+<h4 id="垃圾回收原理"><a href="#垃圾回收原理" class="headerlink" title="垃圾回收原理"></a>垃圾回收原理</h4><p style="color: red">垃圾回收程序会每隔一段时间(呈周期性)去确定哪个变量不会使用，然后释放掉它所占的内存。</p>
+
+
+
+<p>在变量的生命周期结束时，会被释放内存。看下面代码：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> num1=<span class="number">1</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> num2=<span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line">test()</span><br></pre></td></tr></table></figure>
+
+<p>在函数test被调用时会创建对应的上下文环境，同时会在栈内存分配空间来保存声明的num2变量。在函数执行完毕后，此时局部变量num就变成了“不再需要的变量”，所以垃圾回收程序会在栈内存中释放该变量所占的空间。</p>
+<p>在上述代码中全局变量num1暂时是不会被释放内存的，我们不知道哪个函数还会使用到该变量，全局变量会在页面关闭时才会成为“不在使用的变量”。</p>
+<p>以上代码片段是最理想的状态，实际上并不会那样明显，看如下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> obj1=&#123;<span class="attr">name</span>:<span class="string">&#x27;kobe&#x27;</span>&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> obj2=&#123;<span class="attr">name</span>:<span class="string">&#x27;kobe&#x27;</span>&#125;</span><br><span class="line">    <span class="keyword">return</span> obj2</span><br><span class="line">&#125;</span><br><span class="line">test1()</span><br><span class="line"><span class="keyword">let</span> o=test2()</span><br></pre></td></tr></table></figure>
+
+<p>在test1函数执行完毕后内部在堆内存上申请的空间会被释放掉(和第一个代码片段情况相同)，但是当代码执行流进入test2函数上下文后，直到调用结束也并不会释放掉在堆内存上申请的空间，这是因为全局变量o指向了函数返回的obj2。</p>
+<p>基于两个代码片段，我们可以确定垃圾回收程序一定跟踪记录了哪个变量会被使用，哪个变量不再被使用，最后将不再被使用的变量释放内存。至于如何标记变量有两种主要的标记策略：<strong>标记清理和引用计数</strong>。</p>
+<hr>
+<p><em>以下关于两种标记策略的内容全部来自《JavaScript高级程序设计第四版》</em></p>
+<h4 id="标记清理-最常用"><a href="#标记清理-最常用" class="headerlink" title="标记清理(最常用)"></a>标记清理(最常用)</h4><p>JavaScript最常用的垃圾回收策略是**标记清理(mark-and-sweep)**。当变量进入上下文，比如在函数内部声明一个变量时，这个变量会被加上存在于上下文中的标记。而不在上下文中的变量，逻辑上讲，永远不应该释放它们的内存，因为只要上下文中的代码在运行，就有可能用到它们。当变量离开上下文时，也会被加上离开上下文的标记。</p>
+<p>给变量加标记的方式有很多种。比如，当变量进入上下文时，反转某一位；或者可以维护”在上下文中”和”不在上下文中”两个变量列表，可以把变量从一个列表转移到另一个列表。标记过程的实现并不重要，关键是策略。</p>
+<p>垃圾回收程序运行的时候，会标记内存中储存的所有变量(记住，标记方法有很多种)。然后，它会将所有在上下文中的变量，以及被在上下文中的变量引用的变量的标记去掉。在此之后再被加上标记的变量就是待删除的了，原因是任何在上下文中的变量都访问不到它们了。随后垃圾回收程序做一次<strong>内存清理</strong>，销毁带标记的所有值并收回它们的内存。</p>
+<blockquote>
+<p>——《JavaScript高级程序设计第四版》</p>
+</blockquote>
+<h4 id="引用计数"><a href="#引用计数" class="headerlink" title="引用计数"></a>引用计数</h4><p>另一种没那么常用的垃圾回收策略是<strong>引用计数</strong> 。其思路是对每个值都记录它被引用的次数。声明变量并给它赋一个引用值时，这个值的引用数为1。如果同一个值又被赋给另一个变量，那么引用数加1。类似地，如果保存对该值引用地变量被其他值给覆盖了，那么引用数减1。当一个值地引用数为0时，就说明没办法再访问到这个值了，因此可以安全地回收其内存了。垃圾回收程序下次运行的时候就会释放引用数为0的值的内存。</p>
+<p>引用计数最早由Netscape Navigator 3.0采用，但很快就遇到了严重的问题：循环引用。所谓<strong>循环引用</strong>，就是对象A有一个指针指向对象B，而对象B也引用了对象A。比如</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">problem</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">let</span> objectA=<span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">	<span class="keyword">let</span> objectB=<span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">	objectA.someOtherObject=objectB;</span><br><span class="line">	objectB.anotherObject=objectA;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，objectA和objectB通过各自的属性相互引用，意味着它们的引用数都是2。在标记清理策略下，这不是问题，因为在函数结束后，这两个对象都不在作用域中。而在引用计数策略下，objectA和objectB在函数结束后还会存在，因为它们的引用数永远不会变成0。如果函数被多次调用，则会导致大量的内存永远不会被释放。为此，Netscape在4.0版放弃了引用计数，转而采用标记清理，事实上，引用计数策略的问题还远不止如此。</p>
+<p>在IE8以及更早版本的IE中，并非所有对象都是原生JavaScript对象。BOM和DOM中的对象是C++实现的组件对象模型(COM，Component Object Model)对象，而COM对象使用引用计数实现垃圾回收。因此，即使这些版本IE的JavaScript引擎使用标记清理，JavaScript存取的COM对象依旧使用引用计数。换句话说，只要涉及COM对象，就无法避免循环引用问题。下面这个简单的例子就展示了涉及COM对象的循环引用问题：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> element=<span class="built_in">document</span>.getElementById(<span class="string">&quot;some_element&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> myObject=<span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line">myObject.element=element;</span><br><span class="line">element.someObject=myObject;</span><br></pre></td></tr></table></figure>
+
+<p>这个例子在一个DOM对象（element）和一个原生JavaScript对象（myObject）之间制造了循环引用。myObject变量有一个名为element的属性指向DOM对象element，而element对象有一个someObject属指回myObject对象。由于存在循环引用，因此DOM元素的内存永远不会被回收，即使它一家被从页面上删除了也是如此。</p>
+<p>为避免类似的循环引用问题，应该在确保不使用的情况下切断原生JavaScript对象与DOM元素之间的连接。比如，通过以下代码可以清除前面例子中建立的循环引用：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">myObject.element=<span class="literal">null</span>;</span><br><span class="line">element.someObject=<span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+
+<p>把变量设置为null实际上会切断变量与其之前引用值之间的关系。当下次垃圾回收程序运行时，这些值就会被删除，内存也会被回收。</p>
+<p>为了补救这一点，IE9把BOM和DOM对象都改成了JavaScript对象，这同时也避免了由于存在两套垃圾回收算法而导致的问题，还消除了常用的内存泄露现象。</p>
+<blockquote>
+<p>——《JavaScript高级程序设计第四版》</p>
+</blockquote>
+<hr>
+<h4 id="什么条件下会进行垃圾回收"><a href="#什么条件下会进行垃圾回收" class="headerlink" title="什么条件下会进行垃圾回收"></a>什么条件下会进行垃圾回收</h4><p>垃圾回收程序呈周期性运行，如果内存中分配了很多变量则可能造成性能损失。IE6的垃圾回收程序是根据内存的分配数来运行的：比如分配了256个变量，4096个对象/数组字面量和数组槽位(slot)，64kb字符串。只要满足以上任意条件，垃圾回收程序就会运行。我们可以假设一下这种情况：在整个程序内我们创建了许多变量，在这整个程序运行过程中有超过256个变量是被使用的。这样就会造成一种现象，垃圾回收程序会不停的运行。</p>
+<p>所以在IE7发布后，相比原先规定死的条件，js引擎将动态改变变量、字面量或数组槽位等作为触发垃圾回收程序的阈值。IE7的起始阈值和IE6的相同，但是如果垃圾回收程序回收的内存不到已分配内存的15%，这说明有内存中好多内容是不需要回收的，此时触发垃圾回收程序的阈值会翻一倍，这样的目的是为了让垃圾回收程序触发的不会那么敏感。如果有一次回收的内存达到了 分配内存的85%，阈值重置为默认值(这样会把需要清理的部分全部清理)。这样会大大提高性能。</p>
+<p>总结起来就一句话：IE7中垃圾回收程序回收内存的多少与分配的内存会进行比较，如果特别少(不到分配内存的15%)，就会提高触发垃圾回收程序的条件，减少频繁回收。反之如果回收的内存占比达到了85%就恢复触发条件。这个触发条件是动态的，根据回收内存与分配内存的比值。</p>
 ]]></content>
       <categories>
         <category>关于JavaScript</category>
