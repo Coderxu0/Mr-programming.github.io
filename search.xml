@@ -727,14 +727,14 @@
 <p>首先，全局变量a会提升,对于1,2行相当执行了如下代码</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a</span><br><span class="line"><span class="built_in">console</span>.log(a) <span class="comment">//这里的a相当于只声明但未赋值    undefined</span></span><br><span class="line">a=<span class="number">12</span></span><br></pre></td></tr></table></figure>
 
-<p>代码执行流进入test函数，函数体内并没有声明a变量，在函数上下文中是找不到a变量的，所以通过作用域链向全局变量对象上查找变量a，这个此时变量a的值是12.所以第五行打印的结果是12</p>
+<p>代码执行流进入test函数，函数体内并没有声明a变量，在函数上下文中是找不到a变量的(所有定义的变量都会在上下文关联的变量对象上)，所以通过作用域链向全局变量对象上查找变量a，此时变量a的值是12.所以第五行打印的结果是12</p>
 <p>在函数内部打印了全局变量a后 ，又对全局变量a进行了修改，值为13。所以在函数执行完毕后，全局变量a的值为13，所以最后一行打印结果 为13。</p>
 <p>变：</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(a)	</span><br><span class="line"><span class="keyword">var</span> a = <span class="number">12</span>	</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(a)</span><br><span class="line">    <span class="keyword">var</span> a = <span class="number">13</span></span><br><span class="line">&#125;</span><br><span class="line">test()</span><br><span class="line"><span class="built_in">console</span>.log(a)</span><br></pre></td></tr></table></figure>
 
 <p>这里是对第一个例子做了一个变形，仅仅把函数体内部 a=13 前面加了个var关键字，下面看打印结果：</p>
 <p><img src="/2021/09/24/%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87%E7%BB%83%E4%B9%A0%E9%A2%98/2.png" alt="2"></p>
-<p>这也很好理解，区别就在于函数体内部的a变量不再是全局变量：代码执行流进入函数后，会搜索自身上下文中的 变量(所有定义的变量都会在上下文关联的变量对象上)，此时a变量并未赋值，是undefined，所以打印结果为undefined。注意，这里的a变量为函数的局部变量，我们并没有像之前那样去顺着作用域链去全局上下文中找数据。</p>
+<p>这也很好理解，区别就在于函数体内部的a变量不再是全局变量：代码执行流进入函数后，会搜索自身上下文中的变量(所有定义的变量都会在上下文关联的变量对象上)，此时a变量并未赋值，是undefined，所以打印结果为undefined。注意，这里的a变量为函数的局部变量，我们并没有像之前那样去顺着作用域链去全局上下文中找数据。</p>
 <p>最后一行打印的结果为12，因为全局变量a在第一次赋值为12后 并没有被改变。</p>
 <p><strong>看到这里可以给弟弟来个三联吗？</strong></p>
 <p><img src="/2021/09/24/%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87%E7%BB%83%E4%B9%A0%E9%A2%98/3.jpg"></p>
