@@ -660,7 +660,7 @@
   </entry>
   <entry>
     <title>JS中的垃圾回收机制</title>
-    <url>/2021/09/22/JS%E4%B8%AD%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86/</url>
+    <url>/2021/09/22/JS%E4%B8%AD%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/</url>
     <content><![CDATA[<h2 id="垃圾回收"><a href="#垃圾回收" class="headerlink" title="垃圾回收"></a>垃圾回收</h2><p>JavaScript是一门使用垃圾回收的语言，也就是执行环境负责在代码执行时管理内存。JS不同于其他的编程语言，比如在C，C++中每当我们为变量在堆内存中开辟一块空间后往往需要开发者去手动的回收掉变量，而<strong>在JS中是通过自动内存管理实现内存分配和闲置资源回收</strong>，这不在需要开发者去“亲力亲为”的释放申请的内存空间。</p>
 <h4 id="垃圾回收原理"><a href="#垃圾回收原理" class="headerlink" title="垃圾回收原理"></a>垃圾回收原理</h4><p style="color: red">垃圾回收程序会每隔一段时间(呈周期性)去确定哪个变量不会使用，然后释放掉它所占的内存。</p>
 
@@ -669,7 +669,7 @@
 <p>在变量的生命周期结束时，会被释放内存。看下面代码：</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> num1=<span class="number">1</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> num2=<span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line">test()</span><br></pre></td></tr></table></figure>
 
-<p>在函数test被调用时会创建对应的上下文环境，同时会在栈内存分配空间来保存声明的num2变量。在函数执行完毕后，此时局部变量num就变成了“不再需要的变量”，所以垃圾回收程序会在栈内存中释放该变量所占的空间。</p>
+<p>在函数test被调用时会创建对应的上下文环境，同时会在栈内存分配空间来保存声明的num2变量。在函数执行完毕后，此时局部变量num2就变成了“不再需要的变量”，所以垃圾回收程序会在栈内存中释放该变量所占的空间。</p>
 <p>在上述代码中全局变量num1暂时是不会被释放内存的，我们不知道哪个函数还会使用到该变量，全局变量会在页面关闭时才会成为“不在使用的变量”。</p>
 <p>以上代码片段是最理想的状态，实际上并不会那样明显，看如下代码：</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> obj1=&#123;<span class="attr">name</span>:<span class="string">&#x27;kobe&#x27;</span>&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> obj2=&#123;<span class="attr">name</span>:<span class="string">&#x27;kobe&#x27;</span>&#125;</span><br><span class="line">    <span class="keyword">return</span> obj2</span><br><span class="line">&#125;</span><br><span class="line">test1()</span><br><span class="line"><span class="keyword">let</span> o=test2()</span><br></pre></td></tr></table></figure>
