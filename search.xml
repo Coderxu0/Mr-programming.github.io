@@ -556,7 +556,7 @@
   <entry>
     <title>JS中的全等和不全等、等于和不等于</title>
     <url>/2021/09/21/JS%E4%B8%AD%E7%9A%84%E5%85%A8%E7%AD%89%E5%92%8C%E4%B8%8D%E5%85%A8%E7%AD%89%E3%80%81%E7%AD%89%E4%BA%8E%E5%92%8C%E4%B8%8D%E7%AD%89%E4%BA%8E/</url>
-    <content><![CDATA[<h2 id="全等和不全等"><a href="#全等和不全等" class="headerlink" title="全等和不全等"></a>全等和不全等</h2><p>全等和不全等比较的是符号两侧的操作数，以全等操作符为例，如果操作数满足全等则返回true，否则返回false。全等和不全等操作符在做比较相等时不会转换操作数，也就是在不转换的前提下直接进行全等或不全等的比较。</p>
+    <content><![CDATA[<h2 id="全等和不全等"><a href="#全等和不全等" class="headerlink" title="全等和不全等"></a>全等和不全等</h2><p>全等和不全等比较的是符号两侧的操作数，以全等操作符为例，如果操作数满足全等则返回true，否则返回false。</p>
 <h4 id="全等"><a href="#全等" class="headerlink" title="全等"></a>全等</h4><p>符号：===</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> str1=<span class="string">&quot;1&quot;</span></span><br><span class="line"><span class="keyword">let</span> str2=<span class="number">1</span></span><br><span class="line"><span class="built_in">console</span>.log(str1===str2)		<span class="comment">//false</span></span><br></pre></td></tr></table></figure>
 
