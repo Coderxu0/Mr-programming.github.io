@@ -702,7 +702,8 @@
   <entry>
     <title>浅谈JS中的执行上下文和作用域链(基础)</title>
     <url>/2021/09/21/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E5%9F%BA%E7%A1%80)/</url>
-    <content><![CDATA[<h2 id="执行上下文"><a href="#执行上下文" class="headerlink" title="执行上下文"></a>执行上下文</h2><ul>
+    <content><![CDATA[<p><strong><a href="https://mr-programming.github.io/2021/09/26/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E8%BF%9B%E9%98%B6)%EF%BC%88%E5%8C%85%E5%90%AB%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87%EF%BC%89/">点这里，关于变量提升的原理和上下文的创建具体内容请看进阶篇</a></strong></p>
+<h2 id="执行上下文"><a href="#执行上下文" class="headerlink" title="执行上下文"></a>执行上下文</h2><ul>
 <li><p>对于执行上下文(简称“上下文”)，我们可以将其理解成变量或函数的代码运行环境，在JS中的执行上下文一共有三种：全局上下文、函数上下文、eval。</p>
 </li>
 <li><p>每一个上下文环境都会有它关联的变量对象，这个变量对象保存了这个上下文环境中的所有的数据，包括：变量和函数。</p>
@@ -725,10 +726,10 @@
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> num1=<span class="number">1</span></span><br><span class="line"><span class="keyword">let</span> num2=<span class="number">2</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.hasOwnProperty(<span class="string">&#x27;num1&#x27;</span>))	<span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.hasOwnProperty(<span class="string">&#x27;num2&#x27;</span>))	<span class="comment">//false</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getNum1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(num1)	<span class="comment">//拿到全局变量num1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getNum2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(num2)	<span class="comment">//拿到全局变量num2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">getNum1()	<span class="comment">//1</span></span><br><span class="line">getNum2()	<span class="comment">//2</span></span><br></pre></td></tr></table></figure>
 
 <p>很明显，使用let 和const定义的变量并不会保存到全局上下文当中。但是在函数体内部(函数上下文)同样可以通过作用域链(下面会介绍)正常访问的。</p>
-<h4 id="上下文栈"><a href="#上下文栈" class="headerlink" title="上下文栈"></a>上下文栈</h4><p>在一个JS程序运行时必然会有多个上下文，那么就会有执行上下文的栈。那么一个程序首次运行时，首先压入栈中的就是全局上下文，随着代码的执行，其他的函数上下文会不断地入栈，压栈。如下图：</p>
+<h4 id="上下文栈"><a href="#上下文栈" class="headerlink" title="上下文栈"></a>上下文栈</h4><p>在一个JS程序运行时必然会有多个上下文，那么就会有执行上下文的栈。那么一个程序首次运行时，首先压入栈中的就是全局上下文，随着代码的执行，其他的函数上下文会不断地入栈，出栈。如下图：</p>
 <p><img src="/2021/09/21/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E5%9F%BA%E7%A1%80)/2.png" alt="2"></p>
 <p><img src="/2021/09/21/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E5%9F%BA%E7%A1%80)/3.png" alt="3"></p>
-<p>整个过程中 一旦函数被调用则会创建对应的函数上下文放并将其压出栈中，随着代码运行完毕函数上下文会被弹出上下文栈并销毁。此时上下文栈的控制权会被返还给之前的上下文(可能是函数上下文也可能是全局上下文)。不难发现全局上下文压入栈底后始终没有出栈，所有的函数上下文不断地进出栈，最后当程序结束(关闭网页)时全局上下文会出栈销毁。</p>
+<p>整个过程中 一旦函数被调用则会创建对应的函数上下文放并将其压出栈顶，随着代码运行完毕函数上下文会被弹出上下文栈并销毁。此时上下文栈的控制权会被返还给之前的上下文(可能是函数上下文也可能是全局上下文)。不难发现全局上下文压入栈底后始终没有出栈，所有的函数上下文不断地进出栈，最后当程序结束(关闭网页)时全局上下文会出栈销毁。</p>
 <h2 id="作用域链"><a href="#作用域链" class="headerlink" title="作用域链"></a>作用域链</h2><p>代码执行流每进入一个新的上下文，都会创建一个作用域链，用于搜索变量和函数。这个作用域链的范围或大或小，位于作用域链顶端的是代码正在执行的上下文的变量对象。代码在执行时的标识符解析是通过沿作用域链逐级搜索标识符完成的，说起来可能有点绕。看示例：</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> a=<span class="number">1</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> b=<span class="number">2</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//在该函数内通过作用域链完成a和b值的交换</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">test1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">let</span> c=b</span><br><span class="line">        <span class="comment">//访问函数体外部的变量</span></span><br><span class="line">        b=a</span><br><span class="line">        a=c</span><br><span class="line">	&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//调用test1函数</span></span><br><span class="line">    test1()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//执行函数</span></span><br><span class="line">test2()</span><br></pre></td></tr></table></figure>
 
@@ -745,8 +746,6 @@
 <li>函数上下文既可以访问它本身的变量，也可以访问包含它的上下文和全局上下文中的变量</li>
 <li>全局上下文只可以访问自身的变量和函数</li>
 </ul>
-<p style="color:blue">[点这里，关于变量提升的原理和上下文的创建具体内容请看进阶篇](https://mr-programming.github.io/2021/09/26/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E8%BF%9B%E9%98%B6)%EF%BC%88%E5%8C%85%E5%90%AB%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87%EF%BC%89/)</p>
-
 ]]></content>
       <categories>
         <category>关于JavaScript</category>
@@ -771,8 +770,75 @@
   <entry>
     <title>浅谈JS中的执行上下文和作用域链(进阶)（包含变量提升）</title>
     <url>/2021/09/26/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E8%BF%9B%E9%98%B6)%EF%BC%88%E5%8C%85%E5%90%AB%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87%EF%BC%89/</url>
-    <content><![CDATA[<p style="color:blue">[点这里，想了解有关上下文和作用域链内容请看基础篇](https://mr-programming.github.io/2021/09/21/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E5%9F%BA%E7%A1%80)/)</p>
+    <content><![CDATA[<p><strong><a href="https://mr-programming.github.io/2021/09/21/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E5%9F%BA%E7%A1%80)/">点这里，关于关上下文和作用域链内容请看基础篇</a></strong></p>
+<p>先看两段代码：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(a)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> a = <span class="number">1</span></span><br><span class="line">    <span class="built_in">console</span>.log(a);</span><br><span class="line">	<span class="comment">//a()</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line">test1()</span><br></pre></td></tr></table></figure>
 
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params">i</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(i  == <span class="number">3</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    test2(i+<span class="number">1</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(i);</span><br><span class="line">&#125;</span><br><span class="line">test2(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>先思考一下控制台的打印结果：………</p>
+<img src="/2021/09/26/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E8%BF%9B%E9%98%B6)%EF%BC%88%E5%8C%85%E5%90%AB%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87%EF%BC%89/2.jpg" alt="2" style="zoom: 67%;">
+
+<center style="color: red">下面是控制台的输出(分两次打印)</center>
+
+<center style="color: blue">代码片段一(test1)打印结果</center>
+
+<p><img src="/2021/09/26/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E8%BF%9B%E9%98%B6)%EF%BC%88%E5%8C%85%E5%90%AB%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87%EF%BC%89/1.png" alt="1"></p>
+<center style="color: blue">代码片段二(test2)打印结果</center>
+
+<p><img src="/2021/09/26/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E8%BF%9B%E9%98%B6)%EF%BC%88%E5%8C%85%E5%90%AB%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87%EF%BC%89/3.png" alt="3"></p>
+<p><em>如果这个结果不在你的意料之中，那么恭喜你，这篇文章很适合你。当然，如果有大佬看到有理解偏差的地方也可以指正。</em></p>
+<p><strong>代码执行过程：</strong></p>
+<p style="color:red">一旦函数被调用则创建对应上下文环境并将其压入上下文栈顶部，代码执行，随着代码执行完毕该上下文环境被弹出上下文栈并销毁。</p>
+
+<p><em>如果不知道什么是上下文、作用域链、上下文栈的话可以去看上一篇，连接在顶部。</em></p>
+<h4 id="关于执行上下文的创建："><a href="#关于执行上下文的创建：" class="headerlink" title="关于执行上下文的创建："></a>关于执行上下文的创建：</h4><p>当代码执行流进入对应的代码片段，但在代码执行前，会有个预加载的过程，这个时候会创建对应的上下文环境（这里想表达的意思就是上下文创建过程是在代码执行前完成的）。</p>
+<p>创建上下文一共分为三部分：</p>
+<ul>
+<li><p><strong>创建变量对象(VO)</strong></p>
+<ol>
+<li>(全局上下文中没有arguments)创建arguments参数对象，搜索上下文环境中的参数值，为该对象添加对应的属性和属性值</li>
+<li>扫描函数申明：扫描代码中的函数，将对应的函数名作为VO的一个属性，该属性保存了一个指针，该指针指向函数在内存中的位置。扫描时如果有同名的函数，则对应的属性值会被覆盖。</li>
+<li>扫描变量申明(var)：和扫描函数申明的操作类似，扫描代码中的变量，会将变量名作为VO对象的一个属性，不过不同的是属性值会被初始化为undefined。扫描时如果有同名的变量，则会直接跳过。(不难理解，就算给覆盖了也一样，属性名不变，值为undefined)</li>
+</ol>
+</li>
+</ul>
+<p><strong>注意：函数申明优先于变量申明，下面会有具体示例</strong></p>
+<ul>
+<li><p><strong>创建作用域链(scopeChain)</strong></p>
+<p>作用域链里面每一级上下文的变量对象，最顶端是正在执行上下文的变量对象，往下依次是上一级上下文的变量对象。</p>
+</li>
+<li><p><strong>确定上下文中this指向</strong></p>
+<p>全局上下文中 this指向window对象</p>
+<p>函数上下文中 this指向取决于函数调用方式</p>
+</li>
+</ul>
+<h4 id="执行阶段："><a href="#执行阶段：" class="headerlink" title="执行阶段："></a>执行阶段：</h4><p>创建阶段完成后代码执行，此时会为VO中的变量赋值，VO会变成AO。</p>
+<h4 id="举个例子："><a href="#举个例子：" class="headerlink" title="举个例子："></a>举个例子：</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">first</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line">    </span><br><span class="line">	<span class="keyword">var</span> num=<span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">second</span>(<span class="params"></span>)</span>&#123;	</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> fn=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">first(<span class="number">5</span>,<span class="number">6</span>)</span><br></pre></td></tr></table></figure>
+
+<p>创建全局上下文(伪代码)</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">ExecutionContext=&#123;</span><br><span class="line">    <span class="attr">VO</span>:&#123;...&#125;,</span><br><span class="line">    <span class="attr">scopeChain</span>:&#123;...&#125;,</span><br><span class="line">    <span class="attr">this</span>:<span class="literal">null</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码执行流进入first，创建函数上下文(伪代码)：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">firstExecutionContext=&#123;</span><br><span class="line">    <span class="comment">//变量对象</span></span><br><span class="line">    <span class="attr">VO</span>:&#123;</span><br><span class="line">        <span class="attr">arguments</span>:&#123;</span><br><span class="line">            <span class="number">0</span>:<span class="number">5</span>，</span><br><span class="line">            <span class="number">1</span>:<span class="number">6</span>，</span><br><span class="line">            <span class="attr">length</span>:<span class="number">2</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="attr">a</span>:<span class="number">5</span>,</span><br><span class="line">        <span class="attr">b</span>:<span class="number">6</span>,</span><br><span class="line">        <span class="attr">second</span>:pointer to <span class="function"><span class="keyword">function</span> <span class="title">c</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        <span class="title">num</span>:<span class="title">undefined</span>,</span></span><br><span class="line"><span class="function">    	<span class="title">fn</span>:<span class="title">undefined</span></span></span><br><span class="line"><span class="function">    &#125;,</span></span><br><span class="line"><span class="function">    <span class="title">scopeChain</span>:</span>&#123;VO(first),<span class="built_in">window</span>&#125;,</span><br><span class="line">    <span class="attr">this</span>:<span class="built_in">window</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>创建上下文环境之后，代码执行，会对变量对象中的变量赋值，这里需要注意函数申明优先于变量申明</p>
+<p>如果上述内容你看懂了的话(如果没看懂那一定是我没讲清楚hhh)，对于第一个代码片段应该就有了思路了，其实很简单的。下面先回顾一下第一个代码片段</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(a)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> a = <span class="number">1</span></span><br><span class="line">    <span class="built_in">console</span>.log(a);</span><br><span class="line">	<span class="comment">//a()</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line">test1()</span><br></pre></td></tr></table></figure>
+
+<p>代码执行流进入test1函数，创建对应上下文环境：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">firstExecutionContext:&#123;</span><br><span class="line">	<span class="attr">VO</span>:&#123;</span><br><span class="line">        <span class="attr">arguments</span>:&#123;...&#125;</span><br><span class="line">        <span class="attr">a</span>:pointer to <span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params"></span>)</span></span><br><span class="line"><span class="function">        <span class="title">a</span>:<span class="title">undifined</span></span></span><br><span class="line"><span class="function">    &#125;</span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>代码执行阶段，首先打印a，这里会有疑问，这个a是哪个a呢？我们在上面反复强调的函数申明优先于变量申明，所以此处的a为函数，所以打印的是a函数。那么这个a为什么不和变量一样是undefined的？因为在扫描函数申明时，VO对象中保存函数名a的属性所存储的值为函数a在内存的地址。代码继续执行，此时为VO变量对象的属性a赋值1，这里的a变量就不再是上一个函数a了，所以打印出来的a变量的值1。</p>
+<p><img src="/2021/09/26/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E8%BF%9B%E9%98%B6)%EF%BC%88%E5%8C%85%E5%90%AB%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87%EF%BC%89/1.png" alt="1"></p>
+<p>我们可以做一个假设，在第六行调用a()函数，结果一定会报错：a is not a function 。这里两个a重名，代码从上往下执行，此时会认为a是一个保存数值1的变量。</p>
+<p>说完了第一个代码片段，下面来说说第二个代码片段：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params">i</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(i  == <span class="number">3</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    test2(i+<span class="number">1</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(i);</span><br><span class="line">&#125;</span><br><span class="line">test2(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>第二个代码片段就涉及到了<strong>上下文栈</strong>的相关内容，代码执行流进入test2(0)，创建test2(0)函数上下文并将其压如栈顶，此时看函数内部:i的值为0不等于3，所以代码继续执行，代码执行流进入test2(1),创建上下文，并压入栈顶(原本的test2(0)上下文被压入了栈中)，i的值为1不等于3，函数继续执行，test2(2)…test2(3),代码执行流进入test2(3)后，创建上下文，压入栈顶，代码执行…函数内部 i等于3满足条件，执行return语句，该上下文被弹出上下文栈。上下文栈控制权交给test2(2)，i的值为2，执行打印语句打印2，函数执行完毕出栈，将控制权交给test2(1), 打印1….控制权交给test2(0),打印0，test2(0)被弹出上下文栈被销毁。</p>
+<p><img src="/2021/09/26/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E8%BF%9B%E9%98%B6)%EF%BC%88%E5%8C%85%E5%90%AB%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87%EF%BC%89/3.png" alt="3"></p>
 ]]></content>
       <categories>
         <category>关于JavaScript</category>

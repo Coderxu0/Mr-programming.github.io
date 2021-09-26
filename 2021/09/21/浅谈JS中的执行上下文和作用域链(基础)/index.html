@@ -32,7 +32,7 @@
 <meta property="og:image" content="http://example.com/2021/09/21/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E5%9F%BA%E7%A1%80)/3.png">
 <meta property="og:image" content="http://example.com/2021/09/21/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E5%9F%BA%E7%A1%80)/4.png">
 <meta property="article:published_time" content="2021-09-21T09:59:12.000Z">
-<meta property="article:modified_time" content="2021-09-26T07:33:39.890Z">
+<meta property="article:modified_time" content="2021-09-26T11:30:52.269Z">
 <meta property="article:author" content="Mr-programming">
 <meta property="article:tag" content="前端">
 <meta name="twitter:card" content="summary">
@@ -233,7 +233,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">عُدل في</span>
-                <time title="更新于：2021-09-26 15:33:39" itemprop="dateModified" datetime="2021-09-26T15:33:39+08:00">2021-09-26</time>
+                <time title="更新于：2021-09-26 19:30:52" itemprop="dateModified" datetime="2021-09-26T19:30:52+08:00">2021-09-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -278,7 +278,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="执行上下文"><a href="#执行上下文" class="headerlink" title="执行上下文"></a>执行上下文</h2><ul>
+        <p><strong><a target="_blank" rel="noopener" href="https://mr-programming.github.io/2021/09/26/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E8%BF%9B%E9%98%B6)%EF%BC%88%E5%8C%85%E5%90%AB%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87%EF%BC%89/">点这里，关于变量提升的原理和上下文的创建具体内容请看进阶篇</a></strong></p>
+<h2 id="执行上下文"><a href="#执行上下文" class="headerlink" title="执行上下文"></a>执行上下文</h2><ul>
 <li><p>对于执行上下文(简称“上下文”)，我们可以将其理解成变量或函数的代码运行环境，在JS中的执行上下文一共有三种：全局上下文、函数上下文、eval。</p>
 </li>
 <li><p>每一个上下文环境都会有它关联的变量对象，这个变量对象保存了这个上下文环境中的所有的数据，包括：变量和函数。</p>
@@ -301,10 +302,10 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> num1=<span class="number">1</span></span><br><span class="line"><span class="keyword">let</span> num2=<span class="number">2</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.hasOwnProperty(<span class="string">&#x27;num1&#x27;</span>))	<span class="comment">//true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.hasOwnProperty(<span class="string">&#x27;num2&#x27;</span>))	<span class="comment">//false</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getNum1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(num1)	<span class="comment">//拿到全局变量num1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getNum2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(num2)	<span class="comment">//拿到全局变量num2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">getNum1()	<span class="comment">//1</span></span><br><span class="line">getNum2()	<span class="comment">//2</span></span><br></pre></td></tr></table></figure>
 
 <p>很明显，使用let 和const定义的变量并不会保存到全局上下文当中。但是在函数体内部(函数上下文)同样可以通过作用域链(下面会介绍)正常访问的。</p>
-<h4 id="上下文栈"><a href="#上下文栈" class="headerlink" title="上下文栈"></a>上下文栈</h4><p>在一个JS程序运行时必然会有多个上下文，那么就会有执行上下文的栈。那么一个程序首次运行时，首先压入栈中的就是全局上下文，随着代码的执行，其他的函数上下文会不断地入栈，压栈。如下图：</p>
+<h4 id="上下文栈"><a href="#上下文栈" class="headerlink" title="上下文栈"></a>上下文栈</h4><p>在一个JS程序运行时必然会有多个上下文，那么就会有执行上下文的栈。那么一个程序首次运行时，首先压入栈中的就是全局上下文，随着代码的执行，其他的函数上下文会不断地入栈，出栈。如下图：</p>
 <p><img src="/2021/09/21/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E5%9F%BA%E7%A1%80)/2.png" alt="2"></p>
 <p><img src="/2021/09/21/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E5%9F%BA%E7%A1%80)/3.png" alt="3"></p>
-<p>整个过程中 一旦函数被调用则会创建对应的函数上下文放并将其压出栈中，随着代码运行完毕函数上下文会被弹出上下文栈并销毁。此时上下文栈的控制权会被返还给之前的上下文(可能是函数上下文也可能是全局上下文)。不难发现全局上下文压入栈底后始终没有出栈，所有的函数上下文不断地进出栈，最后当程序结束(关闭网页)时全局上下文会出栈销毁。</p>
+<p>整个过程中 一旦函数被调用则会创建对应的函数上下文放并将其压出栈顶，随着代码运行完毕函数上下文会被弹出上下文栈并销毁。此时上下文栈的控制权会被返还给之前的上下文(可能是函数上下文也可能是全局上下文)。不难发现全局上下文压入栈底后始终没有出栈，所有的函数上下文不断地进出栈，最后当程序结束(关闭网页)时全局上下文会出栈销毁。</p>
 <h2 id="作用域链"><a href="#作用域链" class="headerlink" title="作用域链"></a>作用域链</h2><p>代码执行流每进入一个新的上下文，都会创建一个作用域链，用于搜索变量和函数。这个作用域链的范围或大或小，位于作用域链顶端的是代码正在执行的上下文的变量对象。代码在执行时的标识符解析是通过沿作用域链逐级搜索标识符完成的，说起来可能有点绕。看示例：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a=<span class="number">1</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> b=<span class="number">2</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//在该函数内通过作用域链完成a和b值的交换</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">test1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">let</span> c=b</span><br><span class="line">        <span class="comment">//访问函数体外部的变量</span></span><br><span class="line">        b=a</span><br><span class="line">        a=c</span><br><span class="line">	&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//调用test1函数</span></span><br><span class="line">    test1()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//执行函数</span></span><br><span class="line">test2()</span><br></pre></td></tr></table></figure>
 
@@ -321,8 +322,6 @@
 <li>函数上下文既可以访问它本身的变量，也可以访问包含它的上下文和全局上下文中的变量</li>
 <li>全局上下文只可以访问自身的变量和函数</li>
 </ul>
-<p style="color:blue">[点这里，关于变量提升的原理和上下文的创建具体内容请看进阶篇](https://mr-programming.github.io/2021/09/26/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E8%BF%9B%E9%98%B6)%EF%BC%88%E5%8C%85%E5%90%AB%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87%EF%BC%89/)</p>
-
 
     </div>
 
