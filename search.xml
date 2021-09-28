@@ -867,4 +867,70 @@
         <tag>前端</tag>
       </tags>
   </entry>
+  <entry>
+    <title>JS中字符串常用的几个方法</title>
+    <url>/2021/09/28/JS%E4%B8%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E7%94%A8%E7%9A%84%E5%87%A0%E4%B8%AA%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<h4 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h4><p><strong>字符串原始值本身是没有属性和方法的，在调用相关属性和方法时后台会创建对应的原始包装类型对象，进而暴露出属性和方法</strong></p>
+<p>举个例子：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> str=<span class="string">&quot;hello,world&quot;</span></span><br><span class="line"><span class="built_in">console</span>.log(str.length)		<span class="comment">//11</span></span><br></pre></td></tr></table></figure>
+
+<p>在第二行打印语句相当于执行了如下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> str=<span class="keyword">new</span> <span class="built_in">String</span>(<span class="string">&quot;hello,world&quot;</span>)	<span class="comment">//临时创建一个String实例</span></span><br><span class="line"><span class="built_in">console</span>.log(str.length)		<span class="comment">//11</span></span><br></pre></td></tr></table></figure>
+
+<p>在执行打印语句后创建的String实例对象会被销毁</p>
+<hr>
+<h4 id="书归正传"><a href="#书归正传" class="headerlink" title="书归正传"></a>书归正传</h4><h5 id="从超类继承的三个方法：valueOf-、toLocaleString-、toString-。他们返回原始值字符串"><a href="#从超类继承的三个方法：valueOf-、toLocaleString-、toString-。他们返回原始值字符串" class="headerlink" title="从超类继承的三个方法：valueOf()、toLocaleString()、toString()。他们返回原始值字符串"></a><strong>从超类继承的三个方法：valueOf()、toLocaleString()、toString()。他们返回原始值字符串</strong></h5><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> str = <span class="string">&quot;hello&quot;</span></span><br><span class="line"><span class="built_in">console</span>.log(str.valueOf())		<span class="comment">//hello</span></span><br><span class="line"><span class="built_in">console</span>.log(str.toLocaleString())		<span class="comment">//hello</span></span><br><span class="line"><span class="built_in">console</span>.log(str.toString())		<span class="comment">//hello</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="charAt-index-返回指定索引位置的字符"><a href="#charAt-index-返回指定索引位置的字符" class="headerlink" title="charAt(index)   返回指定索引位置的字符"></a>charAt(index)   返回指定索引位置的字符</h5><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> str = <span class="string">&quot;hello,world&quot;</span></span><br><span class="line"><span class="built_in">console</span>.log(str.charAt(<span class="number">4</span>))		<span class="comment">//o</span></span><br><span class="line"><span class="built_in">console</span>.log(str.charAt(<span class="number">5</span>))		<span class="comment">//,</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="concat-value1-value2…-拼接字符串，可接受多个参数，将其拼接并返回-原字符串不变"><a href="#concat-value1-value2…-拼接字符串，可接受多个参数，将其拼接并返回-原字符串不变" class="headerlink" title="concat(value1,value2…)  拼接字符串，可接受多个参数，将其拼接并返回(原字符串不变)"></a>concat(value1,value2…)  拼接字符串，可接受多个参数，将其拼接并返回(原字符串不变)</h5><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> str1=<span class="string">&quot;kobe&quot;</span></span><br><span class="line"><span class="keyword">const</span> str2=<span class="string">&quot;hello&quot;</span></span><br><span class="line"><span class="keyword">let</span> s=str2.concat(<span class="string">&quot;--&quot;</span>,str1)</span><br><span class="line"><span class="built_in">console</span>.log(s)		<span class="comment">//hello--kobe</span></span><br></pre></td></tr></table></figure>
+
+<p> 这个方法和用+拼接字符串效果是一样的</p>
+<hr>
+<h5 id="三个从字符串中提取子字符串的方法-返回截取字符串，不改变原字符串-slice、substring、substr"><a href="#三个从字符串中提取子字符串的方法-返回截取字符串，不改变原字符串-slice、substring、substr" class="headerlink" title="三个从字符串中提取子字符串的方法(返回截取字符串，不改变原字符串) : slice、substring、substr"></a><strong>三个从字符串中提取子字符串的方法(返回截取字符串，不改变原字符串) : slice、substring、substr</strong></h5><ul>
+<li>slice(value1，value2)  和 substring(value1,value2) 方法类似   ：</li>
+</ul>
+<p><strong>参数为正数时</strong></p>
+<p> 两个方法都是返回索引从value1到value2的子字符串，区间 [value1,value2) 不包括索引值为value2的字符，如果省略第二个参数，那么表示从索引值value1一直截取到最后并返回。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> str1=<span class="string">&quot;hello,world&quot;</span>	</span><br><span class="line"><span class="built_in">console</span>.log(str1.slice(<span class="number">2</span>,<span class="number">4</span>))	<span class="comment">//ll(注意，是闭开区间)</span></span><br><span class="line"><span class="built_in">console</span>.log(str1.slice(<span class="number">2</span>))		<span class="comment">//llo,world</span></span><br><span class="line"><span class="built_in">console</span>.log(str1.substring(<span class="number">2</span>,<span class="number">4</span>))	<span class="comment">//ll(注意，是闭开区间)</span></span><br><span class="line"><span class="built_in">console</span>.log(str1.substring(<span class="number">2</span>))		<span class="comment">//llo,world</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>当参数为负数时</strong></p>
+<p> slice方法将所有负数参数转换为字符串长度加该负数参数处理</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(str1.slice(-<span class="number">3</span>))		<span class="comment">//rld 从索引为8的位置截取到末尾</span></span><br><span class="line"><span class="built_in">console</span>.log(str1.slice(-<span class="number">3</span>,-<span class="number">1</span>))		<span class="comment">//rl   [8,10)</span></span><br></pre></td></tr></table></figure>
+
+<p> substring方法将所有负数参数转换为0处理</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(str1.substring(-<span class="number">3</span>))		<span class="comment">//hello,world</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>substr(value1,value2) 该方法第一个参数为截取开始的索引，第二个参数为截取的个数，省略则截取到末尾</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> str1=<span class="string">&quot;hello,world&quot;</span>	</span><br><span class="line"><span class="built_in">console</span>.log(str1.substr(<span class="number">2</span>,<span class="number">4</span>))	<span class="comment">//llo,</span></span><br><span class="line"><span class="built_in">console</span>.log(str1.substr(<span class="number">2</span>))		<span class="comment">//llo,world</span></span><br></pre></td></tr></table></figure>
+
+<p>对于参数是负值的情况，substr会将第一个负值参数转换为数组长度加该负数，第二个负值参数转换为0</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(str1.substr(-<span class="number">3</span>))		<span class="comment">//rld</span></span><br><span class="line"><span class="built_in">console</span>.log(str1.substr(<span class="number">3</span>,-<span class="number">4</span>))		<span class="comment">//&quot;&quot;（空）</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="搜索子字符串位置的方法-：indexOf-、lastIndexOf"><a href="#搜索子字符串位置的方法-：indexOf-、lastIndexOf" class="headerlink" title="搜索子字符串位置的方法 ：indexOf()、lastIndexOf()"></a>搜索子字符串位置的方法 ：indexOf()、lastIndexOf()</h5><p>这两个方法都是从指定字符串中搜索参数字符串的位置，第一个参数为参数字符串，第二个参数是起始位置，可以省略。二者区别就是： indexOf是从前往后搜索，lastIndexOf是从后往前搜索。找不到则返回-1</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> str1=<span class="string">&quot;hello,world&quot;</span></span><br><span class="line"><span class="built_in">console</span>.log(str1.indexOf(<span class="string">&quot;lo&quot;</span>))		<span class="comment">//3</span></span><br><span class="line"><span class="built_in">console</span>.log(str1.lastIndexOf(<span class="string">&quot;lo&quot;</span>))		<span class="comment">//3</span></span><br><span class="line"><span class="built_in">console</span>.log(str1.indexOf(<span class="string">&quot;le&quot;</span>))		<span class="comment">//-1</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="判断是否包含另一个字符串的方法：includes"><a href="#判断是否包含另一个字符串的方法：includes" class="headerlink" title="判断是否包含另一个字符串的方法：includes()"></a>判断是否包含另一个字符串的方法：includes()</h5><p>参数是用于搜索的字符串,可以加第二个参数，表示开始搜索位置</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> str1=<span class="string">&quot;hello,world&quot;</span></span><br><span class="line"><span class="built_in">console</span>.log(str1.includes(<span class="string">&quot;wor&quot;</span>))		<span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="trim"><a href="#trim" class="headerlink" title="trim()"></a>trim()</h5><p>该方法会创建字符串的一个副本，去掉前后空格并放回</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> str1=<span class="string">&quot; hello,world      &quot;</span></span><br><span class="line"><span class="built_in">console</span>.log(str1.trim())	<span class="comment">//hello,world</span></span><br><span class="line"><span class="built_in">console</span>.log(str1.trim().length)		<span class="comment">//11</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="repeat"><a href="#repeat" class="headerlink" title="repeat"></a>repeat</h5><p>该方法参数为一个整数，将字符串复制指定次数并拼接成一个副本返回</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> str1=<span class="string">&quot;hello&quot;</span></span><br><span class="line"><span class="built_in">console</span>.log(str1.repeat(<span class="number">3</span>))		<span class="comment">//hellohellohello</span></span><br></pre></td></tr></table></figure>
+
+<p>字符串还有其他的方法，这里只是一部分常用的，今天就先写到这。</p>
+]]></content>
+      <categories>
+        <category>关于JavaScript</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+      </tags>
+  </entry>
 </search>
