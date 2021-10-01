@@ -805,11 +805,17 @@
 <h5 id="判断是否包含另一个字符串的方法：includes"><a href="#判断是否包含另一个字符串的方法：includes" class="headerlink" title="判断是否包含另一个字符串的方法：includes()"></a>判断是否包含另一个字符串的方法：includes()</h5><p>参数是用于搜索的字符串,可以加第二个参数，表示开始搜索位置</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> str1=<span class="string">&quot;hello,world&quot;</span></span><br><span class="line"><span class="built_in">console</span>.log(str1.includes(<span class="string">&quot;wor&quot;</span>))		<span class="comment">//true</span></span><br></pre></td></tr></table></figure>
 
+<hr>
 <h5 id="trim"><a href="#trim" class="headerlink" title="trim()"></a>trim()</h5><p>该方法会创建字符串的一个副本，去掉前后空格并放回</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> str1=<span class="string">&quot; hello,world      &quot;</span></span><br><span class="line"><span class="built_in">console</span>.log(str1.trim())	<span class="comment">//hello,world</span></span><br><span class="line"><span class="built_in">console</span>.log(str1.trim().length)		<span class="comment">//11</span></span><br></pre></td></tr></table></figure>
 
+<hr>
 <h5 id="repeat"><a href="#repeat" class="headerlink" title="repeat"></a>repeat</h5><p>该方法参数为一个整数，将字符串复制指定次数并拼接成一个副本返回</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> str1=<span class="string">&quot;hello&quot;</span></span><br><span class="line"><span class="built_in">console</span>.log(str1.repeat(<span class="number">3</span>))		<span class="comment">//hellohellohello</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h5 id="转化成数组的一个方法：split"><a href="#转化成数组的一个方法：split" class="headerlink" title="转化成数组的一个方法：split()"></a>转化成数组的一个方法：split()</h5><p>该方法接收两个参数，第一个参数为字符串或正则表达式，第二个参数为数组长度(可选)  该方法返回一个数组：该数组是由第一个参数分割后的子字符串组成的</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> str=<span class="string">&quot;h,e,l,l,o,w,o,r,l,d&quot;</span></span><br><span class="line"><span class="keyword">let</span> str1=str.split(<span class="string">&quot;,&quot;</span>)</span><br><span class="line"><span class="built_in">console</span>.log(str1)		<span class="comment">//Array(10) [h,e,l,l,o,w,o,r,l,d]</span></span><br></pre></td></tr></table></figure>
 
 <p>字符串还有其他的方法，这里只是一部分常用的，今天就先写到这。</p>
 ]]></content>
