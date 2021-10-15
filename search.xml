@@ -943,6 +943,10 @@
 <p>在左边界：最后一轮循环middle=start=end=0，执行第二的if条件，end= -1，循环结束。返回start为插入位置</p>
 <p>在右边界：同样在最后一轮循环middle=start=end= nums.length - 1，执行第一个if条件，start=最大索引＋1，循环结束。返回start为插入位置</p>
 <p>在两数中间：在倒数第二轮循环里，middle=start，执行第一个if条件后start等于end，执行最后一轮循环：此时middle=start=end，执行第二个if语句，end-=1，循环结束，返回start作为插入位置。</p>
+<h4 id="盛水最多容器"><a href="#盛水最多容器" class="headerlink" title="盛水最多容器"></a>盛水最多容器</h4><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> getArea = <span class="function"><span class="keyword">function</span>(<span class="params">height</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> maxArea = <span class="number">0</span></span><br><span class="line">    <span class="keyword">let</span> left = <span class="number">0</span></span><br><span class="line">    <span class="keyword">let</span> right = height.length - <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">        <span class="keyword">let</span> area = <span class="built_in">Math</span>.min(height[left], height[right]) * (right - left)</span><br><span class="line">        maxArea = <span class="built_in">Math</span>.max(maxArea, area)</span><br><span class="line">        height[left] &lt; height[right] ? left++ : right--</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> maxArea</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果用传统的双重for循环的话，时间复杂度太差会超时。所以用双指针求最大面积的思路：</p>
+<p>开始left和right所指向的是数组两端元素，此时宽度最大，找出二者中最小的那一个元素作为高，此时的面积是以这个最小的元素为高的最大面积，以数组里面小于或等于这个元素作为高的面积就更比其小了。记录下这个面积，指针从最小元素那里往里移动一个单位，同样以较小元素为高，比较面积是否比原来的大，指针继续从最小元素那里往里移动。</p>
 ]]></content>
       <categories>
         <category>关于算法</category>
