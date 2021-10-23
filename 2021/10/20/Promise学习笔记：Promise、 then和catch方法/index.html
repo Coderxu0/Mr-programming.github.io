@@ -22,28 +22,30 @@
 
   <meta name="description" content="这两天看了一些关于Promise的内容，记录并总结一下学习内容">
 <meta property="og:type" content="article">
-<meta property="og:title" content="记录学习：Promise">
-<meta property="og:url" content="http://example.com/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/index.html">
+<meta property="og:title" content="Promise学习笔记：Promise、then和catch方法">
+<meta property="og:url" content="http://example.com/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/index.html">
 <meta property="og:site_name" content="Mr-programming">
 <meta property="og:description" content="这两天看了一些关于Promise的内容，记录并总结一下学习内容">
 <meta property="og:locale">
-<meta property="og:image" content="http://example.com/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/1.png">
-<meta property="og:image" content="http://example.com/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/2.png">
-<meta property="og:image" content="http://example.com/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/3.png">
-<meta property="og:image" content="http://example.com/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/4.png">
-<meta property="og:image" content="http://example.com/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/5.png">
-<meta property="og:image" content="http://example.com/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/6.png">
-<meta property="og:image" content="http://example.com/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/7.png">
-<meta property="og:image" content="http://example.com/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/8.png">
-<meta property="og:image" content="http://example.com/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/10.png">
+<meta property="og:image" content="http://example.com/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/1.png">
+<meta property="og:image" content="http://example.com/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/2.png">
+<meta property="og:image" content="http://example.com/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/3.png">
+<meta property="og:image" content="http://example.com/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/10.png">
+<meta property="og:image" content="http://example.com/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/4.png">
+<meta property="og:image" content="http://example.com/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/5.png">
+<meta property="og:image" content="http://example.com/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/6.png">
+<meta property="og:image" content="http://example.com/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/7.png">
+<meta property="og:image" content="http://example.com/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/8.png">
+<meta property="og:image" content="http://example.com/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/9.png">
+<meta property="og:image" content="http://example.com/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/11.jpg">
 <meta property="article:published_time" content="2021-10-20T10:10:32.000Z">
-<meta property="article:modified_time" content="2021-10-20T13:01:04.185Z">
+<meta property="article:modified_time" content="2021-10-23T10:22:07.710Z">
 <meta property="article:author" content="Mr-programming">
-<meta property="article:tag" content="前端、学习、提升、建站、努力。">
+<meta property="article:tag" content="前端">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/1.png">
+<meta name="twitter:image" content="http://example.com/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/1.png">
 
-<link rel="canonical" href="http://example.com/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/">
+<link rel="canonical" href="http://example.com/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/">
 
 
 <script id="page-configurations">
@@ -56,7 +58,7 @@
   };
 </script>
 
-  <title>记录学习：Promise | Mr-programming</title>
+  <title>Promise学习笔记：Promise、then和catch方法 | Mr-programming</title>
   
 
 
@@ -208,7 +210,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -221,7 +223,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          记录学习：Promise
+          Promise学习笔记：Promise、then和catch方法
         </h1>
 
         <div class="post-meta">
@@ -230,9 +232,24 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建于：2021-10-20 18:10:32 / 更新于：21:01:04" itemprop="dateCreated datePublished" datetime="2021-10-20T18:10:32+08:00">2021-10-20</time>
+              <time title="创建于：2021-10-20 18:10:32" itemprop="dateCreated datePublished" datetime="2021-10-20T18:10:32+08:00">2021-10-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Bearbeitet am</span>
+                <time title="更新于：2021-10-23 18:22:07" itemprop="dateModified" datetime="2021-10-23T18:22:07+08:00">2021-10-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%85%B3%E4%BA%8EJavaScript/" itemprop="url" rel="index"><span itemprop="name">关于JavaScript</span></a>
+                </span>
             </span>
 
           
@@ -251,8 +268,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/" itemprop="commentCount"></span>
+    <a title="valine" href="/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -269,55 +286,78 @@
 
       
         <h3 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h3><p><strong>Promise是ES6新增的引用类型，通过new来实例化时需要传入执行器函数(executor)作为参数，这个执行器函数内部可以封装异步操作。</strong></p>
-<p><strong>Promise类的实例对象是有状态(state)的，对应三个值：pedding(待定)、fullfilled(成功)、rejected(失败)</strong></p>
-<p><strong>Promise类实例对象有成功的结果(value)和失败的原因(reason)，默认值都为undefined，只有状态被改变后才会为其赋值</strong></p>
+<p>Promise类的实例对象是有<strong>状态(state)<strong>的，对应三个值：</strong>pedding(待定</strong>)、<strong>fullfilled(成功)<strong>、</strong>rejected(失败)</strong></p>
 <p>(实例的初始状态为pedding，一旦由pedding状态落定成fulfilled状态或rejected状态，就不可再次改变，该过程是不可逆的）</p>
-<p>在我们实例化一个Promise时会传入一个执行器函数来进行一系列的操作，在这个执行器函数里面就可以根据这一系列的操作的实际情况来规定该实例对象的状态是fulfilled(成功)，还是rejected(失败)</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//向里面传入执行器函数，执行器函数默认两个参数对应改变状态的两个函数</span></span><br><span class="line"><span class="keyword">let</span> promise=<span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve,reject</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="comment">//改变实例的状态：pedding-&gt;fulfilled，成功的结果value为“我是成功的结果”</span></span><br><span class="line">    resolve(<span class="string">&quot;我是成功的结果&quot;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(promise)</span><br></pre></td></tr></table></figure>
+<p>与之对应，Promise类实例对象有**成功的结果(value)<strong>和</strong>失败的原因(reason)**，默认值都为undefined，只有状态被改变后(从初始默认状态落定成功或失败的状态)才会为其赋值。</p>
+<p><strong>注意：Promsie内部的state、value、reason是私有的，外界是访问不到的</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//向里面传入执行器函数，执行器函数默认两个参数对应改变状态的两个函数</span></span><br><span class="line"><span class="keyword">let</span> promise=<span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve,reject</span>)=&gt;</span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//...一系列操作...</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//改变实例的状态：pedding-&gt;fulfilled，成功的结果value为“我是成功的结果”</span></span><br><span class="line">    resolve(<span class="string">&quot;我是成功的结果&quot;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(promise)</span><br></pre></td></tr></table></figure>
 
+<p><img src="/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/1.png" alt="1"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//向里面传入执行器函数，执行器函数默认两个参数对应改变状态的两个函数</span></span><br><span class="line"><span class="keyword">let</span> promise=<span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve,reject</span>)=&gt;</span>&#123;</span><br><span class="line">        </span><br><span class="line">    <span class="comment">//...一系列操作...</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//改变实例的状态：pedding-&gt;rejected，失败的原因reason为“我是失败的原因”</span></span><br><span class="line">    reject(<span class="string">&quot;我是失败的原因&quot;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(promise)</span><br></pre></td></tr></table></figure>
 
-
-<p><img src="/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/1.png" alt="1"></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//向里面传入执行器函数，执行器函数默认两个参数对应改变状态的两个函数</span></span><br><span class="line"><span class="keyword">let</span> promise=<span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve,reject</span>)=&gt;</span>&#123;</span><br><span class="line">    <span class="comment">//改变实例的状态：pedding-&gt;rejected，失败的原因reason为“我是失败的原因”</span></span><br><span class="line">    reject(<span class="string">&quot;我是失败的原因&quot;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(promise)</span><br></pre></td></tr></table></figure>
-
-<p><img src="/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/2.png" alt="2"></p>
-<h3 id="Promise-prototype-then"><a href="#Promise-prototype-then" class="headerlink" title="Promise.prototype.then()"></a>Promise.prototype.then()</h3><p>在原型上的then方法最多接收两个参数，onResolved处理程序和onRejected处理程序。都是可选的。通过这两个参数我们可以拿到实例成功或失败的结果。同时then方法也会返回一个新的Promise实例对象(下面一律称为promise2)。</p>
+<p><img src="/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/2.png" alt="2"></p>
+<p>正如开头说的，在我们实例化一个Promise时会传入一个执行器函数来进行一系列的操作，这个执行器函数接受两个参数：resolve、reject他们都是回调函数，用来落定状态。在这个执行器函数里面就可以根据这一系列的操作的实际情况通过这两个回调来规定该实例对象的状态是fulfilled(成功)，还是rejected(失败)，并设置成功的结果或失败的原因。</p>
+<hr>
+<p>上面说到Promise内部的值是私有的，那么外部代码需要访问这个成功或失败的值呢？这时候就需要Promsie类为我们提供的方法了。</p>
+<h3 id="Promise-prototype-then"><a href="#Promise-prototype-then" class="headerlink" title="Promise.prototype.then()"></a>Promise.prototype.then()</h3><ul>
+<li><strong>then()</strong></li>
+</ul>
+<p>在原型上的then方法<strong>最多接收两个参数</strong>，<strong>onResolved处理程序</strong>和<strong>onRejected处理程序</strong>，都是可选的。通过这两个参数我们可以拿到实例成功或失败的结果。同时then方法也会返回一个新的Promise实例对象(下面一律称为promise2)。</p>
+<p><strong>注意：只有Promsie内部的状态落定了，then方法中对应的处理程序才会执行。</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//向里面传入执行器函数，执行器函数默认两个参数对应改变状态的两个函数</span></span><br><span class="line"><span class="keyword">let</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">//改变实例的状态：pedding-&gt;fulfilled，成功的结果value为“我是成功的结果”</span></span><br><span class="line">    reject(<span class="string">&quot;我是失败的原因&quot;</span>)</span><br><span class="line">&#125;)</span><br><span class="line">promise.then(<span class="literal">undefined</span>, <span class="function"><span class="params">reason</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(reason)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">//打印 “我是失败的原因”</span></span><br></pre></td></tr></table></figure>
 
+<ul>
+<li><strong>链式调用</strong></li>
+</ul>
+<p>上面说到then方法返回一个新的Promise实例，那么就再次可以使用then方法，不断地.then().then()，以此类推：new Promsie((res,rej)=&gt;(res(‘bar’))).then().then().then() … ,这就是then方法的强大之处，可以<strong>链式调用</strong></p>
+<p>举个例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义一个函数，里面有两个参数，str和回电函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params">str, callback = <span class="literal">null</span></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//一秒后打印str，并执行回调函数</span></span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(str)</span><br><span class="line">        <span class="keyword">if</span> (callback) &#123;</span><br><span class="line">            callback()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, <span class="number">1000</span>)</span><br><span class="line">&#125;</span><br><span class="line">fn(<span class="string">&#x27;你&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    fn(<span class="string">&#x27;好&#x27;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">        fn(<span class="string">&#x27;啊&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">//打印结果：</span></span><br><span class="line"><span class="comment">// 你（1秒后）</span></span><br><span class="line"><span class="comment">// 好（2秒后）</span></span><br><span class="line"><span class="comment">// 啊（3秒后）</span></span><br></pre></td></tr></table></figure>
+
+<p>这里只有三次回调，真实的业务要比这复杂得多，那么回调会更多。如果没有更方便更直观的方法，那么就这样一直回调，回调，回调……</p>
+<p>下面使用Promise实现的同样的功能：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn2</span>(<span class="params">str</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">            <span class="built_in">console</span>.log(str)</span><br><span class="line">            res()</span><br><span class="line">        &#125;, <span class="number">1000</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line">fn2(<span class="string">&#x27;你&#x27;</span>)</span><br><span class="line">    .then(<span class="function">() =&gt;</span></span><br><span class="line">        fn2(<span class="string">&#x27;好&#x27;</span>)</span><br><span class="line">    ).then(<span class="function">() =&gt;</span></span><br><span class="line">        fn2(<span class="string">&#x27;啊&#x27;</span>)</span><br><span class="line">    )</span><br><span class="line"><span class="comment">//打印结果：</span></span><br><span class="line"><span class="comment">// 你（1秒后）</span></span><br><span class="line"><span class="comment">// 好（2秒后）</span></span><br><span class="line"><span class="comment">// 啊（3秒后）</span></span><br></pre></td></tr></table></figure>
+
+<p>这里面虽然没有通过链式调用来拿上一次的结果，但是就这个例子而言已经可以看出相比上面的写法通过promise更为直观。then里面的处理程序会等待前一个实例解决，然后实例化一个新的实例并返回，这样可以串行异步任务。</p>
+<hr>
 <p>说到then返回一个新的promsie实例，那么then方法返回一个什么样的promise实例呢，里面是成功的还是失败的呢？下面总结了几个规则：</p>
 <ul>
-<li>then方法中没有传递和原本实例状态相对应的回调函数（不传参也一样），那么返回的promise2和原本的实例是相同的(promise2是一个新的对象，指针不会指向原本实例的地址）</li>
+<li>then方法内没有传入相应的处理程序，或者原promise处于pedding状态都会返回一个和原来相同的promsie2（虽然二者看起来一样，但是指针指向的不是同一个对象）</li>
 </ul>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> A = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">    rej(<span class="string">&#x27;123&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(A.then())</span><br><span class="line"><span class="built_in">console</span>.log(A.then(<span class="function">()=&gt;</span>&#123;&#125;,<span class="literal">undefined</span>))</span><br><span class="line"><span class="built_in">console</span>.log(A)</span><br><span class="line"><span class="built_in">console</span>.log(A===A.then())</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/3.png" alt="3"></p>
-<p>这里原本A实例的状态已经落定成了rejected，两次调用then方法对应位置都没有传入回调，返回和原本实例相同的promise2</p>
+<p><img src="/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/3.png" alt="3"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> A = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        rej(<span class="string">&#x27;123&#x27;</span>)</span><br><span class="line">    &#125;, <span class="number">3000</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">let</span> promise2 = A.then(<span class="literal">undefined</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;111&quot;</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="comment">//此时原本的A实例处于pending状态，处理程序没有执行，打印的then方法返回的promise2也处于pedding状态</span></span><br><span class="line"><span class="built_in">console</span>.log(promise2)</span><br><span class="line"><span class="comment">//定时四秒超时后A的状态早已落定，then执行了onResolved处理程序(为啥返回结果不一样呢，往下看)</span></span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(promise2)</span><br><span class="line">    &#125;, <span class="number">4000</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/10.png" alt="10"></p>
 <ul>
-<li><p>对应的位置传入了回调函数(看返回值)：<br>如果对应的回调函数返回值不是一个promsie对象，那么返回的promise2对象执行了resolve(回调的返回值)</p>
+<li><p>对应的位置传入了处理程序(看返回值)：<br>（1）如果对应的处理程序返回值不是一个promsie对象，那么返回的promise2对象执行了resolve(处理程序的返回值)</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> A = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">    res(<span class="string">&#x27;123&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">let</span> promise2 = A.then(<span class="function"><span class="params">value</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;我拿到了成功的结果&#x27;</span> + value)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;我是promise2的结果&quot;</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(promise2)</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/4.png" alt="4"></p>
+<p><img src="/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/4.png" alt="4"></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> A = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">    rej(<span class="string">&#x27;123&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">let</span> promise2 = A.then(<span class="literal">undefined</span>, <span class="function"><span class="params">reason</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;我拿到了失败的原因&#x27;</span> + reason)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;我是promise2的结果&quot;</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(promise2)</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/5.png" alt="5"></p>
-<p>如果对应的回调的返回值是一个promsie对象，取这个promise的结果，如果成功那么返回的promise2执行了resolve(成功的结果)，如果失败，返回的promise2执行了reject(失败的原因)，如果没有结果(这个promsie对象内部并没有改变状态，没有执行resolve或reject函数)，则返回的promise2处于pedding状态。</p>
+<p><img src="/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/5.png" alt="5"></p>
+<p>（2）如果对应的处理程序的返回值是一个promsie对象，返回这个promsie对象</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> A = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">    rej(<span class="string">&#x27;123&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">let</span> promise2 = A.then(<span class="literal">undefined</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        res(<span class="string">&#x27;111&#x27;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(promise2)</span><br></pre></td></tr></table></figure></li>
 </ul>
-<p><img src="/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/6.png" alt="6"></p>
+<p><img src="/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/6.png" alt="6"></p>
 <p>​    </p>
  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">let</span> A = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">    rej(<span class="string">&#x27;123&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">let</span> promise2 = A.then(<span class="literal">undefined</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">//无结果</span></span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(promise2)</span><br></pre></td></tr></table></figure>
 
 
 
-<p><img src="/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/7.png" alt="7"></p>
+<p><img src="/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/7.png" alt="7"></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> A = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">    rej(<span class="string">&#x27;123&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">let</span> promise2 = A.then(<span class="literal">undefined</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">        rej(<span class="string">&quot;111&quot;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(promise2)</span><br></pre></td></tr></table></figure>
 
-<p><img src="/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/8.png" alt="8"></p>
-<ul>
-<li><p>执行对应回调函数出现异常，返回的promsie2执行了reject(e)</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">  <span class="keyword">let</span> A = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">      rej(<span class="string">&#x27;123&#x27;</span>)</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">let</span> promise2 = A.then(<span class="literal">undefined</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">throw</span>(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">&#x27;出错啦&#x27;</span>))</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="built_in">console</span>.log(promise2)</span><br><span class="line"></span><br><span class="line">![<span class="number">9</span>](%E8%AE%B0%E5%BD%<span class="number">95</span>%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/<span class="number">9.</span>png)</span><br><span class="line"></span><br><span class="line">注意：在原本实例处于pedding状态下，调用then方法返回的promise2处于pedding状态</span><br><span class="line"></span><br><span class="line"><span class="string">``</span><span class="string">`javascript</span></span><br><span class="line"><span class="string">let A = new Promise((res, rej) =&gt; &#123;</span></span><br><span class="line"><span class="string">    setTimeout(() =&gt; &#123;</span></span><br><span class="line"><span class="string">        rej(&#x27;123&#x27;)</span></span><br><span class="line"><span class="string">    &#125;, 3000)</span></span><br><span class="line"><span class="string">&#125;)</span></span><br><span class="line"><span class="string">let promise2 = A.then(undefined, () =&gt; &#123;</span></span><br><span class="line"><span class="string">    return &quot;111&quot;</span></span><br><span class="line"><span class="string">&#125;)</span></span><br><span class="line"><span class="string">//此时原本的A实例处于pending状态，打印的then方法返回的promise2也处于pedding状态</span></span><br><span class="line"><span class="string">console.log(promise2)</span></span><br><span class="line"><span class="string">//定时器回调执行的时候A实例已经不在处于pedding状态，peomise2也不再处于pedding状态。</span></span><br><span class="line"><span class="string">setTimeout(() =&gt; &#123;</span></span><br><span class="line"><span class="string">        console.log(promise2)</span></span><br><span class="line"><span class="string">    &#125;, 4000)</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<p><img src="/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/10.png" alt="10"></p>
+<p><img src="/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/8.png" alt="8"></p>
+<p>（3）执行对应处理程序出现异常，返回的promsie2执行了reject(e)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> A = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">    rej(<span class="string">&#x27;123&#x27;</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">let</span> promise2 = A.then(<span class="literal">undefined</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">throw</span>(<span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">&#x27;出错啦&#x27;</span>))</span><br><span class="line">&#125;)</span><br><span class="line"><span class="built_in">console</span>.log(promise2)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/9.png" alt="9"></p>
+<h2 id="Promise-protorype-catch"><a href="#Promise-protorype-catch" class="headerlink" title="Promise.protorype.catch"></a>Promise.protorype.catch</h2><p>catch方法就是一个语法糖，只接收一个参数，onRejected处理程序。他的作用和调用Promise.prototype.then(null,onRejected)是一样的。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> promise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">//打印一个未定义的变量，这里会出错</span></span><br><span class="line">    <span class="built_in">console</span>.log(a)</span><br><span class="line">    res()</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">//控制台是一样的结果</span></span><br><span class="line">promise.then(<span class="literal">null</span>, <span class="function"><span class="params">reason</span> =&gt;</span> <span class="built_in">console</span>.log(reason))</span><br><span class="line">promise.catch(<span class="function"><span class="params">reason</span> =&gt;</span> <span class="built_in">console</span>.log(reason))</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/11.jpg" alt="11"></p>
 
     </div>
 
@@ -346,6 +386,9 @@
 
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag"># 前端</a>
+          </div>
 
         
 
@@ -353,12 +396,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/10/20/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9APromise%E3%80%81%20then%E5%92%8Ccatch%E6%96%B9%E6%B3%95/" rel="prev" title="Promise学习笔记：Promise、then和catch方法">
-      <i class="fa fa-chevron-left"></i> Promise学习笔记：Promise、then和catch方法
+    <a href="/2021/10/12/JS%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%9E%8B%E5%92%8C%E5%8E%9F%E5%9E%8B%E9%93%BE/" rel="prev" title="JS中的原型和原型链">
+      <i class="fa fa-chevron-left"></i> JS中的原型和原型链
     </a></div>
       <div class="post-nav-item">
-    <a href="/2021/10/21/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%88/" rel="next" title="数据结构--栈">
-      数据结构--栈 <i class="fa fa-chevron-right"></i>
+    <a href="/2021/10/20/%E8%AE%B0%E5%BD%95%E5%AD%A6%E4%B9%A0%EF%BC%9APromise/" rel="next" title="记录学习：Promise">
+      记录学习：Promise <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -419,7 +462,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Promise"><span class="nav-number">1.</span> <span class="nav-text">Promise</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Promise-prototype-then"><span class="nav-number">2.</span> <span class="nav-text">Promise.prototype.then()</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Promise"><span class="nav-number">1.</span> <span class="nav-text">Promise</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Promise-prototype-then"><span class="nav-number">2.</span> <span class="nav-text">Promise.prototype.then()</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Promise-protorype-catch"><span class="nav-number"></span> <span class="nav-text">Promise.protorype.catch</span></a></div>
       </div>
       <!--/noindex-->
 
