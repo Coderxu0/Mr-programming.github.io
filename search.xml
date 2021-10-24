@@ -1214,13 +1214,60 @@
 
 <p>返回值：大多数情况该方法回原样返回父Promsie实例，但是如果处理程序返回一个pedding状态的实例或处理程序内部抛出错误(显示抛出或返回一个拒绝promsie)则会返回相应的promsie实例(待定或拒绝)</p>
 <hr>
-<h2 id="Promise-all"><a href="#Promise-all" class="headerlink" title="Promise.all"></a>Promise.all</h2><p>该方法的参数是一个可迭代对象，内部的全部的promsie解决后才会返回解决的promise实例</p>
+<h2 id="Promise-all"><a href="#Promise-all" class="headerlink" title="Promise.all"></a>Promise.all</h2><p>该方法的参数是一个可迭代对象，内部的<strong>全部</strong>的promsie<strong>解决</strong>后才会返回解决的promise实例。解决的结果就是每一个promise解决结果构成的数组</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//创建几个解决的promsie实例</span></span><br><span class="line"><span class="keyword">let</span> promise1 = <span class="built_in">Promise</span>.resolve(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">let</span> promise2 = <span class="built_in">Promise</span>.resolve(<span class="number">2</span>)</span><br><span class="line"><span class="keyword">let</span> promise3 = <span class="built_in">Promise</span>.resolve(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//除了这几个解决的promise可迭代对象中还添加了数字2</span></span><br><span class="line"><span class="keyword">let</span> promise = <span class="built_in">Promise</span>.all([promise1, promise2, promise3，<span class="number">2</span>])</span><br><span class="line"><span class="built_in">console</span>.log(promise)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/10/23/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9Afinally%E3%80%81all%E3%80%81race%E6%96%B9%E6%B3%95/1.png" alt="1"></p>
+<p>这里要注意的是，就算可迭代对象中添加的不是promise实例也会由Promsie.resolve方法包装成解决的promise实例</p>
+<p>当然也有可迭代对象中不全是解决的promise实例的情况，继续看例子：</p>
+<ul>
+<li><p>有拒绝promsie的情况,就返回这个拒绝的promsie的镜像(如果有多个拒绝，则返回第一个)</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">//成功的promsie实例</span></span><br><span class="line"><span class="keyword">let</span> promise1 = <span class="built_in">Promise</span>.resolve(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">let</span> promise2 = <span class="built_in">Promise</span>.resolve(<span class="number">2</span>)</span><br><span class="line"><span class="comment">//失败的promsie实例</span></span><br><span class="line"><span class="keyword">let</span> promise3 = <span class="built_in">Promise</span>.reject(<span class="string">&#x27;失败啦&#x27;</span>)</span><br><span class="line"><span class="keyword">let</span> promise4 = <span class="built_in">Promise</span>.reject(<span class="string">&#x27;又又又失败啦&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> promise = <span class="built_in">Promise</span>.all([promise1, promise2, promise3, promise4, <span class="number">2</span>])</span><br><span class="line"><span class="built_in">console</span>.log(promise)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/10/23/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9Afinally%E3%80%81all%E3%80%81race%E6%96%B9%E6%B3%95/2.png" alt="2"></p>
+</li>
+<li><p>有处于pedding的promsie，就返回的promsie实例也处于pedding状态</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> promise1 = <span class="built_in">Promise</span>.resolve(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">let</span> promise2 = <span class="built_in">Promise</span>.resolve(<span class="number">2</span>)</span><br><span class="line"><span class="keyword">let</span> promise5 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">() =&gt;</span> &#123;&#125;)</span><br><span class="line">    <span class="comment">// let promise3 = Promise.reject(&#x27;失败啦&#x27;)</span></span><br><span class="line">    <span class="comment">// let promise4 = Promise.reject(&#x27;又又又失败啦&#x27;)</span></span><br><span class="line"><span class="keyword">let</span> promise = <span class="built_in">Promise</span>.all([promise1, promise2, promise5])</span><br><span class="line"><span class="built_in">console</span>.log(promise)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><img src="/2021/10/23/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9Afinally%E3%80%81all%E3%80%81race%E6%96%B9%E6%B3%95/3.png" alt="3"></p>
+<ul>
+<li><p>可迭代对象的元素既有promsie实例也有处于pedding状态的实例，还是返回拒绝的promsie的镜像</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> promise1 = <span class="built_in">Promise</span>.resolve(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">let</span> promise2 = <span class="built_in">Promise</span>.resolve(<span class="number">2</span>)</span><br><span class="line"><span class="keyword">let</span> promise5 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">() =&gt;</span> &#123;&#125;)</span><br><span class="line"><span class="keyword">let</span> promise3 = <span class="built_in">Promise</span>.reject(<span class="string">&#x27;失败啦&#x27;</span>)</span><br><span class="line"><span class="keyword">let</span> promise4 = <span class="built_in">Promise</span>.reject(<span class="string">&#x27;又又又失败啦&#x27;</span>)</span><br><span class="line"><span class="keyword">let</span> promise = <span class="built_in">Promise</span>.all([promise1, promise2, promise3, promise4, promise5])</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><img src="/2021/10/23/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9Afinally%E3%80%81all%E3%80%81race%E6%96%B9%E6%B3%95/2.png" alt="2"></p>
+<hr>
+<h2 id="Promsie-race"><a href="#Promsie-race" class="headerlink" title="Promsie.race"></a>Promsie.race</h2><p>这个方法正好和all方法相反，返回的新promise是这组可迭代对象中<strong>最先</strong>解决或拒绝的promise的镜像。普通的值同样会用Promise.resolve()包装</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> promise1 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        res(<span class="string">&#x27;YES&#x27;</span>)</span><br><span class="line">    &#125;, <span class="number">3000</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> promise2 = <span class="built_in">Promise</span>.reject(<span class="string">&#x27;NO&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> promise = <span class="built_in">Promise</span>.race([promise1, promise2])</span><br></pre></td></tr></table></figure>
+
+<p><img src="file:///C:\Users\86137\AppData\Roaming\Tencent\Users\2235253716\QQ\WinTemp\RichOle\HW0HTVJ}NFJXV8}H]7N6P{1.png" alt="img"></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> promise1 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        res(<span class="string">&#x27;YES&#x27;</span>)</span><br><span class="line">    &#125;, <span class="number">3000</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> promise2 = <span class="built_in">Promise</span>.reject(<span class="string">&#x27;NO&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> promise = <span class="built_in">Promise</span>.race([promise1, promise2])</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/10/23/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9Afinally%E3%80%81all%E3%80%81race%E6%96%B9%E6%B3%95/5.png" alt="5"></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> promise1 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        rej(<span class="string">&#x27;NO&#x27;</span>)</span><br><span class="line">    &#125;, <span class="number">3000</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">let</span> promise2 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        rej(<span class="string">&#x27;~~~~~~~NO&#x27;</span>)</span><br><span class="line">    &#125;, <span class="number">2000</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> promise = <span class="built_in">Promise</span>.race([promise1, promise2])</span><br><span class="line"></span><br><span class="line"><span class="comment">//此时打印的promsie是处于pedding状态的</span></span><br><span class="line"><span class="built_in">console</span>.log(promise)</span><br><span class="line"></span><br><span class="line"><span class="comment">//四秒后打印promise</span></span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(promise)</span><br><span class="line">&#125;, <span class="number">4000</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/10/23/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9Afinally%E3%80%81all%E3%80%81race%E6%96%B9%E6%B3%95/6.png" alt="6"></p>
 ]]></content>
       <categories>
         <category>关于JavaScript</category>
       </categories>
       <tags>
         <tag>前端</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>数据结构--树、二叉树</title>
+    <url>/2021/10/24/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91/</url>
+    <content><![CDATA[<h2 id="树"><a href="#树" class="headerlink" title="树"></a>树</h2><p>树是一种分层次数据的抽象模型，下图是在现实生活中的例子：</p>
+<p><img src="/2021/10/24/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91/1%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/source/_posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91/1.png" alt="1"></p>
+<p>在图中不难看出一个家族里要长幼有序，不能乱了辈分，这就是树在现实生活中的表现形式。</p>
+<h2 id="树的结构"><a href="#树的结构" class="headerlink" title="树的结构"></a>树的结构</h2><p><img src="/2021/10/24/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91/1%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/source/_posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91/2.png" alt="2"></p>
+<hr>
+<h2 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h2>]]></content>
+      <categories>
+        <category>关于数据结构</category>
+      </categories>
+      <tags>
+        <tag>数据结构</tag>
       </tags>
   </entry>
 </search>

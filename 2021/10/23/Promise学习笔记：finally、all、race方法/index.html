@@ -27,11 +27,19 @@
 <meta property="og:site_name" content="Mr-programming">
 <meta property="og:description" content="这两天看了一些关于Promise的内容，记录并总结一下学习内容">
 <meta property="og:locale">
+<meta property="og:image" content="http://example.com/2021/10/23/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9Afinally%E3%80%81all%E3%80%81race%E6%96%B9%E6%B3%95/1.png">
+<meta property="og:image" content="http://example.com/2021/10/23/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9Afinally%E3%80%81all%E3%80%81race%E6%96%B9%E6%B3%95/2.png">
+<meta property="og:image" content="http://example.com/2021/10/23/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9Afinally%E3%80%81all%E3%80%81race%E6%96%B9%E6%B3%95/3.png">
+<meta property="og:image" content="http://example.com/2021/10/23/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9Afinally%E3%80%81all%E3%80%81race%E6%96%B9%E6%B3%95/2.png">
+<meta property="og:image" content="file:///C:/Users/86137/AppData/Roaming/Tencent/Users/2235253716/QQ/WinTemp/RichOle/HW0HTVJ%7DNFJXV8%7DH]7N6P%7B1.png">
+<meta property="og:image" content="http://example.com/2021/10/23/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9Afinally%E3%80%81all%E3%80%81race%E6%96%B9%E6%B3%95/5.png">
+<meta property="og:image" content="http://example.com/2021/10/23/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9Afinally%E3%80%81all%E3%80%81race%E6%96%B9%E6%B3%95/6.png">
 <meta property="article:published_time" content="2021-10-23T10:24:24.000Z">
-<meta property="article:modified_time" content="2021-10-23T11:07:50.021Z">
+<meta property="article:modified_time" content="2021-10-24T09:06:12.265Z">
 <meta property="article:author" content="Mr-programming">
 <meta property="article:tag" content="前端">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2021/10/23/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9Afinally%E3%80%81all%E3%80%81race%E6%96%B9%E6%B3%95/1.png">
 
 <link rel="canonical" href="http://example.com/2021/10/23/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9Afinally%E3%80%81all%E3%80%81race%E6%96%B9%E6%B3%95/">
 
@@ -87,7 +95,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Navigationsleiste an/ausschalten">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
       <span class="toggle-line toggle-line-first"></span>
       <span class="toggle-line toggle-line-middle"></span>
       <span class="toggle-line toggle-line-last"></span>
@@ -220,10 +228,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建于：2021-10-23 18:24:24 / 更新于：19:07:50" itemprop="dateCreated datePublished" datetime="2021-10-23T18:24:24+08:00">2021-10-23</time>
+              <time title="创建于：2021-10-23 18:24:24" itemprop="dateCreated datePublished" datetime="2021-10-23T18:24:24+08:00">2021-10-23</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="更新于：2021-10-24 17:06:12" itemprop="dateModified" datetime="2021-10-24T17:06:12+08:00">2021-10-24</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -235,11 +249,11 @@
             </span>
 
           
-            <span class="post-meta-item" title="Aufrufe" id="busuanzi_container_page_pv" style="display: none;">
+            <span class="post-meta-item" title="مشاهدات" id="busuanzi_container_page_pv" style="display: none;">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
-              <span class="post-meta-item-text">Aufrufe：</span>
+              <span class="post-meta-item-text">مشاهدات：</span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
   
@@ -274,7 +288,38 @@
 
 <p>返回值：大多数情况该方法回原样返回父Promsie实例，但是如果处理程序返回一个pedding状态的实例或处理程序内部抛出错误(显示抛出或返回一个拒绝promsie)则会返回相应的promsie实例(待定或拒绝)</p>
 <hr>
-<h2 id="Promise-all"><a href="#Promise-all" class="headerlink" title="Promise.all"></a>Promise.all</h2><p>该方法的参数是一个可迭代对象，内部的全部的promsie解决后才会返回解决的promise实例</p>
+<h2 id="Promise-all"><a href="#Promise-all" class="headerlink" title="Promise.all"></a>Promise.all</h2><p>该方法的参数是一个可迭代对象，内部的<strong>全部</strong>的promsie<strong>解决</strong>后才会返回解决的promise实例。解决的结果就是每一个promise解决结果构成的数组</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建几个解决的promsie实例</span></span><br><span class="line"><span class="keyword">let</span> promise1 = <span class="built_in">Promise</span>.resolve(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">let</span> promise2 = <span class="built_in">Promise</span>.resolve(<span class="number">2</span>)</span><br><span class="line"><span class="keyword">let</span> promise3 = <span class="built_in">Promise</span>.resolve(<span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//除了这几个解决的promise可迭代对象中还添加了数字2</span></span><br><span class="line"><span class="keyword">let</span> promise = <span class="built_in">Promise</span>.all([promise1, promise2, promise3，<span class="number">2</span>])</span><br><span class="line"><span class="built_in">console</span>.log(promise)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/10/23/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9Afinally%E3%80%81all%E3%80%81race%E6%96%B9%E6%B3%95/1.png" alt="1"></p>
+<p>这里要注意的是，就算可迭代对象中添加的不是promise实例也会由Promsie.resolve方法包装成解决的promise实例</p>
+<p>当然也有可迭代对象中不全是解决的promise实例的情况，继续看例子：</p>
+<ul>
+<li><p>有拒绝promsie的情况,就返回这个拒绝的promsie的镜像(如果有多个拒绝，则返回第一个)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//成功的promsie实例</span></span><br><span class="line"><span class="keyword">let</span> promise1 = <span class="built_in">Promise</span>.resolve(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">let</span> promise2 = <span class="built_in">Promise</span>.resolve(<span class="number">2</span>)</span><br><span class="line"><span class="comment">//失败的promsie实例</span></span><br><span class="line"><span class="keyword">let</span> promise3 = <span class="built_in">Promise</span>.reject(<span class="string">&#x27;失败啦&#x27;</span>)</span><br><span class="line"><span class="keyword">let</span> promise4 = <span class="built_in">Promise</span>.reject(<span class="string">&#x27;又又又失败啦&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> promise = <span class="built_in">Promise</span>.all([promise1, promise2, promise3, promise4, <span class="number">2</span>])</span><br><span class="line"><span class="built_in">console</span>.log(promise)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/10/23/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9Afinally%E3%80%81all%E3%80%81race%E6%96%B9%E6%B3%95/2.png" alt="2"></p>
+</li>
+<li><p>有处于pedding的promsie，就返回的promsie实例也处于pedding状态</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> promise1 = <span class="built_in">Promise</span>.resolve(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">let</span> promise2 = <span class="built_in">Promise</span>.resolve(<span class="number">2</span>)</span><br><span class="line"><span class="keyword">let</span> promise5 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">() =&gt;</span> &#123;&#125;)</span><br><span class="line">    <span class="comment">// let promise3 = Promise.reject(&#x27;失败啦&#x27;)</span></span><br><span class="line">    <span class="comment">// let promise4 = Promise.reject(&#x27;又又又失败啦&#x27;)</span></span><br><span class="line"><span class="keyword">let</span> promise = <span class="built_in">Promise</span>.all([promise1, promise2, promise5])</span><br><span class="line"><span class="built_in">console</span>.log(promise)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><img src="/2021/10/23/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9Afinally%E3%80%81all%E3%80%81race%E6%96%B9%E6%B3%95/3.png" alt="3"></p>
+<ul>
+<li><p>可迭代对象的元素既有promsie实例也有处于pedding状态的实例，还是返回拒绝的promsie的镜像</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> promise1 = <span class="built_in">Promise</span>.resolve(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">let</span> promise2 = <span class="built_in">Promise</span>.resolve(<span class="number">2</span>)</span><br><span class="line"><span class="keyword">let</span> promise5 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">() =&gt;</span> &#123;&#125;)</span><br><span class="line"><span class="keyword">let</span> promise3 = <span class="built_in">Promise</span>.reject(<span class="string">&#x27;失败啦&#x27;</span>)</span><br><span class="line"><span class="keyword">let</span> promise4 = <span class="built_in">Promise</span>.reject(<span class="string">&#x27;又又又失败啦&#x27;</span>)</span><br><span class="line"><span class="keyword">let</span> promise = <span class="built_in">Promise</span>.all([promise1, promise2, promise3, promise4, promise5])</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><img src="/2021/10/23/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9Afinally%E3%80%81all%E3%80%81race%E6%96%B9%E6%B3%95/2.png" alt="2"></p>
+<hr>
+<h2 id="Promsie-race"><a href="#Promsie-race" class="headerlink" title="Promsie.race"></a>Promsie.race</h2><p>这个方法正好和all方法相反，返回的新promise是这组可迭代对象中<strong>最先</strong>解决或拒绝的promise的镜像。普通的值同样会用Promise.resolve()包装</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> promise1 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        res(<span class="string">&#x27;YES&#x27;</span>)</span><br><span class="line">    &#125;, <span class="number">3000</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> promise2 = <span class="built_in">Promise</span>.reject(<span class="string">&#x27;NO&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> promise = <span class="built_in">Promise</span>.race([promise1, promise2])</span><br></pre></td></tr></table></figure>
+
+<p><img src="file:///C:\Users\86137\AppData\Roaming\Tencent\Users\2235253716\QQ\WinTemp\RichOle\HW0HTVJ}NFJXV8}H]7N6P{1.png" alt="img"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> promise1 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        res(<span class="string">&#x27;YES&#x27;</span>)</span><br><span class="line">    &#125;, <span class="number">3000</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> promise2 = <span class="built_in">Promise</span>.reject(<span class="string">&#x27;NO&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> promise = <span class="built_in">Promise</span>.race([promise1, promise2])</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/10/23/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9Afinally%E3%80%81all%E3%80%81race%E6%96%B9%E6%B3%95/5.png" alt="5"></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> promise1 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        rej(<span class="string">&#x27;NO&#x27;</span>)</span><br><span class="line">    &#125;, <span class="number">3000</span>)</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">let</span> promise2 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">res, rej</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        rej(<span class="string">&#x27;~~~~~~~NO&#x27;</span>)</span><br><span class="line">    &#125;, <span class="number">2000</span>)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> promise = <span class="built_in">Promise</span>.race([promise1, promise2])</span><br><span class="line"></span><br><span class="line"><span class="comment">//此时打印的promsie是处于pedding状态的</span></span><br><span class="line"><span class="built_in">console</span>.log(promise)</span><br><span class="line"></span><br><span class="line"><span class="comment">//四秒后打印promise</span></span><br><span class="line"><span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(promise)</span><br><span class="line">&#125;, <span class="number">4000</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/10/23/Promise%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%EF%BC%9Afinally%E3%80%81all%E3%80%81race%E6%96%B9%E6%B3%95/6.png" alt="6"></p>
 
     </div>
 
@@ -316,7 +361,10 @@
     <a href="/2021/10/21/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%88/" rel="prev" title="数据结构--栈">
       <i class="fa fa-chevron-left"></i> 数据结构--栈
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/10/24/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91/" rel="next" title="数据结构--树、二叉树">
+      数据结构--树、二叉树 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -376,7 +424,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Promise-prototype-finally"><span class="nav-number">1.</span> <span class="nav-text">Promise.prototype.finally</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Promise-all"><span class="nav-number">2.</span> <span class="nav-text">Promise.all</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Promise-prototype-finally"><span class="nav-number">1.</span> <span class="nav-text">Promise.prototype.finally</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Promise-all"><span class="nav-number">2.</span> <span class="nav-text">Promise.all</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Promsie-race"><span class="nav-number">3.</span> <span class="nav-text">Promsie.race</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -390,7 +438,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -464,7 +512,7 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-user"></i>
       </span>
-      <span class="site-uv" title="Alle Besucher">
+      <span class="site-uv" title="إجمالي الزوار">
         <span id="busuanzi_value_site_uv"></span>
       </span>
     </span>
@@ -473,7 +521,7 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-eye"></i>
       </span>
-      <span class="site-pv" title="Alle Aufrufe">
+      <span class="site-pv" title="إجمالي المشاهدات">
         <span id="busuanzi_value_site_pv"></span>
       </span>
     </span>
