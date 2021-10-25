@@ -1263,9 +1263,9 @@
     <title>数据结构--树、二叉树</title>
     <url>/2021/10/24/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91/</url>
     <content><![CDATA[<h2 id="树"><a href="#树" class="headerlink" title="树"></a>树</h2><p>树是一种分层次数据的抽象模型，下图是在现实生活中的例子：</p>
-<p><img src="/2021/10/24/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91/1%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/source/_posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91/1.png" alt="1"></p>
+<p><img src="/2021/10/24/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91/1.png" alt="1"></p>
 <p>在图中不难看出一个家族里要长幼有序，不能乱了辈分，这就是树在现实生活中的表现形式。</p>
-<h2 id="树的结构"><a href="#树的结构" class="headerlink" title="树的结构"></a>树的结构</h2><p><img src="/2021/10/24/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91/1%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/source/_posts/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91/2.png" alt="2"></p>
+<h2 id="树的结构"><a href="#树的结构" class="headerlink" title="树的结构"></a>树的结构</h2><p><img src="/2021/10/24/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-%E6%A0%91%E3%80%81%E4%BA%8C%E5%8F%89%E6%A0%91/2.png" alt="2"></p>
 <hr>
 <h2 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h2>]]></content>
       <categories>
