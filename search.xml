@@ -1389,7 +1389,7 @@
 <p>这里要注意，堆内存中的bar函数对象有一个属性scope，它指向的是父级的活动对象。我们注意红色箭头，这个bar函数对象里面的scope属性(表示父级作用域)又引用着foo函数上下文的AO活动对象(<strong>形成闭包)<strong>，而全局变量Bar引用着bar函数对象。根据这两层引用关系，从某种角度来说这个全局变量Bar也是“指向”这个AO活动对象的，所以无论在下面的代码中是否通过Bar()去调用bar函数，这层引用关系是永远存在的，这就造成了</strong>内存泄漏</strong>，这个AO活动对象一直得不到回收。</p>
 <p>如果我们想要让内存中的AO对象和bar函数对象都得到回收也很简单，只需一步：<strong>Bar=null</strong> 。意思是让全局变量Bar去指向0x0这块地址，内存中的bar函数对象就不会被全局变量Bar引用了，所以内存中的对象就会被回收掉。</p>
 <hr>
-<p>假想一下：如果变换成如下代码还内存将会怎样变换呢？</p>
+<p>假想一下：如果变换成如下代码内存中将会怎样执行呢？</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> a = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(a)</span><br><span class="line">    &#125;</span><br><span class="line">    bar()</span><br><span class="line">&#125;</span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
 
 <p>这里只有微小的改变，也就是foo函数没有返回bar函数并用一个全局变量引用。还是熟悉的味道：代码执行到第9行，创建foo函数上下文，该上下文入栈，里面的活动对象仍然是包括变量a和一个函数bar。foo函数代码执行，此时创建bar函数上下文，通过作用域链找到a变量，打印 1。bar函数上下文出栈，销毁，foo函数上下文出栈，销毁，同时AO也都会被回收。</p>
