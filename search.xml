@@ -838,8 +838,7 @@
 
 
 <p>先思考一下控制台的打印结果：………</p>
-<img src="/2021/09/26/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E8%BF%9B%E9%98%B6)%EF%BC%88%E5%8C%85%E5%90%AB%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87%E3%80%81VO%E3%80%81AO%E7%AD%89%EF%BC%89/2.jpg" alt="2" style="zoom: 67%;">
-
+<p><img src="/2021/09/26/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E8%BF%9B%E9%98%B6)%EF%BC%88%E5%8C%85%E5%90%AB%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87%E3%80%81VO%E3%80%81AO%E7%AD%89%EF%BC%89/2.jpg" alt="2"></p>
 <center style="color: red">下面是控制台的输出(分两次打印)</center>
 
 <center style="color: blue">代码片段一(test1)打印结果</center>
@@ -1370,5 +1369,34 @@
       <tags>
         <tag>前端</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>从内存的角度浅谈JS中的闭包以及闭包造成的内存泄漏</title>
+    <url>/2021/11/10/%E4%BB%8E%E5%86%85%E5%AD%98%E7%9A%84%E8%A7%92%E5%BA%A6%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E9%97%AD%E5%8C%85%E4%BB%A5%E5%8F%8A%E9%97%AD%E5%8C%85%E9%80%A0%E6%88%90%E7%9A%84%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/</url>
+    <content><![CDATA[<h2 id="什么是闭包？"><a href="#什么是闭包？" class="headerlink" title="什么是闭包？"></a>什么是闭包？</h2><p><strong>一个可以访问外层作用域的函数就是一个闭包</strong></p>
+<p>关于闭包的概念在论坛里每个人都有自己的观点，其实不难理解。我们可以这样想，在一对嵌套函数中，子函数是<strong>一定具备</strong>访问父函数内部变量的本领的，子函数无论是否<strong>真的</strong>引用了父函数中的变量，它都<strong>始终</strong>具备这样的本领，那么在这一对嵌套函数中就形成了<strong>闭包</strong>。所以，从广义的角度讲<strong>任何一个函数都是闭包，它都具备访问外层作用域的本领。</strong>从狭义的角度讲，<strong>一个子函数确确实实的访问了父函数中的变量，那么它一定是一个闭包！</strong></p>
+<hr>
+<h4 id="那么为什么内层的函数就可以访问到外层作用域的变量了呢？"><a href="#那么为什么内层的函数就可以访问到外层作用域的变量了呢？" class="headerlink" title="那么为什么内层的函数就可以访问到外层作用域的变量了呢？"></a>那么为什么内层的函数就可以访问到外层<strong>作用域</strong>的变量了呢？</h4><p><u>友情提示：下面内容涉及到<a href="https://mr-programming.github.io/2021/09/26/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E8%BF%9B%E9%98%B6)%EF%BC%88%E5%8C%85%E5%90%AB%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87%E3%80%81VO%E3%80%81AO%E7%AD%89%EF%BC%89/">作用域和上下文</a>相关的相关知识，不太懂的小伙伴可以点链接去看一下相关内容。</u></p>
+<p><strong>下面从内存的角度来分析：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> a = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(a)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> bar</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> Bar = foo()</span><br><span class="line">Bar()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 控制台打印： 1</span></span><br></pre></td></tr></table></figure>
+
+<p>代码执行到第9行，foo( )函数被调用。此时会创建foo的函数上下文，函数上下文入栈。函数的上下文中包括变量对象VO，表示为AO活动对象，AO对象中包含a变量和bar函数，代码执行… 执行完毕后返回bar函数，foo函数上下文出栈。如下图：</p>
+<p><img src="/2021/11/10/%E4%BB%8E%E5%86%85%E5%AD%98%E7%9A%84%E8%A7%92%E5%BA%A6%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E9%97%AD%E5%8C%85%E4%BB%A5%E5%8F%8A%E9%97%AD%E5%8C%85%E9%80%A0%E6%88%90%E7%9A%84%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/1.png" alt="1"></p>
+<p>代码执行到第十行，调用bar函数，同样创建上下文，bar函数上下文压入上下文栈，上下文中不光包含活动对象AO同样还包含着<strong>作用域链</strong>，这个作用域链中包括父级上下文中的活动对象(foo的活动对象AO)。所以，在执行bar函数(Bar())时就可以访问到外层函数中的a变量。下面的图就不画了，hhhhh关于作用域链，AO，VO这些词汇很陌生的小伙伴最好去看下前面的内容。</p>
+<hr>
+<h4 id="闭包带来的内存泄漏"><a href="#闭包带来的内存泄漏" class="headerlink" title="闭包带来的内存泄漏"></a>闭包带来的内存泄漏</h4><p>我们来思考一个问题：我们在上面分析到第9行的时候说foo函数执行完毕会它对应的上下文会弹出上下文栈，那么在堆内存中的AO对象该何去何从呢？整常情况下该活动对象随后也会被销毁，但是在这个例子中这个AO是永远不会被销毁的。这就是因为<strong>闭包所造成的内存泄漏</strong></p>
+<p>我们把目光锁定到上面例子中的第9行，此时foo函数执行完毕 如下图所示：<img src="/2021/11/10/%E4%BB%8E%E5%86%85%E5%AD%98%E7%9A%84%E8%A7%92%E5%BA%A6%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E9%97%AD%E5%8C%85%E4%BB%A5%E5%8F%8A%E9%97%AD%E5%8C%85%E9%80%A0%E6%88%90%E7%9A%84%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F/2.png" alt="2"></p>
+<p>这里要注意，堆内存中的bar函数对象有一个属性scope，它指向的是父级的活动对象。我们注意红色箭头，这个bar函数对象里面的scope属性又引用着foo函数上下文的AO活动对象(<strong>形成闭包)<strong>，而全局变量Bar引用着bar函数对象。根据这两层引用关系，从某种角度来说这个全局变量Bar也是“指向”这个AO活动对象的，所以无论在下面的代码中是否通过Bar()去调用bar函数，这层引用关系是永远存在的，这就造成了</strong>内存泄漏</strong>，这个AO活动对象一直得不到回收。</p>
+<p>如果我们想要让内存中的AO对象和bar函数对象都得到回收也很简单，只需一步：<strong>Bar=null</strong> 。意思是让全局变量Bar去指向0x0这块地址，内存中的bar函数对象就不会被全局变量Bar引用了，所以内存中的对象就会被回收掉。</p>
+<hr>
+<p>假想一下：如果变换成如下代码还内存将会怎样变换呢？</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> a = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(a)</span><br><span class="line">    &#125;</span><br><span class="line">    bar()</span><br><span class="line">&#125;</span><br><span class="line">foo()</span><br></pre></td></tr></table></figure>
+
+<p>这里只有微小的改变，也就是foo函数没有返回bar函数并用一个全局变量引用。还是熟悉的味道：代码执行到第9行，创建foo函数上下文，该上下文入栈，里面的活动对象仍然是包括变量a和一个函数bar。foo函数代码执行，此时创建bar函数上下文，通过作用域链找到a变量，打印 1。bar函数上下文出栈，销毁，foo函数上下文出栈，销毁，同时AO也都会被回收。</p>
+<p>说一千道一万，这一微小的变化就是在foo函数体内部并没有返回bar函数并被全局变量引用，所以这里面有闭包，但是没有内存泄漏。</p>
+]]></content>
+      <categories>
+        <category>关于JavaScript</category>
+      </categories>
   </entry>
 </search>
