@@ -85,7 +85,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Navigationsleiste an/ausschalten">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
       <span class="toggle-line toggle-line-first"></span>
       <span class="toggle-line toggle-line-middle"></span>
       <span class="toggle-line toggle-line-last"></span>
@@ -195,7 +195,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/17/var%E3%80%81let%E3%80%81const%E5%85%B3%E9%94%AE%E5%AD%97%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E5%8C%BA%E5%88%AB/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/22/JS%E4%B8%AD%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -209,7 +209,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/09/17/var%E3%80%81let%E3%80%81const%E5%85%B3%E9%94%AE%E5%AD%97%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">var、let、const关键字的详细解读</a>
+            <a href="/2021/09/22/JS%E4%B8%AD%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/" class="post-title-link" itemprop="url">JS中的垃圾回收机制</a>
         </h2>
 
         <div class="post-meta">
@@ -218,10 +218,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建于：2021-09-17 17:34:51 / 更新于：23:55:22" itemprop="dateCreated datePublished" datetime="2021-09-17T17:34:51+08:00">2021-09-17</time>
+              <time title="创建于：2021-09-22 16:44:12" itemprop="dateCreated datePublished" datetime="2021-09-22T16:44:12+08:00">2021-09-22</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="更新于：2021-09-24 10:31:11" itemprop="dateModified" datetime="2021-09-24T10:31:11+08:00">2021-09-24</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -241,8 +247,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2021/09/17/var%E3%80%81let%E3%80%81const%E5%85%B3%E9%94%AE%E5%AD%97%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E5%8C%BA%E5%88%AB/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/17/var%E3%80%81let%E3%80%81const%E5%85%B3%E9%94%AE%E5%AD%97%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E5%8C%BA%E5%88%AB/" itemprop="commentCount"></span>
+    <a title="valine" href="/2021/09/22/JS%E4%B8%AD%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/22/JS%E4%B8%AD%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -257,10 +263,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>var、let、const的区别和使用时的注意事项</p>
+          <p>今天看了JavaScript高级程序设计第四版中的内存部分，里面涉及到了垃圾回收的相关内容。又顺便看了几篇大佬们写的博客，下面来总结一下今天收获的知识点 。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/09/17/var%E3%80%81let%E3%80%81const%E5%85%B3%E9%94%AE%E5%AD%97%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8F%8A%E5%8C%BA%E5%88%AB/">
+              <a class="btn" href="/2021/09/22/JS%E4%B8%AD%E7%9A%84%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -284,7 +290,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/16/Vue_Music%E7%BB%83%E4%B9%A0%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/21/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E5%9F%BA%E7%A1%80)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -298,7 +304,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/09/16/Vue_Music%E7%BB%83%E4%B9%A0%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">Vue_Music练习项目总结</a>
+            <a href="/2021/09/21/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E5%9F%BA%E7%A1%80)/" class="post-title-link" itemprop="url">浅谈JS中的执行上下文和作用域链(基础)</a>
         </h2>
 
         <div class="post-meta">
@@ -307,17 +313,23 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建于：2021-09-16 10:46:19 / 更新于：13:41:07" itemprop="dateCreated datePublished" datetime="2021-09-16T10:46:19+08:00">2021-09-16</time>
+              <time title="创建于：2021-09-21 17:59:12" itemprop="dateCreated datePublished" datetime="2021-09-21T17:59:12+08:00">2021-09-21</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="更新于：2021-09-26 21:32:13" itemprop="dateModified" datetime="2021-09-26T21:32:13+08:00">2021-09-26</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%85%B3%E4%BA%8EVue/" itemprop="url" rel="index"><span itemprop="name">关于Vue</span></a>
+                  <a href="/categories/%E5%85%B3%E4%BA%8EJavaScript/" itemprop="url" rel="index"><span itemprop="name">关于JavaScript</span></a>
                 </span>
             </span>
 
@@ -330,8 +342,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2021/09/16/Vue_Music%E7%BB%83%E4%B9%A0%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/16/Vue_Music%E7%BB%83%E4%B9%A0%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/" itemprop="commentCount"></span>
+    <a title="valine" href="/2021/09/21/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E5%9F%BA%E7%A1%80)/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/21/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E5%9F%BA%E7%A1%80)/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -346,10 +358,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>一个关于webApp音乐播放器的练习项目，技术栈有：Vue2+View.UI+vuex+vue-router+axios+ES6</p>
+          <p>关于JS中的执行上下文和作用域链的介绍，本篇是基础篇，关于变量提升的原理和上下文的创建具体内容请看进阶篇。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/09/16/Vue_Music%E7%BB%83%E4%B9%A0%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/">
+              <a class="btn" href="/2021/09/21/%E6%B5%85%E8%B0%88JS%E4%B8%AD%E7%9A%84%E6%89%A7%E8%A1%8C%E4%B8%8A%E4%B8%8B%E6%96%87%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE(%E5%9F%BA%E7%A1%80)/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -373,7 +385,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/04/Vue2%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1-%E5%85%A8%E5%B1%80%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/21/JS%E4%B8%AD%E7%9A%84%E5%85%A8%E7%AD%89%E5%92%8C%E4%B8%8D%E5%85%A8%E7%AD%89%E3%80%81%E7%AD%89%E4%BA%8E%E5%92%8C%E4%B8%8D%E7%AD%89%E4%BA%8E/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -387,7 +399,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/09/04/Vue2%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1-%E5%85%A8%E5%B1%80%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF/" class="post-title-link" itemprop="url">Vue2组件间通信---全局事件总线</a>
+            <a href="/2021/09/21/JS%E4%B8%AD%E7%9A%84%E5%85%A8%E7%AD%89%E5%92%8C%E4%B8%8D%E5%85%A8%E7%AD%89%E3%80%81%E7%AD%89%E4%BA%8E%E5%92%8C%E4%B8%8D%E7%AD%89%E4%BA%8E/" class="post-title-link" itemprop="url">JS中的全等和不全等、等于和不等于</a>
         </h2>
 
         <div class="post-meta">
@@ -396,17 +408,23 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建于：2021-09-04 09:11:44 / 更新于：10:29:59" itemprop="dateCreated datePublished" datetime="2021-09-04T09:11:44+08:00">2021-09-04</time>
+              <time title="创建于：2021-09-21 12:18:43" itemprop="dateCreated datePublished" datetime="2021-09-21T12:18:43+08:00">2021-09-21</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="更新于：2021-09-24 10:29:54" itemprop="dateModified" datetime="2021-09-24T10:29:54+08:00">2021-09-24</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%85%B3%E4%BA%8EVue/" itemprop="url" rel="index"><span itemprop="name">关于Vue</span></a>
+                  <a href="/categories/%E5%85%B3%E4%BA%8EJavaScript/" itemprop="url" rel="index"><span itemprop="name">关于JavaScript</span></a>
                 </span>
             </span>
 
@@ -419,8 +437,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2021/09/04/Vue2%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1-%E5%85%A8%E5%B1%80%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/04/Vue2%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1-%E5%85%A8%E5%B1%80%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF/" itemprop="commentCount"></span>
+    <a title="valine" href="/2021/09/21/JS%E4%B8%AD%E7%9A%84%E5%85%A8%E7%AD%89%E5%92%8C%E4%B8%8D%E5%85%A8%E7%AD%89%E3%80%81%E7%AD%89%E4%BA%8E%E5%92%8C%E4%B8%8D%E7%AD%89%E4%BA%8E/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/21/JS%E4%B8%AD%E7%9A%84%E5%85%A8%E7%AD%89%E5%92%8C%E4%B8%8D%E5%85%A8%E7%AD%89%E3%80%81%E7%AD%89%E4%BA%8E%E5%92%8C%E4%B8%8D%E7%AD%89%E4%BA%8E/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -435,10 +453,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Vue2中组件间通信系列，本篇是关于任意组件间传值传值的介绍，这里我会用通俗的语言帮助大家理解全局事件总线</p>
+          <p>关于JavaScript中的全等和不全等、等于和不等于</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/09/04/Vue2%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1-%E5%85%A8%E5%B1%80%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF/">
+              <a class="btn" href="/2021/09/21/JS%E4%B8%AD%E7%9A%84%E5%85%A8%E7%AD%89%E5%92%8C%E4%B8%8D%E5%85%A8%E7%AD%89%E3%80%81%E7%AD%89%E4%BA%8E%E5%92%8C%E4%B8%8D%E7%AD%89%E4%BA%8E/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -462,7 +480,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/03/Vue2%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1---%E5%AD%90%E4%BC%A0%E7%88%B6%E5%80%BC%E8%87%AA%E5%AE%9A%E4%B9%89%E4%BA%8B%E4%BB%B6/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/20/JS%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%A7%8B%E5%80%BC%E3%80%81%E5%BC%95%E7%94%A8%E5%80%BC%E3%80%81%E6%8C%89%E5%80%BC%E4%BC%A0%E9%80%92/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -476,7 +494,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/09/03/Vue2%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1---%E5%AD%90%E4%BC%A0%E7%88%B6%E5%80%BC%E8%87%AA%E5%AE%9A%E4%B9%89%E4%BA%8B%E4%BB%B6/" class="post-title-link" itemprop="url">Vue2组件间通信---子传父值自定义事件</a>
+            <a href="/2021/09/20/JS%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%A7%8B%E5%80%BC%E3%80%81%E5%BC%95%E7%94%A8%E5%80%BC%E3%80%81%E6%8C%89%E5%80%BC%E4%BC%A0%E9%80%92/" class="post-title-link" itemprop="url">JS中的原始值、引用值、按值传递</a>
         </h2>
 
         <div class="post-meta">
@@ -485,17 +503,23 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建于：2021-09-03 10:17:10 / 更新于：13:37:45" itemprop="dateCreated datePublished" datetime="2021-09-03T10:17:10+08:00">2021-09-03</time>
+              <time title="创建于：2021-09-20 12:34:08" itemprop="dateCreated datePublished" datetime="2021-09-20T12:34:08+08:00">2021-09-20</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="更新于：2021-09-23 22:37:53" itemprop="dateModified" datetime="2021-09-23T22:37:53+08:00">2021-09-23</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%85%B3%E4%BA%8EVue/" itemprop="url" rel="index"><span itemprop="name">关于Vue</span></a>
+                  <a href="/categories/%E5%85%B3%E4%BA%8EJavaScript/" itemprop="url" rel="index"><span itemprop="name">关于JavaScript</span></a>
                 </span>
             </span>
 
@@ -508,8 +532,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2021/09/03/Vue2%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1---%E5%AD%90%E4%BC%A0%E7%88%B6%E5%80%BC%E8%87%AA%E5%AE%9A%E4%B9%89%E4%BA%8B%E4%BB%B6/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/03/Vue2%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1---%E5%AD%90%E4%BC%A0%E7%88%B6%E5%80%BC%E8%87%AA%E5%AE%9A%E4%B9%89%E4%BA%8B%E4%BB%B6/" itemprop="commentCount"></span>
+    <a title="valine" href="/2021/09/20/JS%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%A7%8B%E5%80%BC%E3%80%81%E5%BC%95%E7%94%A8%E5%80%BC%E3%80%81%E6%8C%89%E5%80%BC%E4%BC%A0%E9%80%92/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/09/20/JS%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%A7%8B%E5%80%BC%E3%80%81%E5%BC%95%E7%94%A8%E5%80%BC%E3%80%81%E6%8C%89%E5%80%BC%E4%BC%A0%E9%80%92/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -524,10 +548,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Vue2中组件间通信系列，本篇是关于子组件向父组件传值的介绍，这里我会用通俗的语言帮助大家理解自定义事件</p>
+          <p>关于JavaScript中的原始值与引用值以及按值传递</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/09/03/Vue2%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1---%E5%AD%90%E4%BC%A0%E7%88%B6%E5%80%BC%E8%87%AA%E5%AE%9A%E4%B9%89%E4%BA%8B%E4%BB%B6/">
+              <a class="btn" href="/2021/09/20/JS%E4%B8%AD%E7%9A%84%E5%8E%9F%E5%A7%8B%E5%80%BC%E3%80%81%E5%BC%95%E7%94%A8%E5%80%BC%E3%80%81%E6%8C%89%E5%80%BC%E4%BC%A0%E9%80%92/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -550,7 +574,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Vorherige Seite"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Nächste Seite"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="الصفحة السابقة"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="الصفحة التالية"></i></a>
   </nav>
 
 
@@ -616,20 +640,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -690,7 +714,7 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-user"></i>
       </span>
-      <span class="site-uv" title="Alle Besucher">
+      <span class="site-uv" title="إجمالي الزوار">
         <span id="busuanzi_value_site_uv"></span>
       </span>
     </span>
@@ -699,7 +723,7 @@
       <span class="post-meta-item-icon">
         <i class="fa fa-eye"></i>
       </span>
-      <span class="site-pv" title="Alle Aufrufe">
+      <span class="site-pv" title="إجمالي المشاهدات">
         <span id="busuanzi_value_site_pv"></span>
       </span>
     </span>
